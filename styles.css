@@ -3936,3 +3936,485 @@ body.dark-mode .monitoring-item {
 body.dark-mode .monitoring-item:hover {
   /* 移除夜间模式悬停效果 */
 }
+
+/* ===== 手机端响应式设计 ===== */
+
+/* 手机端全局优化 */
+@media (max-width: 768px) {
+  /* 手机端字体渲染优化 */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 手机端性能优化 */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 手机端滚动优化 */
+  .dashboard-container {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* 手机端基础适配 - 480px以下 */
+@media (max-width: 480px) {
+  /* 基础容器调整 */
+  .dashboard-container {
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow-x: auto;
+  }
+
+  /* 头部区域手机端优化 */
+  .dashboard-header {
+    height: auto;
+    min-height: 60px;
+    padding: var(--spacing-sm);
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: center;
+  }
+
+  .main-title {
+    font-size: var(--text-lg);
+    text-align: center;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .header-controls {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+    align-items: center;
+  }
+
+  /* 颜色切换器手机端优化 */
+  .color-options {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-xs);
+  }
+
+  .color-option {
+    padding: var(--spacing-xs);
+    font-size: var(--text-xs);
+  }
+
+  .color-option span {
+    font-size: var(--text-xs);
+  }
+
+  /* 主题切换按钮手机端优化 */
+  .theme-toggle-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--text-sm);
+  }
+
+  /* 时间显示手机端优化 */
+  .datetime-display {
+    font-size: var(--text-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  /* 主要内容区域手机端布局 */
+  .dashboard-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    height: calc(100vh - 120px);
+  }
+
+  /* 左侧区域手机端优化 */
+  .left-section {
+    max-height: none;
+    height: auto;
+    padding: var(--spacing-sm);
+  }
+
+  /* 中间区域手机端优化 */
+  .middle-section {
+    height: auto;
+    min-height: 400px;
+  }
+
+  /* 右侧区域手机端优化 */
+  .right-section {
+    max-height: none;
+    height: auto;
+    padding-bottom: var(--spacing-sm);
+  }
+
+  /* 卡片标题手机端优化 */
+  .card-title {
+    font-size: var(--text-md);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  /* 科室运营情况手机端优化 */
+  .department-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .department-item {
+    padding: var(--spacing-sm);
+  }
+
+  .department-name {
+    font-size: var(--text-sm);
+  }
+
+  .department-metrics {
+    font-size: var(--text-xs);
+  }
+
+  .department-status {
+    font-size: var(--text-xs);
+    padding: 2px var(--spacing-xs);
+  }
+
+  /* 医疗质量指标手机端优化 */
+  .quality-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .quality-item {
+    padding: var(--spacing-sm);
+  }
+
+  .quality-icon {
+    font-size: var(--text-xl);
+  }
+
+  .quality-value {
+    font-size: var(--text-lg);
+  }
+
+  .quality-label {
+    font-size: var(--text-xs);
+  }
+
+  /* 详细指标区域手机端优化 */
+  .metrics-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .detailed-metric-item {
+    padding: var(--spacing-sm);
+  }
+
+  .metric-header .metric-icon {
+    font-size: var(--text-lg);
+  }
+
+  .metric-header .metric-title {
+    font-size: var(--text-sm);
+  }
+
+  .metric-value-large {
+    font-size: var(--text-xl);
+  }
+
+  .metric-subtitle {
+    font-size: var(--text-xs);
+  }
+
+  .metric-comparison {
+    font-size: var(--text-xs);
+  }
+
+  /* 环境监控手机端优化 */
+  .environment-monitoring-section .environment-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .environment-monitoring-section .env-item {
+    min-height: 100px;
+    padding: var(--spacing-sm);
+  }
+
+  /* 图表区域手机端优化 */
+  .chart-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .chart-container-small {
+    height: 120px;
+  }
+
+  .chart-container-large {
+    height: 150px;
+  }
+
+  .chart-container {
+    height: 120px;
+    min-height: 120px;
+  }
+
+  /* 停车场和网络监控手机端优化 */
+  .parking-network-section {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .parking-network-section .parking-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .parking-network-section .network-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .parking-network-section .parking-chart-container,
+  .parking-network-section .network-chart-container {
+    height: 100px;
+  }
+
+  /* 系统功能模块手机端优化 */
+  .systems-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .system-card {
+    min-height: 80px;
+    padding: var(--spacing-sm);
+  }
+
+  .system-card h4 {
+    font-size: var(--text-sm);
+  }
+
+  .system-icon {
+    font-size: var(--text-xl);
+  }
+
+  .system-status {
+    font-size: var(--text-xs);
+    padding: 2px var(--spacing-xs);
+  }
+
+  .system-metrics {
+    font-size: var(--text-xs);
+  }
+
+  /* 告警面板手机端优化 */
+  .alert-panel {
+    flex: none;
+    height: auto;
+  }
+
+  .alert-item {
+    padding: var(--spacing-sm);
+    font-size: var(--text-sm);
+  }
+
+  .alert-time {
+    font-size: var(--text-xs);
+  }
+
+  .alert-content {
+    font-size: var(--text-xs);
+  }
+
+  /* 状态指示器手机端优化 */
+  .status-indicators {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+  }
+
+  .status-item {
+    justify-content: center;
+  }
+
+  .status-text {
+    font-size: var(--text-xs);
+  }
+
+  /* 图表切换按钮手机端优化 */
+  .chart-toggle {
+    gap: var(--spacing-xs);
+  }
+
+  .toggle-btn {
+    padding: 2px var(--spacing-xs);
+    font-size: var(--text-xs);
+  }
+
+  /* 滚动条在手机端隐藏 */
+  .left-section,
+  .right-section,
+  .middle-section {
+    overflow-x: hidden;
+  }
+
+  /* 手机端触摸优化 */
+  .color-option,
+  .theme-toggle-btn,
+  .toggle-btn,
+  .system-card {
+    min-height: 44px; /* iOS推荐的最小触摸目标 */
+    min-width: 44px;
+  }
+
+  /* 手机端按钮触摸反馈 */
+  .color-option:active,
+  .theme-toggle-btn:active,
+  .toggle-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  /* 手机端卡片触摸反馈 */
+  .system-card:active,
+  .department-item:active,
+  .quality-item:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  /* 手机端滚动优化 */
+  .left-section,
+  .right-section,
+  .middle-section,
+  .systems-grid,
+  .alert-list {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* 手机端横屏适配 - 480px到768px之间 */
+@media (min-width: 481px) and (max-width: 768px) {
+  .dashboard-header {
+    height: 70px;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .main-title {
+    font-size: var(--text-xl);
+  }
+
+  .header-controls {
+    gap: var(--spacing-md);
+  }
+
+  .dashboard-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+
+  .left-section,
+  .right-section {
+    max-height: 250px;
+  }
+
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .environment-monitoring-section .environment-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .systems-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-container-small {
+    height: 140px;
+  }
+
+  .chart-container-large {
+    height: 180px;
+  }
+}
+
+/* 手机端超小屏幕适配 - 360px以下 */
+@media (max-width: 360px) {
+  .dashboard-header {
+    padding: var(--spacing-xs);
+  }
+
+  .main-title {
+    font-size: var(--text-md);
+  }
+
+  .color-options {
+    gap: 2px;
+  }
+
+  .color-option {
+    padding: 2px var(--spacing-xs);
+  }
+
+  .color-option span {
+    display: none; /* 隐藏文字，只显示颜色圆点 */
+  }
+
+  .theme-toggle-btn {
+    padding: 2px var(--spacing-xs);
+    font-size: var(--text-xs);
+  }
+
+  .theme-text {
+    display: none; /* 隐藏文字，只显示图标 */
+  }
+
+  .datetime-display {
+    font-size: var(--text-xs);
+    padding: 2px var(--spacing-xs);
+  }
+
+  .dashboard-main {
+    padding: var(--spacing-xs);
+    gap: var(--spacing-xs);
+  }
+
+  .card {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .card-title {
+    font-size: var(--text-sm);
+  }
+
+  .metric-value-large {
+    font-size: var(--text-lg);
+  }
+
+  .department-item,
+  .quality-item,
+  .detailed-metric-item {
+    padding: var(--spacing-xs);
+  }
+
+  .system-card {
+    min-height: 60px;
+    padding: var(--spacing-xs);
+  }
+
+  .system-card h4 {
+    font-size: var(--text-xs);
+  }
+
+  .chart-container-small {
+    height: 100px;
+  }
+
+  .chart-container-large {
+    height: 120px;
+  }
+}
