@@ -724,44 +724,214 @@ function initCharts() {
             if (patientFlowChart) {
                 let newOption;
                 if (period === 'day') {
-                    // 日数据 - 24小时
+                    // 日数据 - 12小时
                     newOption = {
+                        backgroundColor: 'transparent',
+                        textStyle: {
+                            color: '#ffffff'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            borderColor: '#00ffff',
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        legend: {
+                            data: ['今日', '昨日', '上周同日'],
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            top: '15%',
+                            containLabel: true
+                        },
                         xAxis: {
-                            data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00']
+                            type: 'category',
+                            data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
                         },
                         series: [
                             {
                                 name: '今日',
-                                data: [12, 8, 5, 15, 45, 78, 95, 88, 76, 65, 42, 28]
+                                type: 'line',
+                                data: [12, 8, 5, 15, 45, 78, 95, 88, 76, 65, 42, 28],
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#00e5ff'
+                                },
+                                lineStyle: {
+                                    color: '#00e5ff',
+                                    width: 3
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(0, 229, 255, 0.3)' },
+                                        { offset: 1, color: 'rgba(0, 229, 255, 0.05)' }
+                                    ])
+                                }
                             },
                             {
                                 name: '昨日',
-                                data: [10, 6, 8, 18, 42, 82, 89, 85, 72, 68, 45, 32]
+                                type: 'line',
+                                data: [10, 6, 8, 18, 42, 82, 89, 85, 72, 68, 45, 32],
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#ff6b6b'
+                                },
+                                lineStyle: {
+                                    color: '#ff6b6b',
+                                    width: 2
+                                }
                             },
                             {
                                 name: '上周同日',
-                                data: [15, 12, 10, 20, 48, 75, 92, 90, 78, 70, 50, 35]
+                                type: 'line',
+                                data: [15, 12, 10, 20, 48, 75, 92, 90, 78, 70, 50, 35],
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#4ecdc4'
+                                },
+                                lineStyle: {
+                                    color: '#4ecdc4',
+                                    width: 2
+                                }
                             }
                         ]
                     };
                 } else {
                     // 月数据 - 30天
+                    const monthData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 50);
+                    const lastMonthData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 45);
+                    const lastYearData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 40);
+                    
                     newOption = {
+                        backgroundColor: 'transparent',
+                        textStyle: {
+                            color: '#ffffff'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            borderColor: '#00ffff',
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        legend: {
+                            data: ['本月', '上月', '去年同月'],
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            top: '15%',
+                            containLabel: true
+                        },
                         xAxis: {
-                            data: Array.from({length: 30}, (_, i) => `${i + 1}日`)
+                            type: 'category',
+                            data: Array.from({length: 30}, (_, i) => `${i + 1}日`),
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
                         },
                         series: [
                             {
                                 name: '本月',
-                                data: Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 50)
+                                type: 'line',
+                                data: monthData,
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#00e5ff'
+                                },
+                                lineStyle: {
+                                    color: '#00e5ff',
+                                    width: 3
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(0, 229, 255, 0.3)' },
+                                        { offset: 1, color: 'rgba(0, 229, 255, 0.05)' }
+                                    ])
+                                }
                             },
                             {
                                 name: '上月',
-                                data: Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 45)
+                                type: 'line',
+                                data: lastMonthData,
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#ff6b6b'
+                                },
+                                lineStyle: {
+                                    color: '#ff6b6b',
+                                    width: 2
+                                }
                             },
                             {
                                 name: '去年同月',
-                                data: Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 40)
+                                type: 'line',
+                                data: lastYearData,
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#4ecdc4'
+                                },
+                                lineStyle: {
+                                    color: '#4ecdc4',
+                                    width: 2
+                                }
                             }
                         ]
                     };
@@ -881,6 +1051,231 @@ function initCharts() {
     if (energyChart) {
         energyChart.setOption(energyOption);
     }
+
+    // 能源消耗趋势图表日月切换功能
+    const energyToggleButtons = document.querySelectorAll('.chart-container-small:nth-child(2) .chart-toggle .toggle-btn');
+    energyToggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 移除所有按钮的active类
+            energyToggleButtons.forEach(btn => btn.classList.remove('active'));
+            // 添加当前按钮的active类
+            this.classList.add('active');
+            
+            // 获取切换的周期
+            const period = this.getAttribute('data-period');
+            
+            // 更新图表数据
+            if (energyChart) {
+                let newOption;
+                if (period === 'day') {
+                    // 日数据 - 12小时
+                    newOption = {
+                        backgroundColor: 'transparent',
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            borderColor: '#00e5ff',
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        legend: {
+                            data: ['电力', '水', '燃气'],
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            top: '15%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name: '电力',
+                                type: 'line',
+                                data: [120, 110, 95, 105, 140, 180, 200, 185, 160, 135, 125, 115],
+                                itemStyle: {
+                                    color: '#ff6b6b'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(255, 107, 107, 0.3)' },
+                                        { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }
+                                    ])
+                                }
+                            },
+                            {
+                                name: '水',
+                                type: 'line',
+                                data: [220, 200, 180, 190, 240, 280, 300, 285, 260, 235, 225, 215],
+                                itemStyle: {
+                                    color: '#4ecdc4'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(78, 205, 196, 0.3)' },
+                                        { offset: 1, color: 'rgba(78, 205, 196, 0.05)' }
+                                    ])
+                                }
+                            },
+                            {
+                                name: '燃气',
+                                type: 'line',
+                                data: [150, 140, 125, 135, 170, 210, 230, 215, 190, 165, 155, 145],
+                                itemStyle: {
+                                    color: '#45b7d1'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(69, 183, 209, 0.3)' },
+                                        { offset: 1, color: 'rgba(69, 183, 209, 0.05)' }
+                                    ])
+                                }
+                            }
+                        ]
+                    };
+                } else {
+                    // 月数据 - 30天
+                    const electricityData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 100);
+                    const waterData = Array.from({length: 30}, () => Math.floor(Math.random() * 120) + 180);
+                    const gasData = Array.from({length: 30}, () => Math.floor(Math.random() * 80) + 120);
+                    
+                    newOption = {
+                        backgroundColor: 'transparent',
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            borderColor: '#00e5ff',
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        legend: {
+                            data: ['电力', '水', '燃气'],
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            top: '15%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: Array.from({length: 30}, (_, i) => `${i + 1}日`),
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#ffffff'
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name: '电力',
+                                type: 'line',
+                                data: electricityData,
+                                itemStyle: {
+                                    color: '#ff6b6b'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(255, 107, 107, 0.3)' },
+                                        { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }
+                                    ])
+                                }
+                            },
+                            {
+                                name: '水',
+                                type: 'line',
+                                data: waterData,
+                                itemStyle: {
+                                    color: '#4ecdc4'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(78, 205, 196, 0.3)' },
+                                        { offset: 1, color: 'rgba(78, 205, 196, 0.05)' }
+                                    ])
+                                }
+                            },
+                            {
+                                name: '燃气',
+                                type: 'line',
+                                data: gasData,
+                                itemStyle: {
+                                    color: '#45b7d1'
+                                },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(69, 183, 209, 0.3)' },
+                                        { offset: 1, color: 'rgba(69, 183, 209, 0.05)' }
+                                    ])
+                                }
+                            }
+                        ]
+                    };
+                }
+                
+                // 更新图表
+                energyChart.setOption(newOption, true);
+            }
+        });
+    });
 
     // 交通流量图表
     const trafficElement = document.getElementById('trafficChart');
