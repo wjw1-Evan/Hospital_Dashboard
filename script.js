@@ -1,3 +1,6 @@
+// 患者流量趋势图表显示模式状态
+let patientFlowChartMode = 'day'; // 'day' 或 'month'
+
 // 时间显示更新
 function updateTime() {
     const now = new Date();
@@ -276,13 +279,13 @@ function updateDetailedMetrics() {
         patientComparisonEl.className = 'patient-value ' + (patientComparison > 0 ? 'up' : 'down');
     }
     
-    // 更新患者流量趋势图表数据
-    if (patientFlowChart && typeof patientFlowChart.setOption === 'function') {
+    // 更新患者流量趋势图表数据（仅在日模式下）
+    if (window.patientFlowChart && typeof window.patientFlowChart.setOption === 'function' && patientFlowChartMode === 'day') {
         const currentData = [45, 23, 156, 234, 189, 78].map(val => val + Math.floor(Math.random() * 20 - 10));
         const lastYearData = [38, 45, 142, 198, 165, 89].map(val => val + Math.floor(Math.random() * 15 - 8));
         const lastMonthData = [42, 28, 148, 215, 172, 85].map(val => val + Math.floor(Math.random() * 18 - 9));
         
-        patientFlowChart.setOption({
+        window.patientFlowChart.setOption({
             series: [
                 { data: currentData },
                 { data: lastYearData },
@@ -597,9 +600,8 @@ function initCharts() {
         }
     // 患者流量图表
     const patientFlowElement = document.getElementById('patientFlowChart');
-    let patientFlowChart = null;
     if (patientFlowElement) {
-        patientFlowChart = echarts.init(patientFlowElement);
+        window.patientFlowChart = echarts.init(patientFlowElement);
     }
     const patientFlowOption = {
         backgroundColor: 'transparent',
@@ -630,6 +632,7 @@ function initCharts() {
         },
         xAxis: {
             type: 'category',
+            boundaryGap: false,
             data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
             axisLine: {
                 lineStyle: {
@@ -704,24 +707,27 @@ function initCharts() {
             }
         ]
     };
-    if (patientFlowChart) {
-        patientFlowChart.setOption(patientFlowOption);
+    if (window.patientFlowChart) {
+        window.patientFlowChart.setOption(patientFlowOption);
     }
 
     // 患者流量趋势图表日月切换功能
-    const toggleButtons = document.querySelectorAll('.chart-toggle .toggle-btn');
-    toggleButtons.forEach(button => {
+    const patientFlowToggleButtons = document.querySelectorAll('.chart-container-small:nth-child(1) .chart-toggle .toggle-btn');
+    patientFlowToggleButtons.forEach(button => {
         button.addEventListener('click', function() {
             // 移除所有按钮的active类
-            toggleButtons.forEach(btn => btn.classList.remove('active'));
+            patientFlowToggleButtons.forEach(btn => btn.classList.remove('active'));
             // 添加当前按钮的active类
             this.classList.add('active');
             
             // 获取切换的周期
             const period = this.getAttribute('data-period');
             
-            // 更新图表数据
-            if (patientFlowChart) {
+            // 更新图表模式状态
+            patientFlowChartMode = period;
+            
+            // 更新患者流量图表数据
+            if (window.patientFlowChart) {
                 let newOption;
                 if (period === 'day') {
                     // 日数据 - 12小时
@@ -753,6 +759,7 @@ function initCharts() {
                         },
                         xAxis: {
                             type: 'category',
+                            boundaryGap: false,
                             data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
                             axisLine: {
                                 lineStyle: {
@@ -829,9 +836,9 @@ function initCharts() {
                     };
                 } else {
                     // 月数据 - 30天
-                    const monthData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 50);
-                    const lastMonthData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 45);
-                    const lastYearData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 40);
+                    const monthData = Array.from({length: 30}, () => Math.floor(Math.random() * 200) + 300);
+                    const lastMonthData = Array.from({length: 30}, () => Math.floor(Math.random() * 180) + 280);
+                    const lastYearData = Array.from({length: 30}, () => Math.floor(Math.random() * 160) + 250);
                     
                     newOption = {
                         backgroundColor: 'transparent',
@@ -861,6 +868,7 @@ function initCharts() {
                         },
                         xAxis: {
                             type: 'category',
+                            boundaryGap: false,
                             data: Array.from({length: 30}, (_, i) => `${i + 1}日`),
                             axisLine: {
                                 lineStyle: {
@@ -868,18 +876,25 @@ function initCharts() {
                                 }
                             },
                             axisLabel: {
-                                color: '#ffffff'
+                                color: '#ffffff',
+                                interval: 4, // 每5天显示一个标签
+                                rotate: 45 // 旋转45度避免重叠
                             }
                         },
                         yAxis: {
                             type: 'value',
+                            min: 200,
+                            max: 600,
                             axisLine: {
                                 lineStyle: {
                                     color: '#ffffff'
                                 }
                             },
                             axisLabel: {
-                                color: '#ffffff'
+                                color: '#ffffff',
+                                formatter: function(value) {
+                                    return value + '人';
+                                }
                             },
                             splitLine: {
                                 lineStyle: {
@@ -938,16 +953,15 @@ function initCharts() {
                 }
                 
                 // 更新图表
-                patientFlowChart.setOption(newOption, true);
+                window.patientFlowChart.setOption(newOption, true);
             }
         });
     });
 
     // 能源消耗图表
     const energyElement = document.getElementById('energyChart');
-    let energyChart = null;
     if (energyElement) {
-        energyChart = echarts.init(energyElement);
+        window.energyChart = echarts.init(energyElement);
     }
     const energyOption = {
         backgroundColor: 'transparent',
@@ -1048,8 +1062,8 @@ function initCharts() {
             }
         ]
     };
-    if (energyChart) {
-        energyChart.setOption(energyOption);
+    if (window.energyChart) {
+        window.energyChart.setOption(energyOption);
     }
 
     // 能源消耗趋势图表日月切换功能
@@ -1064,8 +1078,8 @@ function initCharts() {
             // 获取切换的周期
             const period = this.getAttribute('data-period');
             
-            // 更新图表数据
-            if (energyChart) {
+            // 更新能源消耗图表数据
+            if (window.energyChart) {
                 let newOption;
                 if (period === 'day') {
                     // 日数据 - 12小时
@@ -1205,7 +1219,9 @@ function initCharts() {
                                 }
                             },
                             axisLabel: {
-                                color: '#ffffff'
+                                color: '#ffffff',
+                                interval: 4, // 每5天显示一个标签
+                                rotate: 45 // 旋转45度避免重叠
                             }
                         },
                         yAxis: {
@@ -1272,16 +1288,15 @@ function initCharts() {
                 }
                 
                 // 更新图表
-                energyChart.setOption(newOption, true);
+                window.energyChart.setOption(newOption, true);
             }
         });
     });
 
     // 交通流量图表
     const trafficElement = document.getElementById('trafficChart');
-    let trafficChart = null;
     if (trafficElement) {
-        trafficChart = echarts.init(trafficElement);
+        window.trafficChart = echarts.init(trafficElement);
     }
     const trafficOption = {
         backgroundColor: 'transparent',
@@ -1335,15 +1350,14 @@ function initCharts() {
             }
         ]
     };
-    if (trafficChart) {
-        trafficChart.setOption(trafficOption);
+    if (window.trafficChart) {
+        window.trafficChart.setOption(trafficOption);
     }
 
     // 医疗质量指标图表
     const qualityElement = document.getElementById('qualityChart');
-    let qualityChart = null;
     if (qualityElement) {
-        qualityChart = echarts.init(qualityElement);
+        window.qualityChart = echarts.init(qualityElement);
     }
     const qualityOption = {
         backgroundColor: 'transparent',
@@ -1444,15 +1458,14 @@ function initCharts() {
             }
         ]
     };
-    if (qualityChart) {
-        qualityChart.setOption(qualityOption);
+    if (window.qualityChart) {
+        window.qualityChart.setOption(qualityOption);
     }
 
     // 温度监控图表
     const temperatureElement = document.getElementById('temperatureChart');
-    let temperatureChart = null;
     if (temperatureElement) {
-        temperatureChart = echarts.init(temperatureElement);
+        window.temperatureChart = echarts.init(temperatureElement);
     }
     const temperatureOption = {
         backgroundColor: 'transparent',
@@ -1462,7 +1475,7 @@ function initCharts() {
             endAngle: 0,
             
             center: ['50%', '85%'],
-            radius: '140%',
+            radius: '130%',
             min: 0,
             max: 40,
             splitNumber: 4,
@@ -1535,15 +1548,14 @@ function initCharts() {
             }]
         }]
     };
-    if (temperatureChart) {
-        temperatureChart.setOption(temperatureOption);
+    if (window.temperatureChart) {
+        window.temperatureChart.setOption(temperatureOption);
     }
 
     // 湿度监控图表
     const humidityElement = document.getElementById('humidityChart');
-    let humidityChart = null;
     if (humidityElement) {
-        humidityChart = echarts.init(humidityElement);
+        window.humidityChart = echarts.init(humidityElement);
     }
     const humidityOption = {
         backgroundColor: 'transparent',
@@ -1552,7 +1564,7 @@ function initCharts() {
             startAngle: 180,
             endAngle: 0,
             center: ['50%', '85%'],
-            radius: '140%',
+            radius: '130%',
             min: 0,
             max: 100,
             splitNumber: 5,
@@ -1621,15 +1633,14 @@ function initCharts() {
             }]
         }]
     };
-    if (humidityChart) {
-        humidityChart.setOption(humidityOption);
+    if (window.humidityChart) {
+        window.humidityChart.setOption(humidityOption);
     }
 
     // 空气质量监控图表
     const airQualityElement = document.getElementById('airQualityChart');
-    let airQualityChart = null;
     if (airQualityElement) {
-        airQualityChart = echarts.init(airQualityElement);
+        window.airQualityChart = echarts.init(airQualityElement);
     }
     const airQualityOption = {
         backgroundColor: 'transparent',
@@ -1638,7 +1649,7 @@ function initCharts() {
             startAngle: 180,
             endAngle: 0,
             center: ['50%', '85%'],
-            radius: '140%',
+            radius: '130%',
             min: 0,
             max: 500,
             splitNumber: 5,
@@ -1707,8 +1718,8 @@ function initCharts() {
             }]
         }]
     };
-    if (airQualityChart) {
-        airQualityChart.setOption(airQualityOption);
+    if (window.airQualityChart) {
+        window.airQualityChart.setOption(airQualityOption);
     }
 
     // 电力消耗图表
@@ -1732,7 +1743,7 @@ function initCharts() {
             startAngle: 180,
             endAngle: 0,
             center: ['50%', '85%'],
-            radius: '140%', 
+            radius: '130%', 
             min: 800,
             max: 1600,
             splitNumber: 8,
@@ -1807,9 +1818,8 @@ function initCharts() {
 
     // 网络流量图表
     const networkElement = document.getElementById('networkChart');
-    let networkChart = null;
     if (networkElement) {
-        networkChart = echarts.init(networkElement);
+        window.networkChart = echarts.init(networkElement);
     }
     const networkOption = {
         backgroundColor: 'transparent',
@@ -1892,15 +1902,14 @@ function initCharts() {
             }
         ]
     };
-    if (networkChart) {
-        networkChart.setOption(networkOption);
+    if (window.networkChart) {
+        window.networkChart.setOption(networkOption);
     }
 
     // 收入分析饼图
     const revenueElement = document.getElementById('revenueChart');
-    let revenueChart = null;
     if (revenueElement) {
-        revenueChart = echarts.init(revenueElement);
+        window.revenueChart = echarts.init(revenueElement);
     }
     const revenueOption = {
         backgroundColor: 'transparent',
@@ -1952,15 +1961,14 @@ function initCharts() {
             }
         }]
     };
-    if (revenueChart) {
-        revenueChart.setOption(revenueOption);
+    if (window.revenueChart) {
+        window.revenueChart.setOption(revenueOption);
     }
 
     // 设备状态图表
     const equipmentStatusElement = document.getElementById('equipmentStatusChart');
-    let equipmentStatusChart = null;
     if (equipmentStatusElement) {
-        equipmentStatusChart = echarts.init(equipmentStatusElement);
+        window.equipmentStatusChart = echarts.init(equipmentStatusElement);
     }
     const equipmentStatusOption = {
         backgroundColor: 'transparent',
@@ -2012,8 +2020,8 @@ function initCharts() {
             }
         }]
     };
-    if (equipmentStatusChart) {
-        equipmentStatusChart.setOption(equipmentStatusOption);
+    if (window.equipmentStatusChart) {
+        window.equipmentStatusChart.setOption(equipmentStatusOption);
     }
 
     // 就诊人数趋势图
@@ -2393,17 +2401,17 @@ function initCharts() {
     window.addEventListener('resize', function() {
         // 延迟执行resize，确保布局完成
         setTimeout(function() {
-            if (energyChart) energyChart.resize();
-            if (patientFlowChart) patientFlowChart.resize();
-            if (trafficChart) trafficChart.resize();
-            if (qualityChart) qualityChart.resize();
-            if (temperatureChart) temperatureChart.resize();
-            if (humidityChart) humidityChart.resize();
-            if (airQualityChart) airQualityChart.resize();
+            if (window.energyChart) window.energyChart.resize();
+            if (window.patientFlowChart) window.patientFlowChart.resize();
+            if (window.trafficChart) window.trafficChart.resize();
+            if (window.qualityChart) window.qualityChart.resize();
+            if (window.temperatureChart) window.temperatureChart.resize();
+            if (window.humidityChart) window.humidityChart.resize();
+            if (window.airQualityChart) window.airQualityChart.resize();
             if (window.powerChart && typeof window.powerChart.resize === 'function') window.powerChart.resize();
-            if (networkChart) networkChart.resize();
-            if (revenueChart) revenueChart.resize();
-            if (equipmentStatusChart) equipmentStatusChart.resize();
+            if (window.networkChart) window.networkChart.resize();
+            if (window.revenueChart) window.revenueChart.resize();
+            if (window.equipmentStatusChart) window.equipmentStatusChart.resize();
             if (window.patientTrendChart) window.patientTrendChart.resize();
             if (window.bedUsageGauge) window.bedUsageGauge.resize();
             if (window.emergencyChart) window.emergencyChart.resize();
@@ -2497,22 +2505,35 @@ class ThemeModeManager {
     }
 
     bindEvents() {
+        console.log('开始绑定主题切换事件');
         const themeToggleBtn = document.getElementById('theme-toggle');
+        console.log('找到主题切换按钮:', themeToggleBtn);
+        
         if (themeToggleBtn) {
             themeToggleBtn.addEventListener('click', () => {
+                console.log('主题切换按钮被点击');
                 this.toggleMode();
             });
+            console.log('已绑定点击事件到主题切换按钮');
+        } else {
+            console.error('未找到主题切换按钮 (id: theme-toggle)');
         }
     }
 
     toggleMode() {
+        console.log('开始切换主题模式，当前模式:', this.isDarkMode ? '夜间模式' : '白天模式');
+        
         this.isDarkMode = !this.isDarkMode;
+        console.log('切换后模式:', this.isDarkMode ? '夜间模式' : '白天模式');
+        
         this.applyMode();
         
         // 保存到本地存储
-        localStorage.setItem('dashboard-theme-mode', this.isDarkMode ? 'dark' : 'light');
+        const modeValue = this.isDarkMode ? 'dark' : 'light';
+        localStorage.setItem('dashboard-theme-mode', modeValue);
+        console.log('已保存到本地存储:', modeValue);
         
-        console.log('主题模式已切换到:', this.isDarkMode ? '夜间模式' : '白天模式');
+        console.log('主题模式切换完成:', this.isDarkMode ? '夜间模式' : '白天模式');
     }
 
     applyMode() {
@@ -2521,21 +2542,46 @@ class ThemeModeManager {
         const themeIcon = themeToggleBtn?.querySelector('.theme-icon');
         const themeText = themeToggleBtn?.querySelector('.theme-text');
 
+        console.log('应用主题模式:', this.isDarkMode ? '夜间模式' : '白天模式');
+
         if (this.isDarkMode) {
             body.classList.add('dark-mode');
-            if (themeIcon) themeIcon.textContent = '🌙';
-            if (themeText) themeText.textContent = '夜间';
-            if (themeToggleBtn) themeToggleBtn.classList.add('active');
+            console.log('已添加dark-mode类到body');
+            if (themeIcon) {
+                themeIcon.textContent = '🌙';
+                console.log('已更新图标为月亮');
+            }
+            if (themeText) {
+                themeText.textContent = '夜间';
+                console.log('已更新文字为夜间');
+            }
+            if (themeToggleBtn) {
+                themeToggleBtn.classList.add('active');
+                console.log('已添加active类到按钮');
+            }
         } else {
             body.classList.remove('dark-mode');
-            if (themeIcon) themeIcon.textContent = '☀️';
-            if (themeText) themeText.textContent = '白天';
-            if (themeToggleBtn) themeToggleBtn.classList.remove('active');
+            console.log('已移除dark-mode类从body');
+            if (themeIcon) {
+                themeIcon.textContent = '☀️';
+                console.log('已更新图标为太阳');
+            }
+            if (themeText) {
+                themeText.textContent = '白天';
+                console.log('已更新文字为白天');
+            }
+            if (themeToggleBtn) {
+                themeToggleBtn.classList.remove('active');
+                console.log('已移除active类从按钮');
+            }
         }
 
         // 更新图表颜色以适应主题模式
         if (window.colorThemeManager) {
+            console.log('开始更新图表颜色');
             window.colorThemeManager.updateChartsForDarkMode(this.isDarkMode);
+        } else {
+            console.warn('colorThemeManager未初始化');
         }
     }
 }
