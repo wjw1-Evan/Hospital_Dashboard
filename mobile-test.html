@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>手机适配测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        
+        .test-title {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .test-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        .test-button:hover {
+            background: #0056b3;
+        }
+        
+        .test-button:active {
+            transform: scale(0.95);
+            transition: transform 0.1s ease;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .test-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .test-chart {
+            height: 150px;
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1976d2;
+            font-weight: bold;
+        }
+        
+        .responsive-info {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .responsive-info h3 {
+            color: #2e7d32;
+            margin: 0 0 10px 0;
+        }
+        
+        .responsive-info p {
+            margin: 5px 0;
+            color: #388e3c;
+        }
+        
+        /* 手机端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .test-container {
+                padding: 15px;
+            }
+            
+            .test-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .test-title {
+                font-size: 16px;
+            }
+            
+            .test-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .test-button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .test-container {
+                padding: 10px;
+            }
+            
+            .test-section {
+                padding: 10px;
+            }
+            
+            .test-title {
+                font-size: 14px;
+            }
+            
+            .test-description {
+                font-size: 14px;
+            }
+            
+            .test-chart {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>手机适配测试页面</h1>
+        
+        <div class="responsive-info">
+            <h3>当前屏幕信息</h3>
+            <p>屏幕宽度: <span id="screen-width"></span>px</p>
+            <p>视口宽度: <span id="viewport-width"></span>px</p>
+            <p>设备像素比: <span id="device-ratio"></span></p>
+            <p>用户代理: <span id="user-agent"></span></p>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">触摸目标测试</div>
+            <div class="test-description">
+                测试按钮是否符合44px最小触摸目标要求
+            </div>
+            <button class="test-button">测试按钮1</button>
+            <button class="test-button">测试按钮2</button>
+            <button class="test-button">测试按钮3</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">响应式网格测试</div>
+            <div class="test-description">
+                测试网格布局在不同屏幕尺寸下的表现
+            </div>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h4>卡片1</h4>
+                    <p>内容描述</p>
+                </div>
+                <div class="test-card">
+                    <h4>卡片2</h4>
+                    <p>内容描述</p>
+                </div>
+                <div class="test-card">
+                    <h4>卡片3</h4>
+                    <p>内容描述</p>
+                </div>
+                <div class="test-card">
+                    <h4>卡片4</h4>
+                    <p>内容描述</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">图表容器测试</div>
+            <div class="test-description">
+                测试图表容器在手机端的显示效果
+            </div>
+            <div class="test-chart">
+                模拟图表区域
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">滚动测试</div>
+            <div class="test-description">
+                测试长内容的滚动效果
+            </div>
+            <div style="height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                <p>这是一段长内容，用于测试滚动效果。</p>
+                <p>在手机端，应该能够平滑滚动。</p>
+                <p>内容1</p>
+                <p>内容2</p>
+                <p>内容3</p>
+                <p>内容4</p>
+                <p>内容5</p>
+                <p>内容6</p>
+                <p>内容7</p>
+                <p>内容8</p>
+                <p>内容9</p>
+                <p>内容10</p>
+                <p>内容11</p>
+                <p>内容12</p>
+                <p>内容13</p>
+                <p>内容14</p>
+                <p>内容15</p>
+                <p>内容16</p>
+                <p>内容17</p>
+                <p>内容18</p>
+                <p>内容19</p>
+                <p>内容20</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 显示屏幕信息
+        document.getElementById('screen-width').textContent = screen.width;
+        document.getElementById('viewport-width').textContent = window.innerWidth;
+        document.getElementById('device-ratio').textContent = window.devicePixelRatio;
+        document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
+        
+        // 监听窗口大小变化
+        window.addEventListener('resize', function() {
+            document.getElementById('viewport-width').textContent = window.innerWidth;
+        });
+        
+        // 添加触摸反馈
+        document.querySelectorAll('.test-button').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

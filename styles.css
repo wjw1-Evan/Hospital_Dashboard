@@ -3636,8 +3636,8 @@ body.dark-mode .comparison-value.error {
 /* 超小屏幕优化 */
 @media (max-width: 1024px) {
   .dashboard-container {
-    min-width: 1024px;
-    min-height: 768px;
+    min-width: 100vw;
+    min-height: 100vh;
   }
   
   .dashboard-main {
@@ -3683,8 +3683,8 @@ body.dark-mode .comparison-value.error {
 /* 小屏幕优化 */
 @media (max-width: 768px) {
   .dashboard-container {
-    min-width: 768px;
-    min-height: 1024px;
+    min-width: 100vw;
+    min-height: 100vh;
   }
   
   .dashboard-main {
@@ -3946,6 +3946,11 @@ body.dark-mode .monitoring-item:hover {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* 支持iPhone X及以上的安全区域 */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 
   /* 手机端性能优化 */
@@ -3976,6 +3981,7 @@ body.dark-mode .monitoring-item:hover {
     flex-direction: column;
     gap: var(--spacing-sm);
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .main-title {
@@ -4022,10 +4028,11 @@ body.dark-mode .monitoring-item:hover {
   /* 主要内容区域手机端布局 */
   .dashboard-main {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto 1fr auto;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm);
-    height: calc(100vh - 120px);
+    height: calc(100vh - 80px);
+    min-height: 400px;
   }
 
   /* 左侧区域手机端优化 */
@@ -4148,15 +4155,22 @@ body.dark-mode .monitoring-item:hover {
 
   .chart-container-small {
     height: 120px;
+    min-height: 120px;
   }
 
   .chart-container-large {
     height: 150px;
+    min-height: 150px;
   }
 
   .chart-container {
     height: 120px;
     min-height: 120px;
+  }
+
+  .chart-item {
+    height: 100%;
+    width: 100%;
   }
 
   /* 停车场和网络监控手机端优化 */
@@ -4261,9 +4275,14 @@ body.dark-mode .monitoring-item:hover {
   .color-option,
   .theme-toggle-btn,
   .toggle-btn,
-  .system-card {
+  .system-card,
+  .department-item,
+  .quality-item,
+  .detailed-metric-item {
     min-height: 44px; /* iOS推荐的最小触摸目标 */
     min-width: 44px;
+    /* 确保触摸区域足够大 */
+    padding: var(--spacing-sm);
   }
 
   /* 手机端按钮触摸反馈 */
@@ -4287,17 +4306,21 @@ body.dark-mode .monitoring-item:hover {
   .right-section,
   .middle-section,
   .systems-grid,
-  .alert-list {
+  .alert-list,
+  .detailed-metrics-section {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 }
 
-/* 手机端横屏适配 - 480px到768px之间 */
+/* 手机端横屏适配 - 481px到768px之间 */
 @media (min-width: 481px) and (max-width: 768px) {
   .dashboard-header {
     height: 70px;
     padding: var(--spacing-sm) var(--spacing-md);
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .main-title {
@@ -4306,6 +4329,7 @@ body.dark-mode .monitoring-item:hover {
 
   .header-controls {
     gap: var(--spacing-md);
+    flex-direction: row;
   }
 
   .dashboard-main {
@@ -4313,11 +4337,12 @@ body.dark-mode .monitoring-item:hover {
     grid-template-rows: auto 1fr auto;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm);
+    height: calc(100vh - 70px);
   }
 
   .left-section,
   .right-section {
-    max-height: 250px;
+    max-height: 300px;
   }
 
   .metrics-row {
