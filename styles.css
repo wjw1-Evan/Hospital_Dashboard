@@ -104,14 +104,14 @@ body::after {
 
 /* 头部样式 */
 .dashboard-header {
-  height: 80px;
+  height: 60px;
   background: rgba(10, 14, 39, 0.8);
   backdrop-filter: blur(20px);
   border: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border-bottom: 2px solid var(--border-color);
@@ -123,7 +123,7 @@ body::after {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
 }
 
 /* 主题模式切换器 */
@@ -195,10 +195,10 @@ body::after {
 
 .color-option {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-md);
@@ -220,11 +220,12 @@ body::after {
 }
 
 .color-preview {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .color-option.active .color-preview {
@@ -234,9 +235,10 @@ body::after {
 }
 
 .color-option span {
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: #ffffff;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 /* 移除头部闪光动画效果 */
@@ -247,20 +249,20 @@ body::after {
 /* 移除headerShine动画定义 */
 
 .main-title {
-  font-size: var(--text-5xl);
+  font-size: var(--text-3xl);
   font-weight: bold;
   color: var(--secondary-color);
   text-shadow: var(--text-shadow);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   position: relative;
 }
 
 .datetime-display {
-  font-size: var(--text-3xl);
+  font-size: var(--text-xl);
   color: #ffffff;
   background: transparent;
   backdrop-filter: blur(15px);
-  padding: var(--spacing-sm) var(--spacing-xl);
+  padding: var(--spacing-xs) var(--spacing-lg);
   border-radius: var(--radius-md);
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
@@ -2216,13 +2218,13 @@ body::after {
   }
 
   .dashboard-header {
-    height: 100px;
-    padding: 0 60px;
+    height: 80px;
+    padding: 0 50px;
   }
 
   .datetime-display {
-    font-size: var(--text-4xl);
-    padding: var(--spacing-md) 30px;
+    font-size: var(--text-2xl);
+    padding: var(--spacing-sm) var(--spacing-xl);
   }
 
   .card-title {
@@ -2326,6 +2328,62 @@ body.dark-mode {
   color: #e0e0e0;
 }
 
+/* 夜间模式 - 浅蓝色主题 */
+body.dark-mode[data-theme="light-blue"] {
+  --primary-color: #4fc3f7;
+  --primary-color-rgb: 79, 195, 247;
+  --secondary-color: #29b6f6;
+  --secondary-color-rgb: 41, 182, 246;
+  --accent-color: #4fc3f7;
+  --accent-color-rgb: 79, 195, 247;
+  --background-gradient-1: rgba(79, 195, 247, 0.1);
+  --background-gradient-2: rgba(41, 182, 246, 0.1);
+  --background-gradient-3: rgba(79, 195, 247, 0.05);
+  --border-color: rgba(79, 195, 247, 0.3);
+}
+
+/* 夜间模式 - 浅绿色主题 */
+body.dark-mode[data-theme="light-green"] {
+  --primary-color: #66bb6a;
+  --primary-color-rgb: 102, 187, 106;
+  --secondary-color: #4caf50;
+  --secondary-color-rgb: 76, 175, 80;
+  --accent-color: #66bb6a;
+  --accent-color-rgb: 102, 187, 106;
+  --background-gradient-1: rgba(102, 187, 106, 0.1);
+  --background-gradient-2: rgba(76, 175, 80, 0.1);
+  --background-gradient-3: rgba(102, 187, 106, 0.05);
+  --border-color: rgba(102, 187, 106, 0.3);
+}
+
+/* 夜间模式 - 浅紫色主题 */
+body.dark-mode[data-theme="light-purple"] {
+  --primary-color: #ab47bc;
+  --primary-color-rgb: 171, 71, 188;
+  --secondary-color: #9c27b0;
+  --secondary-color-rgb: 156, 39, 176;
+  --accent-color: #ab47bc;
+  --accent-color-rgb: 171, 71, 188;
+  --background-gradient-1: rgba(171, 71, 188, 0.1);
+  --background-gradient-2: rgba(156, 39, 176, 0.1);
+  --background-gradient-3: rgba(171, 71, 188, 0.05);
+  --border-color: rgba(171, 71, 188, 0.3);
+}
+
+/* 夜间模式 - 浅粉色主题 */
+body.dark-mode[data-theme="light-pink"] {
+  --primary-color: #ec407a;
+  --primary-color-rgb: 236, 64, 122;
+  --secondary-color: #e91e63;
+  --secondary-color-rgb: 233, 30, 99;
+  --accent-color: #ec407a;
+  --accent-color-rgb: 236, 64, 122;
+  --background-gradient-1: rgba(236, 64, 122, 0.1);
+  --background-gradient-2: rgba(233, 30, 99, 0.1);
+  --background-gradient-3: rgba(236, 64, 122, 0.05);
+  --border-color: rgba(236, 64, 122, 0.3);
+}
+
 body.dark-mode::before {
   background: radial-gradient(
       circle at 25% 25%,
@@ -2360,20 +2418,20 @@ body.dark-mode .dashboard-header {
 
 /* 夜间模式卡片样式 */
 body.dark-mode .card {
-  background: rgba(20, 20, 20, 0.8);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(0, 100, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 body.dark-mode .card:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* 夜间模式文字颜色 */
 body.dark-mode .main-title,
 body.dark-mode .card-title {
-  color: #00b4ff;
-  text-shadow: 0 0 20px rgba(0, 180, 255, 0.6);
+  color: var(--primary-color);
+  text-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.6);
 }
 
 body.dark-mode .metric-value-large,
@@ -2389,11 +2447,11 @@ body.dark-mode .quality-value {
 
 /* 夜间模式系统卡片 */
 body.dark-mode .system-card {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .system-card:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* 夜间模式告警项 */
@@ -2442,84 +2500,84 @@ body.dark-mode .alert-item.info {
 body.dark-mode .theme-toggle-btn,
 body.dark-mode .color-option,
 body.dark-mode .toggle-btn {
-  background: rgba(20, 20, 20, 0.8);
-  color: #e0e0e0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 body.dark-mode .theme-toggle-btn:hover,
 body.dark-mode .color-option:hover,
 body.dark-mode .toggle-btn:hover {
-  background: rgba(0, 100, 255, 0.1);
+  background: rgba(var(--primary-color-rgb), 0.1);
 }
 
 body.dark-mode .theme-toggle-btn.active,
 body.dark-mode .color-option.active,
 body.dark-mode .toggle-btn.active {
-  background: rgba(0, 180, 255, 0.2);
+  background: rgba(var(--primary-color-rgb), 0.2);
 }
 
 /* 夜间模式时间显示 */
 body.dark-mode .datetime-display {
-  background: rgba(20, 20, 20, 0.8);
-  color: #e0e0e0;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 /* 夜间模式图表容器 */
 body.dark-mode .chart-container,
 body.dark-mode .chart-container-small,
 body.dark-mode .chart-container-large {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* 夜间模式详细指标项 */
 body.dark-mode .detailed-metric-item,
 body.dark-mode .main-metric-item,
 body.dark-mode .unified-metric-card {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .detailed-metric-item:hover,
 body.dark-mode .main-metric-item:hover,
 body.dark-mode .unified-metric-card:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* 夜间模式环境监控项 */
 body.dark-mode .env-item {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .env-item:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* 夜间模式网络和停车场统计 */
 body.dark-mode .parking-stat,
 body.dark-mode .network-item {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .parking-stat:hover,
 body.dark-mode .network-item:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* 夜间模式科室项 */
 body.dark-mode .department-item,
 body.dark-mode .quality-item {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .department-item:hover,
 body.dark-mode .quality-item:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* 夜间模式监控项 */
 body.dark-mode .monitoring-item {
-  background: rgba(20, 20, 20, 0.8);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.dark-mode .monitoring-item:hover {
-  background: rgba(25, 25, 25, 0.8);
+  background: rgba(255, 255, 255, 0.1);
 }
