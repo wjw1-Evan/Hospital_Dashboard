@@ -4025,36 +4025,43 @@ body.dark-mode .monitoring-item:hover {
     padding: var(--spacing-xs) var(--spacing-sm);
   }
 
-  /* 主要内容区域手机端布局 */
+  /* 主要内容区域手机端布局 - 优化为更合理的垂直布局 */
   .dashboard-main {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto auto;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm);
-    height: calc(100vh - 80px);
-    min-height: 400px;
-  }
-
-  /* 左侧区域手机端优化 */
-  .left-section {
-    max-height: none;
     height: auto;
-    min-height: 70vh;
-    padding: var(--spacing-sm);
-    overflow-y: visible;
+    min-height: calc(100vh - 80px);
   }
 
-  /* 中间区域手机端优化 */
+  /* 左侧区域手机端优化 - 科室运营情况 */
+  .left-section {
+    height: auto;
+    min-height: 50vh;
+    max-height: 60vh;
+    padding: var(--spacing-sm);
+    overflow-y: auto;
+    order: 1;
+  }
+
+  /* 中间区域手机端优化 - 医院运营数据 */
   .middle-section {
     height: auto;
-    min-height: 400px;
+    min-height: 40vh;
+    max-height: 50vh;
+    overflow-y: auto;
+    order: 2;
   }
 
-  /* 右侧区域手机端优化 */
+  /* 右侧区域手机端优化 - 系统功能模块 */
   .right-section {
-    max-height: none;
     height: auto;
+    min-height: 30vh;
+    max-height: 40vh;
     padding-bottom: var(--spacing-sm);
+    overflow-y: auto;
+    order: 3;
   }
 
   /* 卡片标题手机端优化 */
@@ -4167,45 +4174,64 @@ body.dark-mode .monitoring-item:hover {
     font-size: var(--text-xs);
   }
 
-  /* 详细指标区域手机端优化 */
+  /* 详细指标区域手机端优化 - 更紧凑的显示 */
   .metrics-row {
     grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
   }
 
   .detailed-metric-item {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-xs);
+    min-height: 60px;
   }
 
   .metric-header .metric-icon {
-    font-size: var(--text-lg);
+    font-size: var(--text-md);
   }
 
   .metric-header .metric-title {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
   }
 
   .metric-value-large {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
   }
 
   .metric-subtitle {
-    font-size: var(--text-xs);
+    font-size: 10px;
   }
 
   .metric-comparison {
-    font-size: var(--text-xs);
+    font-size: 10px;
   }
 
-  /* 环境监控手机端优化 */
+  /* 环境监控手机端优化 - 更紧凑的网格 */
   .environment-monitoring-section .environment-grid {
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
   }
 
   .environment-monitoring-section .env-item {
-    min-height: 100px;
-    padding: var(--spacing-sm);
+    min-height: 80px;
+    padding: var(--spacing-xs);
+  }
+
+  /* 中间区域内容手机端紧凑优化 */
+  .detailed-metrics-section {
+    margin: var(--spacing-xs) 0;
+  }
+
+  .environment-monitoring-section {
+    margin: var(--spacing-xs) 0;
+  }
+
+  .charts-section {
+    margin: var(--spacing-xs) 0;
+  }
+
+  .parking-network-section {
+    margin: var(--spacing-xs) 0;
   }
 
   /* 图表区域手机端优化 */
@@ -4253,66 +4279,87 @@ body.dark-mode .monitoring-item:hover {
     height: 100px;
   }
 
-  /* 系统功能模块手机端优化 */
+  /* 系统功能模块手机端优化 - 更紧凑的显示 */
   .systems-grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
+    max-height: 200px;
+    overflow-y: auto;
   }
 
   .system-card {
-    min-height: 80px;
-    padding: var(--spacing-sm);
+    min-height: 60px;
+    padding: var(--spacing-xs);
   }
 
   .system-card h4 {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    margin-bottom: 2px;
   }
 
   .system-icon {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
+    margin-bottom: 2px;
   }
 
   .system-status {
-    font-size: var(--text-xs);
-    padding: 2px var(--spacing-xs);
+    font-size: 10px;
+    padding: 1px var(--spacing-xs);
+    margin-bottom: 2px;
   }
 
   .system-metrics {
-    font-size: var(--text-xs);
+    font-size: 10px;
+    line-height: 1.2;
   }
 
-  /* 告警面板手机端优化 */
+  .system-metrics span {
+    margin-bottom: 1px;
+  }
+
+  /* 告警面板手机端优化 - 更紧凑的显示 */
   .alert-panel {
     flex: none;
     height: auto;
+    max-height: 150px;
+    overflow-y: auto;
   }
 
   .alert-item {
-    padding: var(--spacing-sm);
-    font-size: var(--text-sm);
+    padding: var(--spacing-xs);
+    font-size: var(--text-xs);
+    margin-bottom: var(--spacing-xs);
   }
 
   .alert-time {
-    font-size: var(--text-xs);
+    font-size: 10px;
   }
 
   .alert-content {
-    font-size: var(--text-xs);
+    font-size: 10px;
   }
 
-  /* 状态指示器手机端优化 */
+  /* 状态指示器手机端优化 - 更紧凑的显示 */
   .status-indicators {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--spacing-xs);
     padding: var(--spacing-xs);
+    justify-content: space-around;
   }
 
   .status-item {
     justify-content: center;
+    flex: 1;
+    min-width: 80px;
   }
 
   .status-text {
-    font-size: var(--text-xs);
+    font-size: 10px;
+  }
+
+  .status-icon {
+    font-size: var(--text-sm);
   }
 
   /* 图表切换按钮手机端优化 */
@@ -4395,15 +4442,36 @@ body.dark-mode .monitoring-item:hover {
 
   .dashboard-main {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto auto;
     gap: var(--spacing-sm);
     padding: var(--spacing-sm);
-    height: calc(100vh - 70px);
+    height: auto;
+    min-height: calc(100vh - 70px);
   }
 
-  .left-section,
+  /* 横屏模式下给左右两侧更多空间 */
+  .left-section {
+    height: auto;
+    min-height: 40vh;
+    max-height: 50vh;
+    overflow-y: auto;
+    order: 1;
+  }
+
+  .middle-section {
+    height: auto;
+    min-height: 35vh;
+    max-height: 45vh;
+    overflow-y: auto;
+    order: 2;
+  }
+
   .right-section {
-    max-height: 300px;
+    height: auto;
+    min-height: 25vh;
+    max-height: 35vh;
+    overflow-y: auto;
+    order: 3;
   }
 
   .metrics-row {
