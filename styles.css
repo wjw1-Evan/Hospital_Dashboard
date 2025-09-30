@@ -95,6 +95,15 @@ body {
   position: relative;
 }
 
+/* 手机端允许滚动 */
+@media (max-width: 768px) {
+  body {
+    overflow: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -151,6 +160,19 @@ body::after {
   /* 缩放支持 */
   transform-origin: top left;
   /* 移除过渡效果以提升性能 */
+}
+
+/* 手机端主容器优化 */
+@media (max-width: 768px) {
+  .dashboard-container {
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
 }
 
 /* 头部样式 */
@@ -340,9 +362,10 @@ body::after {
   height: calc(100vh - 80px);
 }
 
-/* 手机端连续活动布局 */
+/* 手机端主要内容区域优化 */
 @media (max-width: 768px) {
   .dashboard-main {
+    flex: none;
     display: flex;
     flex-direction: column;
     grid-template-columns: none;
@@ -350,13 +373,11 @@ body::after {
     padding: var(--spacing-sm);
     height: auto;
     min-height: calc(100vh - 60px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* 手机端滚动优化 */
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    overflow: visible;
   }
 }
+
+/* 手机端连续活动布局 - 已合并到上面的样式定义中 */
 
 /* 左侧区域 */
 .left-section {
@@ -379,9 +400,11 @@ body::after {
   .left-section {
     height: auto;
     min-height: 40vh;
-    max-height: 50vh;
+    max-height: 60vh;
     order: 1;
     margin-bottom: var(--spacing-sm);
+    overflow-y: auto;
+    overflow-x: hidden;
     /* 手机端滚动优化 */
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
@@ -401,11 +424,12 @@ body::after {
 @media (max-width: 768px) {
   .middle-section {
     height: auto;
-    min-height: 35vh;
-    max-height: 45vh;
+    min-height: 50vh;
+    max-height: 70vh;
     order: 2;
     margin-bottom: var(--spacing-sm);
     overflow-y: auto;
+    overflow-x: hidden;
     /* 手机端滚动优化 */
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
@@ -426,10 +450,11 @@ body::after {
 @media (max-width: 768px) {
   .right-section {
     height: auto;
-    min-height: 25vh;
-    max-height: 35vh;
+    min-height: 30vh;
+    max-height: 50vh;
     order: 3;
     overflow-y: auto;
+    overflow-x: hidden;
     padding-bottom: var(--spacing-sm);
     /* 手机端滚动优化 */
     -webkit-overflow-scrolling: touch;
@@ -4260,6 +4285,49 @@ body.dark-mode .monitoring-item:hover {
   /* 手机端滚动优化 */
   .dashboard-container {
     -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* 手机端滚动容器通用样式 */
+  .left-section,
+  .middle-section,
+  .right-section,
+  .systems-grid,
+  .alert-list,
+  .detailed-metrics-section,
+  .environment-monitoring-section,
+  .charts-section,
+  .parking-network-section {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  /* 手机端滚动条优化 */
+  .left-section::-webkit-scrollbar,
+  .middle-section::-webkit-scrollbar,
+  .right-section::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .left-section::-webkit-scrollbar-track,
+  .middle-section::-webkit-scrollbar-track,
+  .right-section::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+
+  .left-section::-webkit-scrollbar-thumb,
+  .middle-section::-webkit-scrollbar-thumb,
+  .right-section::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-color-rgb), 0.6);
+    border-radius: 2px;
+  }
+
+  .left-section::-webkit-scrollbar-thumb:hover,
+  .middle-section::-webkit-scrollbar-thumb:hover,
+  .right-section::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--primary-color-rgb), 0.8);
   }
 }
 
@@ -4374,6 +4442,9 @@ body.dark-mode .monitoring-item:hover {
     min-height: 600px;
     max-height: 80vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
   }
 
   .department-grid {
