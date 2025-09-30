@@ -2909,6 +2909,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // 确保所有元素可见
         ensureElementsVisible();
         
+        // 初始化视频监控模态框
+        initVideoModal();
+        
         console.log('医院数据看板初始化完成');
     } catch (error) {
         console.error('初始化过程中发生错误:', error);
@@ -2989,3 +2992,434 @@ function showFullscreenTip() {
 
 // 页面加载后显示提示
 setTimeout(showFullscreenTip, 2000);
+
+// 视频监控模态框功能
+function initVideoModal() {
+    // 创建模态框HTML结构
+    createVideoModalHTML();
+    
+    // 添加点击事件监听器
+    const securitySystemCard = document.querySelector('.security-system');
+    if (securitySystemCard) {
+        securitySystemCard.style.cursor = 'pointer';
+        securitySystemCard.addEventListener('click', function() {
+            showVideoModal();
+        });
+    }
+    
+    // 添加关闭按钮事件监听器
+    const closeBtn = document.getElementById('video-modal-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideVideoModal);
+    }
+    
+    // 添加ESC键关闭功能
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('video-modal');
+        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
+            hideVideoModal();
+        }
+    });
+}
+
+function createVideoModalHTML() {
+    // 检查是否已经存在模态框
+    if (document.getElementById('video-modal')) {
+        return;
+    }
+    
+    const modalHTML = `
+        <div id="video-modal" class="video-modal" style="display: none;">
+            <div class="video-modal-content">
+                <div class="video-modal-header">
+                    <h2>视频安防监控系统</h2>
+                    <button id="video-modal-close" class="video-modal-close">&times;</button>
+                </div>
+                <div class="video-modal-body">
+                    <div class="video-stats">
+                        <div class="video-stat-item">
+                            <span class="video-stat-label">在线摄像头</span>
+                            <span class="video-stat-value" id="online-cameras">156</span>
+                        </div>
+                        <div class="video-stat-item">
+                            <span class="video-stat-label">录像存储</span>
+                            <span class="video-stat-value" id="storage-usage">85%</span>
+                        </div>
+                        <div class="video-stat-item">
+                            <span class="video-stat-label">系统状态</span>
+                            <span class="video-stat-value online" id="system-status">正常</span>
+                        </div>
+                    </div>
+                    <div class="video-search-container">
+                        <div class="search-box">
+                            <input type="text" id="camera-search" placeholder="搜索摄像头位置或编号..." />
+                            <div class="search-icon">🔍</div>
+                        </div>
+                        <div class="search-results-info">
+                            <span id="search-results-count">显示 24 个摄像头</span>
+                        </div>
+                    </div>
+                    <div class="video-grid-container">
+                        <div class="video-grid" id="video-grid">
+                            <!-- 摄像头画面将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // 生成摄像头画面
+    generateCameraFeeds();
+}
+
+// 全局摄像头数据
+let allCameras = [];
+let filteredCameras = [];
+
+function generateCameraFeeds() {
+    const videoGrid = document.getElementById('video-grid');
+    if (!videoGrid) return;
+    
+    // 清空现有内容
+    videoGrid.innerHTML = '';
+    
+    // 扩展摄像头数据
+    const cameraLocations = [
+        '门诊大厅', '急诊科', '手术室', 'ICU病房', '药房', '收费处',
+        '停车场入口', '停车场出口', '电梯间', '楼梯间', '走廊A', '走廊B',
+        '医生办公室', '护士站', '药库', '设备间', '食堂', '会议室',
+        '住院部入口', '住院部出口', '检验科', '放射科', '血库', '太平间',
+        '儿科门诊', '妇产科', '骨科门诊', '心内科', '神经科', '眼科',
+        '耳鼻喉科', '皮肤科', '口腔科', '康复科', '中医科', '心理科',
+        '影像科', '检验科', '病理科', '药剂科', '营养科', '护理部',
+        '行政楼1F', '行政楼2F', '行政楼3F', '行政楼4F', '行政楼5F', '行政楼6F',
+        '住院部1F', '住院部2F', '住院部3F', '住院部4F', '住院部5F', '住院部6F',
+        '住院部7F', '住院部8F', '住院部9F', '住院部10F', '住院部11F', '住院部12F',
+        '地下车库B1', '地下车库B2', '地下车库B3', '设备机房', '配电室', '空调机房',
+        '消防控制室', '监控中心', '网络机房', 'UPS机房', '发电机房', '水泵房',
+        '锅炉房', '洗衣房', '垃圾房', '污水处理', '绿化区A', '绿化区B',
+        '绿化区C', '绿化区D', '停车场A区', '停车场B区', '停车场C区', '停车场D区',
+        '员工宿舍1', '员工宿舍2', '员工宿舍3', '员工宿舍4', '员工食堂', '员工活动室',
+        '图书馆', '会议室A', '会议室B', '会议室C', '会议室D', '会议室E',
+        '培训室1', '培训室2', '培训室3', '培训室4', '培训室5', '培训室6',
+        '实验室1', '实验室2', '实验室3', '实验室4', '实验室5', '实验室6',
+        '手术室1', '手术室2', '手术室3', '手术室4', '手术室5', '手术室6',
+        '手术室7', '手术室8', '手术室9', '手术室10', '手术室11', '手术室12',
+        'ICU病房1', 'ICU病房2', 'ICU病房3', 'ICU病房4', 'ICU病房5', 'ICU病房6',
+        'ICU病房7', 'ICU病房8', 'ICU病房9', 'ICU病房10', 'ICU病房11', 'ICU病房12',
+        '普通病房1', '普通病房2', '普通病房3', '普通病房4', '普通病房5', '普通病房6',
+        '普通病房7', '普通病房8', '普通病房9', '普通病房10', '普通病房11', '普通病房12',
+        '普通病房13', '普通病房14', '普通病房15', '普通病房16', '普通病房17', '普通病房18',
+        '普通病房19', '普通病房20', '普通病房21', '普通病房22', '普通病房23', '普通病房24'
+    ];
+    
+    // 生成156个摄像头画面
+    allCameras = [];
+    for (let i = 0; i < 156; i++) {
+        const camera = {
+            id: i + 1,
+            location: cameraLocations[i] || `区域${i + 1}`,
+            status: Math.random() > 0.05 ? 'online' : 'offline', // 95%在线率
+            floor: Math.floor(i / 24) + 1,
+            zone: String.fromCharCode(65 + (i % 26)) // A-Z区域
+        };
+        allCameras.push(camera);
+    }
+    
+    // 初始显示所有摄像头
+    filteredCameras = [...allCameras];
+    renderCameraFeeds();
+    
+    // 初始化搜索功能
+    initCameraSearch();
+}
+
+function renderCameraFeeds() {
+    const videoGrid = document.getElementById('video-grid');
+    if (!videoGrid) return;
+    
+    // 清空现有内容
+    videoGrid.innerHTML = '';
+    
+    // 渲染过滤后的摄像头
+    filteredCameras.forEach(camera => {
+        const cameraFeed = document.createElement('div');
+        cameraFeed.className = 'camera-feed';
+        cameraFeed.setAttribute('data-camera-id', camera.id);
+        cameraFeed.setAttribute('data-location', camera.location);
+        cameraFeed.innerHTML = `
+            <div class="camera-header">
+                <span class="camera-id">摄像头 ${String(camera.id).padStart(3, '0')}</span>
+                <span class="camera-status ${camera.status}">●</span>
+            </div>
+            <div class="camera-video">
+                <div class="camera-placeholder">
+                    <div class="camera-icon">📹</div>
+                    <div class="camera-location">${camera.location}</div>
+                    <div class="camera-info">
+                        <div class="camera-floor">${camera.floor}楼</div>
+                        <div class="camera-zone">${camera.zone}区</div>
+                    </div>
+                    <div class="camera-time">${new Date().toLocaleTimeString()}</div>
+                </div>
+            </div>
+        `;
+        videoGrid.appendChild(cameraFeed);
+    });
+    
+    // 更新搜索结果计数
+    updateSearchResultsCount();
+}
+
+function initCameraSearch() {
+    const searchInput = document.getElementById('camera-search');
+    if (!searchInput) return;
+    
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase().trim();
+        
+        if (searchTerm === '') {
+            // 显示所有摄像头
+            filteredCameras = [...allCameras];
+        } else {
+            // 过滤摄像头
+            filteredCameras = allCameras.filter(camera => {
+                return camera.location.toLowerCase().includes(searchTerm) ||
+                       camera.id.toString().includes(searchTerm) ||
+                       camera.floor.toString().includes(searchTerm) ||
+                       camera.zone.toLowerCase().includes(searchTerm);
+            });
+        }
+        
+        // 重新渲染摄像头
+        renderCameraFeeds();
+    });
+}
+
+function updateSearchResultsCount() {
+    const countElement = document.getElementById('search-results-count');
+    if (countElement) {
+        countElement.textContent = `显示 ${filteredCameras.length} 个摄像头`;
+    }
+}
+
+function showVideoModal() {
+    const modal = document.getElementById('video-modal');
+    if (modal) {
+        // 更新实时数据
+        updateVideoModalData();
+        
+        // 显示窗口
+        modal.style.display = 'block';
+        
+        // 等待DOM更新后居中显示窗口
+        setTimeout(() => {
+            centerVideoWindow();
+            
+            // 添加淡入动画
+            modal.classList.add('show');
+            
+            // 初始化拖动功能
+            initVideoWindowDrag();
+        }, 50);
+        
+        // 开始实时更新
+        startVideoModalUpdates();
+    }
+}
+
+function hideVideoModal() {
+    const modal = document.getElementById('video-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+        
+        // 停止实时更新
+        stopVideoModalUpdates();
+    }
+}
+
+// 居中视频窗口
+function centerVideoWindow() {
+    const modal = document.getElementById('video-modal');
+    if (modal) {
+        const content = modal.querySelector('.video-modal-content');
+        if (content) {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const contentWidth = content.offsetWidth;
+            const contentHeight = content.offsetHeight;
+            
+            const left = (windowWidth - contentWidth) / 2;
+            const top = (windowHeight - contentHeight) / 2;
+            
+            // 确保位置是有效的数值
+            const finalLeft = Math.max(0, Math.round(left));
+            const finalTop = Math.max(0, Math.round(top));
+            
+            content.style.left = finalLeft + 'px';
+            content.style.top = finalTop + 'px';
+            content.style.transform = 'none';
+            
+            console.log(`窗口居中: ${finalLeft}, ${finalTop}, 尺寸: ${contentWidth}x${contentHeight}`);
+        }
+    }
+}
+
+function updateVideoModalData() {
+    // 更新在线摄像头数量
+    const onlineCamerasEl = document.getElementById('online-cameras');
+    if (onlineCamerasEl) {
+        const onlineCount = allCameras.filter(camera => camera.status === 'online').length;
+        onlineCamerasEl.textContent = onlineCount;
+    }
+    
+    // 更新存储使用率
+    const storageUsageEl = document.getElementById('storage-usage');
+    if (storageUsageEl) {
+        const usage = (Math.random() * 10 + 80).toFixed(1); // 80-90之间
+        storageUsageEl.textContent = usage + '%';
+    }
+    
+    // 更新摄像头时间
+    const cameraTimes = document.querySelectorAll('.camera-time');
+    cameraTimes.forEach(timeEl => {
+        timeEl.textContent = new Date().toLocaleTimeString();
+    });
+    
+    // 随机更新一些摄像头的状态
+    allCameras.forEach(camera => {
+        if (Math.random() < 0.01) { // 1%概率改变状态
+            camera.status = camera.status === 'online' ? 'offline' : 'online';
+        }
+    });
+    
+    // 如果当前有搜索过滤，重新渲染
+    const searchInput = document.getElementById('camera-search');
+    if (searchInput && searchInput.value.trim() !== '') {
+        renderCameraFeeds();
+    }
+}
+
+let videoModalUpdateInterval;
+
+function startVideoModalUpdates() {
+    // 每5秒更新一次数据
+    videoModalUpdateInterval = setInterval(updateVideoModalData, 5000);
+}
+
+function stopVideoModalUpdates() {
+    if (videoModalUpdateInterval) {
+        clearInterval(videoModalUpdateInterval);
+        videoModalUpdateInterval = null;
+    }
+}
+
+// 视频窗口拖动功能
+function initVideoWindowDrag() {
+    const modal = document.getElementById('video-modal');
+    const content = modal.querySelector('.video-modal-content');
+    const header = modal.querySelector('.video-modal-header');
+    
+    if (!content || !header) return;
+    
+    let isDragging = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+    
+    // 获取当前窗口位置
+    function getCurrentPosition() {
+        const rect = content.getBoundingClientRect();
+        return {
+            x: rect.left,
+            y: rect.top
+        };
+    }
+    
+    // 鼠标按下事件
+    header.addEventListener('mousedown', dragStart);
+    
+    // 鼠标移动事件
+    document.addEventListener('mousemove', drag);
+    
+    // 鼠标释放事件
+    document.addEventListener('mouseup', dragEnd);
+    
+    // 触摸事件支持
+    header.addEventListener('touchstart', dragStart, { passive: false });
+    document.addEventListener('touchmove', drag, { passive: false });
+    document.addEventListener('touchend', dragEnd);
+    
+    function dragStart(e) {
+        // 获取当前窗口位置
+        const currentPos = getCurrentPosition();
+        xOffset = currentPos.x;
+        yOffset = currentPos.y;
+        
+        if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        
+        if (e.target === header || header.contains(e.target)) {
+            isDragging = true;
+            header.style.cursor = 'grabbing';
+            e.preventDefault();
+        }
+    }
+    
+    function drag(e) {
+        if (isDragging) {
+            e.preventDefault();
+            
+            if (e.type === "touchmove") {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            
+            // 限制拖动范围
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const contentWidth = content.offsetWidth;
+            const contentHeight = content.offsetHeight;
+            
+            const minX = 0;
+            const maxX = windowWidth - contentWidth;
+            const minY = 0;
+            const maxY = windowHeight - contentHeight;
+            
+            const constrainedX = Math.max(minX, Math.min(maxX, currentX));
+            const constrainedY = Math.max(minY, Math.min(maxY, currentY));
+            
+            content.style.left = constrainedX + 'px';
+            content.style.top = constrainedY + 'px';
+            content.style.transform = 'none';
+            
+            // 更新偏移量
+            xOffset = constrainedX;
+            yOffset = constrainedY;
+        }
+    }
+    
+    function dragEnd(e) {
+        if (isDragging) {
+            isDragging = false;
+            header.style.cursor = 'grab';
+        }
+    }
+}
