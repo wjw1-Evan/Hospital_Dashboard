@@ -4039,7 +4039,9 @@ body.dark-mode .monitoring-item:hover {
   .left-section {
     max-height: none;
     height: auto;
+    min-height: 70vh;
     padding: var(--spacing-sm);
+    overflow-y: visible;
   }
 
   /* 中间区域手机端优化 */
@@ -4062,26 +4064,85 @@ body.dark-mode .monitoring-item:hover {
   }
 
   /* 科室运营情况手机端优化 */
+  .department-operations {
+    min-height: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
   .department-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
+    min-height: 500px;
   }
 
   .department-item {
     padding: var(--spacing-sm);
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .department-name {
     font-size: var(--text-sm);
+    margin-bottom: var(--spacing-xs);
   }
 
   .department-metrics {
     font-size: var(--text-xs);
+    margin-bottom: var(--spacing-xs);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
   .department-status {
     font-size: var(--text-xs);
     padding: 2px var(--spacing-xs);
+    align-self: flex-end;
+  }
+
+  /* 确保科室运营情况在手机端有足够的滚动空间 */
+  .department-operations .card-title {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 14, 39, 0.9);
+    backdrop-filter: var(--blur-lg);
+    z-index: 10;
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  /* 超小屏幕优化 - 480px以下 */
+  @media (max-width: 480px) {
+    .department-operations {
+      min-height: 500px;
+      max-height: 75vh;
+    }
+
+    .department-grid {
+      min-height: 400px;
+      gap: var(--spacing-xs);
+    }
+
+    .department-item {
+      min-height: 50px;
+      padding: var(--spacing-xs);
+    }
+
+    .department-name {
+      font-size: var(--text-xs);
+    }
+
+    .department-metrics {
+      font-size: 10px;
+    }
+
+    .department-status {
+      font-size: 10px;
+      padding: 1px var(--spacing-xs);
+    }
   }
 
   /* 医疗质量指标手机端优化 */
