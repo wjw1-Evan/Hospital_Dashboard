@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>手机端滚动测试 - 医院数据看板</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-header {
+            background: #1a1a2e;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #00e5ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .test-info {
+            background: rgba(0, 229, 255, 0.1);
+            padding: 15px;
+            margin: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00e5ff;
+        }
+        
+        .test-info h3 {
+            color: #00e5ff;
+            margin-bottom: 10px;
+        }
+        
+        .test-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .scroll-test-section {
+            background: rgba(255, 255, 255, 0.05);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .scroll-test-section h3 {
+            color: #00e5ff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .test-content {
+            height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .test-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #00e5ff;
+        }
+        
+        .test-item h4 {
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        
+        .test-item p {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 229, 255, 0.9);
+            color: #000000;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .device-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>手机端滚动测试</h1>
+        <p>医院数据看板 - 滚动功能验证</p>
+    </div>
+    
+    <div class="test-info">
+        <h3>测试说明</h3>
+        <p>✅ 此页面用于测试手机端滚动功能是否正常工作</p>
+        <p>✅ 请尝试在以下各个区域进行滚动操作</p>
+        <p>✅ 滚动应该流畅、平滑，支持惯性滚动</p>
+        <p>📱 请在手机设备或浏览器开发者工具的手机模式下测试</p>
+    </div>
+    
+    <div class="device-info" id="device-info">
+        <p>屏幕宽度: <span id="screen-width"></span>px</p>
+        <p>屏幕高度: <span id="screen-height"></span>px</p>
+        <p>设备像素比: <span id="device-ratio"></span></p>
+        <p>用户代理: <span id="user-agent"></span></p>
+    </div>
+    
+    <!-- 引入原始页面内容 -->
+    <div class="dashboard-container">
+        <!-- 头部标题区域 -->
+        <header class="dashboard-header">
+            <h1 class="main-title">医院数据看板展示大屏</h1>
+            <div class="header-controls">
+                <div class="color-switcher">
+                    <div class="color-options" style="display: flex; gap: 8px;">
+                        <button class="color-option active" data-theme="light-blue" title="浅蓝色" style="display: flex; align-items: center; gap: 6px;">
+                            <div class="color-preview" style="background: #87CEEB; width: 18px; height: 18px; border-radius: 50%;"></div>
+                            <span>浅蓝</span>
+                        </button>
+                        <button class="color-option" data-theme="light-green" title="浅绿色" style="display: flex; align-items: center; gap: 6px;">
+                            <div class="color-preview" style="background: #98FB98; width: 18px; height: 18px; border-radius: 50%;"></div>
+                            <span>浅绿</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="datetime-display">
+                    <span id="current-time"></span>
+                </div>
+                <div class="theme-mode-switcher">
+                    <button id="theme-toggle" class="theme-toggle-btn" title="切换白天/夜间模式">
+                        <span class="theme-icon">☀️</span>
+                        <span class="theme-text">白天</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="dashboard-main">
+            <!-- 左侧区域 - 科室运营情况 -->
+            <section class="left-section">
+                <!-- 科室运营情况 -->
+                <div class="card department-operations">
+                    <h2 class="card-title">科室运营情况</h2>
+                    <div class="department-grid">
+                        <div class="department-item">
+                            <div class="department-name">内科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 456</span>
+                                <span class="dept-beds">床位: 89/120</span>
+                            </div>
+                            <div class="department-status busy">繁忙</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">外科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 234</span>
+                                <span class="dept-beds">床位: 45/80</span>
+                            </div>
+                            <div class="department-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">急诊科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 89</span>
+                                <span class="dept-beds">床位: 12/15</span>
+                            </div>
+                            <div class="department-status urgent">紧急</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">儿科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 156</span>
+                                <span class="dept-beds">床位: 23/40</span>
+                            </div>
+                            <div class="department-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">妇产科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 78</span>
+                                <span class="dept-beds">床位: 15/25</span>
+                            </div>
+                            <div class="department-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">骨科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 123</span>
+                                <span class="dept-beds">床位: 28/35</span>
+                            </div>
+                            <div class="department-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">神经科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 67</span>
+                                <span class="dept-beds">床位: 18/25</span>
+                            </div>
+                            <div class="department-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="department-name">心血管科</div>
+                            <div class="department-metrics">
+                                <span class="dept-patients">患者: 145</span>
+                                <span class="dept-beds">床位: 32/40</span>
+                            </div>
+                            <div class="department-status busy">繁忙</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 医疗质量指标 -->
+                <div class="card quality-metrics">
+                    <h2 class="card-title">医疗质量指标</h2>
+                    <div class="quality-grid">
+                        <div class="quality-item">
+                            <div class="quality-icon">⚕️</div>
+                            <div class="quality-content">
+                                <div class="quality-value" id="infection-rate">0.8%</div>
+                                <div class="quality-label">院内感染率</div>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">🩺</div>
+                            <div class="quality-content">
+                                <div class="quality-value" id="readmission-rate">3.2%</div>
+                                <div class="quality-label">再入院率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 中间区域 - 核心医院运营数据 -->
+            <section class="middle-section">
+                <!-- 核心指标卡片 - 主要数据展示 -->
+                <div class="card hospital-operations main-focus">
+                    <h2 class="card-title main-title-large">医院运营情况</h2>
+                    
+                    <!-- 详细运营数据 -->
+                    <div class="detailed-metrics-section">
+                        <div class="metrics-row">
+                            <div class="detailed-metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-icon">💰</span>
+                                    <span class="metric-title">收入情况</span>
+                                </div>
+                                <div class="metric-details">
+                                    <div class="metric-value-large" id="daily-revenue">¥2,456,789</div>
+                                    <div class="metric-subtitle">今日收入</div>
+                                    <div class="metric-comparison">
+                                        <span class="comparison-label">较昨日</span>
+                                        <span class="comparison-value up" id="revenue-comparison">+8.3%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="detailed-metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-icon">🔬</span>
+                                    <span class="metric-title">检查设备</span>
+                                </div>
+                                <div class="metric-details">
+                                    <div class="metric-value-large" id="equipment-usage">78%</div>
+                                    <div class="metric-subtitle">设备使用率</div>
+                                    <div class="metric-comparison">
+                                        <span class="comparison-label">故障设备</span>
+                                        <span class="comparison-value normal" id="faulty-equipment">3台</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 环境监控数据 -->
+                        <div class="environment-monitoring-section">
+                            <h3 class="section-title">环境监控</h3>
+                            <div class="environment-grid">
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="temperatureChart" class="mini-chart">温度图表</div>
+                                    </div>
+                                </div>
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="humidityChart" class="mini-chart">湿度图表</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右侧区域 - 系统功能模块和实时监控 -->
+            <section class="right-section">
+                <!-- 系统功能模块 -->
+                <div class="card systems-overview">
+                    <h2 class="card-title">系统功能模块</h2>
+                    <div class="systems-grid">
+                        <div class="system-card security-system">
+                            <div class="system-icon">📹</div>
+                            <h4>视频安防监控</h4>
+                            <div class="system-status online">在线</div>
+                            <div class="system-metrics">
+                                <span>摄像头: 156个</span>
+                                <span>录像存储: 85%</span>
+                            </div>
+                        </div>
+                        <div class="system-card vehicle-system">
+                            <div class="system-icon">🚗</div>
+                            <h4>车辆管理</h4>
+                            <div class="system-status online">在线</div>
+                            <div class="system-metrics">
+                                <span>停车场: 245个车位</span>
+                                <span>使用率: 78%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统告警 -->
+                <div class="card alert-panel">
+                    <h2 class="card-title">系统告警</h2>
+                    <div class="alert-list">
+                        <div class="alert-item warning">
+                            <span class="alert-time">14:23</span>
+                            <span class="alert-content">停车场车位不足</span>
+                        </div>
+                        <div class="alert-item info">
+                            <span class="alert-time">13:45</span>
+                            <span class="alert-content">会议室预订提醒</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 滚动测试区域 -->
+    <div class="scroll-test-section">
+        <h3>滚动测试区域 1 - 左侧科室运营情况</h3>
+        <div class="test-content">
+            <div class="test-item">
+                <h4>测试项目 1</h4>
+                <p>这是左侧科室运营情况区域的滚动测试内容。请尝试在此区域进行滚动操作，检查滚动是否流畅。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 2</h4>
+                <p>滚动应该支持惯性滚动，即快速滑动后会有惯性继续滚动一段距离。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 3</h4>
+                <p>滚动条应该显示为细线，颜色为主题色，鼠标悬停时颜色加深。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 4</h4>
+                <p>在手机端，滚动应该支持触摸操作，响应手指滑动。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 5</h4>
+                <p>滚动到顶部和底部时应该有适当的边界处理。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 6</h4>
+                <p>内容应该能够完全显示，不会被截断或隐藏。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 7</h4>
+                <p>滚动性能应该良好，不会出现卡顿或延迟。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 8</h4>
+                <p>在横屏和竖屏模式下，滚动都应该正常工作。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-test-section">
+        <h3>滚动测试区域 2 - 中间医院运营数据</h3>
+        <div class="test-content">
+            <div class="test-item">
+                <h4>测试项目 1</h4>
+                <p>这是中间医院运营数据区域的滚动测试内容。请尝试在此区域进行滚动操作。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 2</h4>
+                <p>中间区域包含详细的运营指标、环境监控数据等，需要确保所有内容都能正常滚动查看。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 3</h4>
+                <p>滚动时应该保持内容的可读性，文字和图标应该清晰可见。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 4</h4>
+                <p>图表和数据显示应该不会因为滚动而变形或错位。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 5</h4>
+                <p>滚动条应该只在需要时显示，内容不足时不显示滚动条。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-test-section">
+        <h3>滚动测试区域 3 - 右侧系统功能模块</h3>
+        <div class="test-content">
+            <div class="test-item">
+                <h4>测试项目 1</h4>
+                <p>这是右侧系统功能模块区域的滚动测试内容。请尝试在此区域进行滚动操作。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 2</h4>
+                <p>系统功能模块包含多个系统卡片，需要确保所有系统都能正常滚动查看。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 3</h4>
+                <p>告警列表也应该支持滚动，以便查看所有告警信息。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 4</h4>
+                <p>滚动时系统状态指示器应该保持可见和可读。</p>
+            </div>
+            <div class="test-item">
+                <h4>测试项目 5</h4>
+                <p>在滚动过程中，交互元素（如按钮）应该保持可点击状态。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-indicator" id="scroll-indicator">
+        滚动测试中...
+    </div>
+
+    <script>
+        // 设备信息显示
+        function updateDeviceInfo() {
+            document.getElementById('screen-width').textContent = window.innerWidth;
+            document.getElementById('screen-height').textContent = window.innerHeight;
+            document.getElementById('device-ratio').textContent = window.devicePixelRatio;
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
+        }
+        
+        // 时间显示更新
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const currentTimeEl = document.getElementById('current-time');
+            if (currentTimeEl) currentTimeEl.textContent = timeString;
+        }
+        
+        // 滚动指示器
+        function updateScrollIndicator() {
+            const indicator = document.getElementById('scroll-indicator');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.round((scrollTop / scrollHeight) * 100);
+            
+            indicator.textContent = `滚动进度: ${scrollPercent}%`;
+        }
+        
+        // 初始化
+        updateDeviceInfo();
+        updateTime();
+        setInterval(updateTime, 1000);
+        setInterval(updateDeviceInfo, 5000);
+        
+        // 窗口大小变化监听
+        window.addEventListener('resize', updateDeviceInfo);
+        
+        // 滚动监听
+        window.addEventListener('scroll', updateScrollIndicator);
+        
+        // 初始化滚动指示器
+        updateScrollIndicator();
+    </script>
+</body>
+</html>
