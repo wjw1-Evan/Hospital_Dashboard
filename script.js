@@ -708,6 +708,71 @@ function initCharts() {
         patientFlowChart.setOption(patientFlowOption);
     }
 
+    // 患者流量趋势图表日月切换功能
+    const toggleButtons = document.querySelectorAll('.chart-toggle .toggle-btn');
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 移除所有按钮的active类
+            toggleButtons.forEach(btn => btn.classList.remove('active'));
+            // 添加当前按钮的active类
+            this.classList.add('active');
+            
+            // 获取切换的周期
+            const period = this.getAttribute('data-period');
+            
+            // 更新图表数据
+            if (patientFlowChart) {
+                let newOption;
+                if (period === 'day') {
+                    // 日数据 - 24小时
+                    newOption = {
+                        xAxis: {
+                            data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00']
+                        },
+                        series: [
+                            {
+                                name: '今日',
+                                data: [12, 8, 5, 15, 45, 78, 95, 88, 76, 65, 42, 28]
+                            },
+                            {
+                                name: '昨日',
+                                data: [10, 6, 8, 18, 42, 82, 89, 85, 72, 68, 45, 32]
+                            },
+                            {
+                                name: '上周同日',
+                                data: [15, 12, 10, 20, 48, 75, 92, 90, 78, 70, 50, 35]
+                            }
+                        ]
+                    };
+                } else {
+                    // 月数据 - 30天
+                    newOption = {
+                        xAxis: {
+                            data: Array.from({length: 30}, (_, i) => `${i + 1}日`)
+                        },
+                        series: [
+                            {
+                                name: '本月',
+                                data: Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 50)
+                            },
+                            {
+                                name: '上月',
+                                data: Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 45)
+                            },
+                            {
+                                name: '去年同月',
+                                data: Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 40)
+                            }
+                        ]
+                    };
+                }
+                
+                // 更新图表
+                patientFlowChart.setOption(newOption, true);
+            }
+        });
+    });
+
     // 能源消耗图表
     const energyElement = document.getElementById('energyChart');
     let energyChart = null;
@@ -1005,7 +1070,7 @@ function initCharts() {
             radius: '140%',
             min: 0,
             max: 40,
-            splitNumber: 3,
+            splitNumber: 4,
             axisLine: {
                 lineStyle: {
                     width: 5,
@@ -1042,11 +1107,15 @@ function initCharts() {
                 rotate: 'tangential',
                 formatter: function (value) {
                     if (value === 0) {
-                        return '冷';
+                        return '0°C';
+                    } else if (value === 10) {
+                        return '10°C';
                     } else if (value === 20) {
-                        return '温';
+                        return '20°C';
+                    } else if (value === 30) {
+                        return '30°C';
                     } else if (value === 40) {
-                        return '热';
+                        return '40°C';
                     }
                     return '';
                 }
