@@ -673,6 +673,53 @@ function checkEChartsAvailable() {
     return true;
 }
 
+// 性能优化配置
+function getPerformanceOptimizedConfig() {
+    return {
+        animation: false,
+        animationDuration: 0,
+        animationEasing: 'linear',
+        // 禁用不必要的交互效果
+        brush: {
+            enabled: false
+        },
+        // 优化渲染性能
+        progressive: 1000,
+        progressiveThreshold: 3000
+    };
+}
+
+// 清理定时器和事件监听器
+function cleanup() {
+    // 清理所有定时器
+    const highestTimeoutId = setTimeout(() => {}, 0);
+    for (let i = 0; i < highestTimeoutId; i++) {
+        clearTimeout(i);
+    }
+    
+    const highestIntervalId = setInterval(() => {}, 9999);
+    for (let i = 0; i < highestIntervalId; i++) {
+        clearInterval(i);
+    }
+    
+    // 清理图表实例
+    const chartInstances = [
+        'patientFlowChart', 'energyChart', 'trafficChart', 'qualityChart',
+        'temperatureChart', 'humidityChart', 'airQualityChart', 'powerChart',
+        'networkChart', 'revenueChart', 'equipmentStatusChart', 'waitingTimeChart'
+    ];
+    
+    chartInstances.forEach(chartName => {
+        if (window[chartName]) {
+            window[chartName].dispose();
+            window[chartName] = null;
+        }
+    });
+    
+    // 清理DOM缓存
+    domCache.clear();
+}
+
 // 初始化图表
 function initCharts() {
     try {
@@ -687,6 +734,7 @@ function initCharts() {
         window.patientFlowChart = echarts.init(patientFlowElement);
     }
     const patientFlowOption = {
+        ...getPerformanceOptimizedConfig(),
         backgroundColor: 'transparent',
         textStyle: {
             color: '#ffffff'
@@ -2951,7 +2999,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 初始化时间显示
         updateTime();
-        setInterval(updateTime, 1000);
+        setInterval(updateTime, 2000); // 优化：从1秒改为2秒以提升性能
         
         // 延迟初始化图表，确保DOM和ECharts库完全加载
         setTimeout(function() {
@@ -2978,16 +3026,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         }, 200);
         
-        // 定期更新数据
-        setInterval(updateData, 5000);
-        setInterval(updateSystemStatus, 10000);
-        setInterval(updateMonitoringData, 3000);
-        setInterval(addNewAlert, 15000);
+        // 定期更新数据 - 优化：减少更新频率以提升性能
+        setInterval(updateData, 10000); // 从5秒改为10秒
+        setInterval(updateSystemStatus, 20000); // 从10秒改为20秒
+        setInterval(updateMonitoringData, 8000); // 从3秒改为8秒
+        setInterval(addNewAlert, 30000); // 从15秒改为30秒
         
         // 初始数据更新
         updateData();
         updateSystemStatus();
         updateMonitoringData();
+        
+        // 页面卸载时清理资源
+        window.addEventListener('beforeunload', cleanup);
+        window.addEventListener('unload', cleanup);
         
         // 确保所有元素可见
         ensureElementsVisible();

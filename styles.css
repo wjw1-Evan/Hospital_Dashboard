@@ -62,6 +62,20 @@
   
   /* 响应式缩放支持 */
   --scale-factor: 1;
+  
+  /* 颜色主题变量定义 - 默认主题 - 浅蓝色 */
+  --primary-color: #87ceeb;
+  --primary-color-rgb: 135, 206, 235;
+  --secondary-color: #00ffff;
+  --secondary-color-rgb: 0, 255, 255;
+  --accent-color: #00e5ff;
+  --accent-color-rgb: 0, 229, 255;
+  --background-gradient-1: rgba(135, 206, 235, 0.1);
+  --background-gradient-2: rgba(0, 150, 255, 0.1);
+  --background-gradient-3: rgba(0, 200, 255, 0.05);
+  --border-color: rgba(135, 206, 235, 0.3);
+  --text-shadow: 0 0 20px rgba(135, 206, 235, 0.6);
+  --glow-color: rgba(135, 206, 235, 0.4);
 }
 
 /* 全局样式重置 */
@@ -69,8 +83,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: color 0.3s ease, text-shadow 0.3s ease, border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  /* 移除全局过渡效果以提升性能 */
 }
 
 body {
@@ -137,7 +150,7 @@ body::after {
   backdrop-filter: var(--blur-sm);
   /* 缩放支持 */
   transform-origin: top left;
-  transition: transform 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 /* 头部样式 */
@@ -179,7 +192,7 @@ body::after {
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   backdrop-filter: var(--blur-md);
   color: #ffffff;
   font-size: var(--text-md);
@@ -202,7 +215,7 @@ body::after {
 
 .theme-icon {
   font-size: var(--text-lg);
-  transition: transform 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .theme-toggle-btn.active .theme-icon {
@@ -241,7 +254,7 @@ body::after {
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   backdrop-filter: var(--blur-md);
 }
 
@@ -262,7 +275,7 @@ body::after {
   height: var(--icon-xs);
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   flex-shrink: 0;
 }
 
@@ -372,7 +385,7 @@ body::after {
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   position: relative;
   overflow: hidden;
 }
@@ -430,7 +443,7 @@ body::after {
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -529,7 +542,7 @@ body::after {
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -638,7 +651,7 @@ body::after {
   gap: var(--spacing-sm);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   position: relative;
   overflow: hidden;
 }
@@ -737,7 +750,7 @@ body::after {
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   position: relative;
   overflow: hidden;
 }
@@ -878,7 +891,7 @@ body::after {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-xs);
   cursor: pointer;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .toggle-btn:hover {
@@ -927,7 +940,7 @@ body::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   min-height: 140px;
@@ -1015,7 +1028,7 @@ body::after {
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .parking-monitoring-section .parking-stat:hover {
@@ -1105,7 +1118,7 @@ body::after {
   border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .parking-network-section .parking-stat:hover {
@@ -1151,7 +1164,7 @@ body::after {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -1210,7 +1223,7 @@ body::after {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -1319,7 +1332,7 @@ body::after {
   position: relative;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .metric-item:hover {
@@ -1393,7 +1406,7 @@ body::after {
   border-radius: var(--radius-xl);
   padding: var(--spacing-md);
   border: none;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -1478,7 +1491,7 @@ body::after {
   gap: var(--spacing-md);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .quality-item:hover {
@@ -1557,7 +1570,7 @@ body::after {
   text-align: center;
   backdrop-filter: var(--blur-lg);
   border: none;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   position: relative;
   overflow: visible;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
@@ -1709,7 +1722,7 @@ body::after {
   gap: var(--spacing-sm);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .monitoring-item:hover {
@@ -1895,7 +1908,7 @@ body::after {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .network-item:hover {
@@ -1976,7 +1989,7 @@ body::after {
   margin-bottom: var(--spacing-sm);
   border-radius: var(--radius-sm);
   font-size: var(--text-md);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   backdrop-filter: var(--blur-md);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -2295,20 +2308,6 @@ body::after {
 }
 
 /* 颜色主题变量定义 - 默认主题 - 浅蓝色 */
-:root {
-  --primary-color: #87ceeb;
-  --primary-color-rgb: 135, 206, 235;
-  --secondary-color: #00ffff;
-  --secondary-color-rgb: 0, 255, 255;
-  --accent-color: #00e5ff;
-  --accent-color-rgb: 0, 229, 255;
-  --background-gradient-1: rgba(135, 206, 235, 0.1);
-  --background-gradient-2: rgba(0, 150, 255, 0.1);
-  --background-gradient-3: rgba(0, 200, 255, 0.05);
-  --border-color: rgba(135, 206, 235, 0.3);
-  --text-shadow: 0 0 20px rgba(135, 206, 235, 0.6);
-  --glow-color: rgba(135, 206, 235, 0.4);
-}
 
 /* 浅绿色主题 */
 [data-theme="light-green"] {
@@ -2599,7 +2598,7 @@ body.dark-mode .system-card {
   text-align: center;
   backdrop-filter: var(--blur-lg);
   border: none;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   position: relative;
   overflow: visible;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
@@ -2804,7 +2803,7 @@ body.dark-mode .alert-item.info {
   z-index: 10000;
   display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   pointer-events: none;
 }
 
@@ -2863,7 +2862,7 @@ body.dark-mode .alert-item.info {
   cursor: pointer;
   padding: var(--spacing-xs);
   border-radius: var(--radius-sm);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   flex-shrink: 0;
   z-index: 10;
   width: 40px;
@@ -2899,7 +2898,7 @@ body.dark-mode .alert-item.info {
   z-index: 10000;
   display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   pointer-events: none;
 }
 
@@ -2959,7 +2958,7 @@ body.dark-mode .alert-item.info {
   cursor: pointer;
   padding: var(--spacing-sm);
   border-radius: var(--radius-sm);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   line-height: 1;
 }
 
@@ -3034,7 +3033,7 @@ body.dark-mode .alert-item.info {
   background: var(--input-bg);
   color: var(--text-primary);
   font-size: 14px;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
 }
 
 .search-box input:focus {
@@ -3086,7 +3085,7 @@ body.dark-mode .alert-item.info {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   position: relative;
   height: 200px;
 }
@@ -3402,7 +3401,7 @@ body.dark-mode .camera-location {
   z-index: 10000;
   display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   pointer-events: none;
 }
 
@@ -3463,7 +3462,7 @@ body.dark-mode .camera-location {
   cursor: pointer;
   padding: var(--spacing-xs);
   border-radius: var(--radius-sm);
-  transition: all 0.3s ease;
+  /* 移除过渡效果以提升性能 */
   flex-shrink: 0;
   z-index: 10;
   width: 40px;
