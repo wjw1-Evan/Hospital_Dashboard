@@ -2475,6 +2475,71 @@ function addNewAlert() {
     }
 }
 
+// 主题模式管理
+class ThemeModeManager {
+    constructor() {
+        this.isDarkMode = false;
+        this.init();
+    }
+
+    init() {
+        // 从本地存储加载保存的模式
+        const savedMode = localStorage.getItem('dashboard-theme-mode');
+        if (savedMode === 'dark') {
+            this.isDarkMode = true;
+        }
+        
+        // 应用当前模式
+        this.applyMode();
+        
+        // 绑定事件监听器
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                this.toggleMode();
+            });
+        }
+    }
+
+    toggleMode() {
+        this.isDarkMode = !this.isDarkMode;
+        this.applyMode();
+        
+        // 保存到本地存储
+        localStorage.setItem('dashboard-theme-mode', this.isDarkMode ? 'dark' : 'light');
+        
+        console.log('主题模式已切换到:', this.isDarkMode ? '夜间模式' : '白天模式');
+    }
+
+    applyMode() {
+        const body = document.body;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn?.querySelector('.theme-icon');
+        const themeText = themeToggleBtn?.querySelector('.theme-text');
+
+        if (this.isDarkMode) {
+            body.classList.add('dark-mode');
+            if (themeIcon) themeIcon.textContent = '🌙';
+            if (themeText) themeText.textContent = '夜间';
+            if (themeToggleBtn) themeToggleBtn.classList.add('active');
+        } else {
+            body.classList.remove('dark-mode');
+            if (themeIcon) themeIcon.textContent = '☀️';
+            if (themeText) themeText.textContent = '白天';
+            if (themeToggleBtn) themeToggleBtn.classList.remove('active');
+        }
+
+        // 更新图表颜色以适应主题模式
+        if (window.colorThemeManager) {
+            window.colorThemeManager.updateChartsForDarkMode(this.isDarkMode);
+        }
+    }
+}
+
 // 颜色主题管理
 class ColorThemeManager {
     constructor() {
@@ -2600,6 +2665,109 @@ class ColorThemeManager {
         });
     }
 
+    // 更新图表以适应夜间模式
+    updateChartsForDarkMode(isDarkMode) {
+        const chartInstances = [
+            'patientFlowChart', 'energyChart', 'trafficChart', 'qualityChart',
+            'temperatureChart', 'humidityChart', 'airQualityChart', 'powerChart',
+            'networkChart', 'revenueChart', 'equipmentStatusChart',
+            'patientTrendChart', 'bedUsageGauge', 'emergencyChart', 'surgeryChart',
+            'waitingTimeChart', 'satisfactionChart'
+        ];
+
+        chartInstances.forEach(chartName => {
+            const chart = window[chartName];
+            if (chart && typeof chart.setOption === 'function') {
+                try {
+                    this.updateChartForDarkMode(chart, isDarkMode, chartName);
+                } catch (error) {
+                    console.warn(`更新图表 ${chartName} 夜间模式失败:`, error);
+                }
+            }
+        });
+    }
+
+    updateChartForDarkMode(chart, isDarkMode, chartName) {
+        const currentOption = chart.getOption();
+        
+        // 夜间模式的颜色配置
+        const darkModeColors = {
+            textColor: '#e0e0e0',
+            gridColor: 'rgba(0, 100, 255, 0.1)',
+            axisLineColor: 'rgba(0, 100, 255, 0.3)',
+            primaryColor: '#00b4ff',
+            secondaryColor: '#4caf50',
+            warningColor: '#ffc107',
+            errorColor: '#f44336'
+        };
+
+        // 白天模式的颜色配置
+        const lightModeColors = {
+            textColor: '#ffffff',
+            gridColor: 'rgba(255, 255, 255, 0.1)',
+            axisLineColor: '#ffffff',
+            primaryColor: '#00ffff',
+            secondaryColor: '#4caf50',
+            warningColor: '#ff9800',
+            errorColor: '#f44336'
+        };
+
+        const colors = isDarkMode ? darkModeColors : lightModeColors;
+
+        // 更新文本颜色
+        if (currentOption.textStyle) {
+            currentOption.textStyle.color = colors.textColor;
+        }
+
+        // 更新网格颜色
+        if (currentOption.grid && currentOption.grid.splitLine) {
+            currentOption.grid.splitLine.lineStyle.color = colors.gridColor;
+        }
+
+        // 更新坐标轴颜色
+        if (currentOption.xAxis) {
+            if (currentOption.xAxis.axisLabel) {
+                currentOption.xAxis.axisLabel.color = colors.textColor;
+            }
+            if (currentOption.xAxis.axisLine) {
+                currentOption.xAxis.axisLine.lineStyle.color = colors.axisLineColor;
+            }
+        }
+
+        if (currentOption.yAxis) {
+            if (currentOption.yAxis.axisLabel) {
+                currentOption.yAxis.axisLabel.color = colors.textColor;
+            }
+            if (currentOption.yAxis.axisLine) {
+                currentOption.yAxis.axisLine.lineStyle.color = colors.axisLineColor;
+            }
+            if (currentOption.yAxis.splitLine) {
+                currentOption.yAxis.splitLine.lineStyle.color = colors.gridColor;
+            }
+        }
+
+        // 更新系列颜色
+        if (currentOption.series) {
+            currentOption.series.forEach((series, index) => {
+                if (series.itemStyle) {
+                    series.itemStyle.color = colors.primaryColor;
+                }
+                if (series.lineStyle) {
+                    series.lineStyle.color = colors.primaryColor;
+                }
+                if (series.areaStyle && series.areaStyle.color) {
+                    const alpha = isDarkMode ? '20' : '30';
+                    series.areaStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: colors.primaryColor + alpha },
+                        { offset: 1, color: colors.primaryColor + '05' }
+                    ]);
+                }
+            });
+        }
+
+        chart.setOption(currentOption, true);
+    }
+
     updateChartOption(chart, theme, chartName) {
         // 根据不同的图表类型应用不同的颜色方案
         const colorScheme = this.getColorScheme(theme);
@@ -2642,6 +2810,9 @@ class ColorThemeManager {
 document.addEventListener('DOMContentLoaded', function() {
     try {
         console.log('开始初始化医院数据看板...');
+        
+        // 初始化主题模式管理器
+        window.themeModeManager = new ThemeModeManager();
         
         // 初始化颜色主题管理器
         window.colorThemeManager = new ColorThemeManager();
