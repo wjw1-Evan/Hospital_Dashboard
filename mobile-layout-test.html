@@ -6,46 +6,66 @@
     <title>手机端布局测试 - 医院数据看板</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* 测试页面专用样式 */
+        .test-header {
+            background: #1a1a2e;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #00e5ff;
+        }
+        
         .test-info {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            z-index: 1000;
+            background: rgba(0, 229, 255, 0.1);
+            padding: 15px;
+            margin: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00e5ff;
         }
         
         .test-info h3 {
-            margin: 0 0 5px 0;
             color: #00e5ff;
+            margin-bottom: 10px;
         }
         
         .test-info p {
-            margin: 2px 0;
+            margin: 5px 0;
+            font-size: 14px;
         }
         
-        @media (max-width: 768px) {
-            .test-info {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin: 10px;
-                text-align: center;
-            }
+        .device-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div class="test-info">
-        <h3>手机端布局测试</h3>
-        <p>屏幕宽度: <span id="screen-width"></span>px</p>
-        <p>设备类型: <span id="device-type"></span></p>
-        <p>布局模式: <span id="layout-mode"></span></p>
+    <div class="test-header">
+        <h1>手机端布局测试</h1>
+        <p>医院数据看板 - 自适应连续活动布局</p>
     </div>
-
+    
+    <div class="test-info">
+        <h3>测试说明</h3>
+        <p>✅ 电脑端左中右三块布局已修改为手机端自适应连续活动布局</p>
+        <p>✅ 手机端采用垂直连续滚动布局，内容按顺序排列</p>
+        <p>✅ 优化了触摸交互和滚动体验</p>
+        <p>✅ 调整了字体大小和间距以适应手机屏幕</p>
+        <p>📱 请在手机设备或浏览器开发者工具的手机模式下查看效果</p>
+    </div>
+    
+    <div class="device-info" id="device-info">
+        <p>屏幕宽度: <span id="screen-width"></span>px</p>
+        <p>屏幕高度: <span id="screen-height"></span>px</p>
+        <p>设备像素比: <span id="device-ratio"></span></p>
+        <p>用户代理: <span id="user-agent"></span></p>
+    </div>
+    
+    <!-- 引入原始页面内容 -->
     <div class="dashboard-container">
         <!-- 头部标题区域 -->
         <header class="dashboard-header">
@@ -115,38 +135,6 @@
                             </div>
                             <div class="department-status normal">正常</div>
                         </div>
-                        <div class="department-item">
-                            <div class="department-name">妇产科</div>
-                            <div class="department-metrics">
-                                <span class="dept-patients">患者: 78</span>
-                                <span class="dept-beds">床位: 15/25</span>
-                            </div>
-                            <div class="department-status normal">正常</div>
-                        </div>
-                        <div class="department-item">
-                            <div class="department-name">骨科</div>
-                            <div class="department-metrics">
-                                <span class="dept-patients">患者: 123</span>
-                                <span class="dept-beds">床位: 28/35</span>
-                            </div>
-                            <div class="department-status normal">正常</div>
-                        </div>
-                        <div class="department-item">
-                            <div class="department-name">神经科</div>
-                            <div class="department-metrics">
-                                <span class="dept-patients">患者: 67</span>
-                                <span class="dept-beds">床位: 18/25</span>
-                            </div>
-                            <div class="department-status normal">正常</div>
-                        </div>
-                        <div class="department-item">
-                            <div class="department-name">心血管科</div>
-                            <div class="department-metrics">
-                                <span class="dept-patients">患者: 145</span>
-                                <span class="dept-beds">床位: 32/40</span>
-                            </div>
-                            <div class="department-status busy">繁忙</div>
-                        </div>
                     </div>
                 </div>
 
@@ -166,20 +154,6 @@
                             <div class="quality-content">
                                 <div class="quality-value" id="readmission-rate">3.2%</div>
                                 <div class="quality-label">再入院率</div>
-                            </div>
-                        </div>
-                        <div class="quality-item">
-                            <div class="quality-icon">⏱️</div>
-                            <div class="quality-content">
-                                <div class="quality-value" id="avg-stay">6.8天</div>
-                                <div class="quality-label">平均住院日</div>
-                            </div>
-                        </div>
-                        <div class="quality-item">
-                            <div class="quality-icon">🎯</div>
-                            <div class="quality-content">
-                                <div class="quality-value" id="safety-score">98.5</div>
-                                <div class="quality-label">安全评分</div>
                             </div>
                         </div>
                     </div>
@@ -224,81 +198,23 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="detailed-metric-item">
-                                <div class="metric-header">
-                                    <span class="metric-icon">📋</span>
-                                    <span class="metric-title">预约管理</span>
-                                </div>
-                                <div class="metric-details">
-                                    <div class="metric-value-large" id="appointment-count">2,156</div>
-                                    <div class="metric-subtitle">今日预约</div>
-                                    <div class="metric-comparison">
-                                        <span class="comparison-label">取消率</span>
-                                        <span class="comparison-value down" id="cancellation-rate">3.2%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="detailed-metric-item">
-                                <div class="metric-header">
-                                    <span class="metric-icon">🏥</span>
-                                    <span class="metric-title">医院负荷率</span>
-                                </div>
-                                <div class="metric-details">
-                                    <div class="metric-value-large" id="hospital-load">78%</div>
-                                    <div class="metric-subtitle">当前负荷</div>
-                                    <div class="metric-comparison">
-                                        <span class="comparison-label">状态</span>
-                                        <span class="comparison-value normal" id="hospital-load-status">正常</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 环境监控数据 -->
-                        <div class="environment-monitoring-section">
-                        <h3 class="section-title">环境监控</h3>
-                        <div class="environment-grid">
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="temperatureChart" class="mini-chart">温度: 22°C</div>
-                                </div>
-                            </div>
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="humidityChart" class="mini-chart">湿度: 45%</div>
-                                </div>
-                            </div>
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="airQualityChart" class="mini-chart">空气质量: 良好</div>
-                                </div>
-                            </div>
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="powerChart" class="mini-chart">功耗: 45.6kW</div>
-                                </div>
-                            </div>
-                        </div>
                         </div>
                         
-                        <!-- 实时状态指示器 -->
-                        <div class="status-indicators">
-                        <div class="status-item">
-                            <div class="status-icon normal">🟢</div>
-                            <div class="status-text">系统运行正常</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-icon warning">🟡</div>
-                            <div class="status-text">部分科室繁忙</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-icon normal">🟢</div>
-                            <div class="status-text">设备运行良好</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-icon normal">🟢</div>
-                            <div class="status-text">库存充足</div>
+                        <!-- 环境监控数据 -->
+                        <div class="environment-monitoring-section">
+                            <h3 class="section-title">环境监控</h3>
+                            <div class="environment-grid">
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="temperatureChart" class="mini-chart">温度图表</div>
+                                    </div>
+                                </div>
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="humidityChart" class="mini-chart">湿度图表</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -310,7 +226,6 @@
                 <div class="card systems-overview">
                     <h2 class="card-title">系统功能模块</h2>
                     <div class="systems-grid">
-                        <!-- 视频安防监控系统 -->
                         <div class="system-card security-system">
                             <div class="system-icon">📹</div>
                             <h4>视频安防监控</h4>
@@ -320,8 +235,6 @@
                                 <span>录像存储: 85%</span>
                             </div>
                         </div>
-
-                        <!-- 车辆管理系统 -->
                         <div class="system-card vehicle-system">
                             <div class="system-icon">🚗</div>
                             <h4>车辆管理</h4>
@@ -329,50 +242,6 @@
                             <div class="system-metrics">
                                 <span>停车场: 245个车位</span>
                                 <span>使用率: 78%</span>
-                            </div>
-                        </div>
-
-                        <!-- 出入口控制系统 -->
-                        <div class="system-card access-system">
-                            <div class="system-icon">🚪</div>
-                            <h4>出入口控制</h4>
-                            <div class="system-status online">在线</div>
-                            <div class="system-metrics">
-                                <span>门禁点: 89个</span>
-                                <span>今日通行: 2,341次</span>
-                            </div>
-                        </div>
-
-                        <!-- 入侵报警系统 -->
-                        <div class="system-card alarm-system">
-                            <div class="system-icon">🚨</div>
-                            <h4>入侵报警</h4>
-                            <div class="system-status online">在线</div>
-                            <div class="system-metrics">
-                                <span>报警器: 67个</span>
-                                <span>今日报警: 3次</span>
-                            </div>
-                        </div>
-
-                        <!-- 电子巡查系统 -->
-                        <div class="system-card patrol-system">
-                            <div class="system-icon">🚶</div>
-                            <h4>电子巡查</h4>
-                            <div class="system-status online">在线</div>
-                            <div class="system-metrics">
-                                <span>巡查点: 45个</span>
-                                <span>完成率: 96%</span>
-                            </div>
-                        </div>
-
-                        <!-- 建筑设备监控系统 -->
-                        <div class="system-card building-system">
-                            <div class="system-icon">🏗️</div>
-                            <h4>建筑设备监控</h4>
-                            <div class="system-status online">在线</div>
-                            <div class="system-metrics">
-                                <span>监控设备: 234个</span>
-                                <span>运行正常率: 99.2%</span>
                             </div>
                         </div>
                     </div>
@@ -390,18 +259,6 @@
                             <span class="alert-time">13:45</span>
                             <span class="alert-content">会议室预订提醒</span>
                         </div>
-                        <div class="alert-item success">
-                            <span class="alert-time">12:30</span>
-                            <span class="alert-content">能耗优化完成</span>
-                        </div>
-                        <div class="alert-item error">
-                            <span class="alert-time">11:15</span>
-                            <span class="alert-content">服务器负载过高</span>
-                        </div>
-                        <div class="alert-item info">
-                            <span class="alert-time">10:45</span>
-                            <span class="alert-content">定期维护提醒</span>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -409,30 +266,15 @@
     </div>
 
     <script>
-        // 更新测试信息
-        function updateTestInfo() {
-            const width = window.innerWidth;
-            document.getElementById('screen-width').textContent = width;
-            
-            let deviceType = '桌面端';
-            let layoutMode = '三栏布局';
-            
-            if (width <= 480) {
-                deviceType = '手机端竖屏';
-                layoutMode = '垂直堆叠';
-            } else if (width <= 768) {
-                deviceType = '手机端横屏/平板';
-                layoutMode = '垂直堆叠';
-            } else if (width <= 1024) {
-                deviceType = '平板端';
-                layoutMode = '三栏布局';
-            }
-            
-            document.getElementById('device-type').textContent = deviceType;
-            document.getElementById('layout-mode').textContent = layoutMode;
+        // 设备信息显示
+        function updateDeviceInfo() {
+            document.getElementById('screen-width').textContent = window.innerWidth;
+            document.getElementById('screen-height').textContent = window.innerHeight;
+            document.getElementById('device-ratio').textContent = window.devicePixelRatio;
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
         }
         
-        // 更新时间
+        // 时间显示更新
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleString('zh-CN', {
@@ -441,16 +283,21 @@
                 day: '2-digit',
                 hour: '2-digit',
                 minute: '2-digit',
-                second: '2-digit'
+                second: '2-digit',
+                hour12: false
             });
-            document.getElementById('current-time').textContent = timeString;
+            const currentTimeEl = document.getElementById('current-time');
+            if (currentTimeEl) currentTimeEl.textContent = timeString;
         }
         
         // 初始化
-        updateTestInfo();
+        updateDeviceInfo();
         updateTime();
         setInterval(updateTime, 1000);
-        window.addEventListener('resize', updateTestInfo);
+        setInterval(updateDeviceInfo, 5000);
+        
+        // 窗口大小变化监听
+        window.addEventListener('resize', updateDeviceInfo);
     </script>
 </body>
 </html>
