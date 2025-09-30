@@ -825,14 +825,7 @@ function initCharts() {
     }
     const trafficOption = {
         backgroundColor: 'transparent',
-        title: {
-            text: '停车场使用情况',
-            textStyle: {
-                color: '#00e5ff',
-                fontSize: 16
-            },
-            left: 'center'
-        },
+       
         tooltip: {
             trigger: 'item',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -1356,14 +1349,7 @@ function initCharts() {
     }
     const networkOption = {
         backgroundColor: 'transparent',
-        title: {
-            text: '网络流量',
-            textStyle: {
-                color: '#00ffff',
-                fontSize: 14
-            },
-            left: 'center'
-        },
+     
         tooltip: {
             trigger: 'axis',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -2035,18 +2021,6 @@ class ColorThemeManager {
                 primary: '#87CEEB',
                 secondary: '#00ffff',
                 accent: '#00e5ff'
-            },
-            'haze-blue': {
-                name: '雾霾蓝',
-                primary: '#B0C4DE',
-                secondary: '#87CEEB',
-                accent: '#B0C4DE'
-            },
-            'blue-gray': {
-                name: '蓝灰色',
-                primary: '#708090',
-                secondary: '#B0C4DE',
-                accent: '#708090'
             },
             'light-green': {
                 name: '浅绿色',
