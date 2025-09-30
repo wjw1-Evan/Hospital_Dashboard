@@ -1382,13 +1382,16 @@ function initCharts() {
             textStyle: {
                 color: '#ffffff'
             },
-            top: 25
+            top: 35,
+            itemGap: 15,
+            itemWidth: 12,
+            itemHeight: 8
         },
         grid: {
             left: '3%',
             right: '4%',
             bottom: '3%',
-            top: '15%',
+            top: '25%',
             containLabel: true
         },
         xAxis: {

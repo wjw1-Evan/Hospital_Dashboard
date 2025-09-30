@@ -1665,6 +1665,7 @@ body::after {
 /* 图表容器 */
 .chart-container {
   height: var(--height-2xl);
+  min-height: 280px;
   margin-bottom: 15px;
   background: transparent;
   backdrop-filter: var(--blur-md);
