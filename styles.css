@@ -340,6 +340,24 @@ body::after {
   height: calc(100vh - 80px);
 }
 
+/* 手机端连续活动布局 */
+@media (max-width: 768px) {
+  .dashboard-main {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    height: auto;
+    min-height: calc(100vh - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* 手机端滚动优化 */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
 /* 左侧区域 */
 .left-section {
   display: flex;
@@ -356,6 +374,20 @@ body::after {
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+/* 手机端左侧区域优化 */
+@media (max-width: 768px) {
+  .left-section {
+    height: auto;
+    min-height: 40vh;
+    max-height: 50vh;
+    order: 1;
+    margin-bottom: var(--spacing-sm);
+    /* 手机端滚动优化 */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
 /* 中间区域 */
 .middle-section {
   display: flex;
@@ -363,6 +395,21 @@ body::after {
   gap: var(--spacing-md);
   overflow: hidden;
   height: 100%;
+}
+
+/* 手机端中间区域优化 */
+@media (max-width: 768px) {
+  .middle-section {
+    height: auto;
+    min-height: 35vh;
+    max-height: 45vh;
+    order: 2;
+    margin-bottom: var(--spacing-sm);
+    overflow-y: auto;
+    /* 手机端滚动优化 */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
 }
 
 /* 右侧区域 */
@@ -373,6 +420,21 @@ body::after {
   overflow: hidden;
   height: 100%;
   padding-bottom: var(--spacing-sm);
+}
+
+/* 手机端右侧区域优化 */
+@media (max-width: 768px) {
+  .right-section {
+    height: auto;
+    min-height: 25vh;
+    max-height: 35vh;
+    order: 3;
+    overflow-y: auto;
+    padding-bottom: var(--spacing-sm);
+    /* 手机端滚动优化 */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
 }
 
 /* 卡片样式 */
@@ -734,11 +796,56 @@ body::after {
   overflow-y: auto !important;
 }
 
+/* 手机端详细指标区域优化 */
+@media (max-width: 768px) {
+  .detailed-metrics-section {
+    margin: var(--spacing-sm) 0;
+    flex: none !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+}
+
 .metrics-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
+}
+
+/* 手机端指标行优化 */
+@media (max-width: 768px) {
+  .metrics-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  /* 手机端详细指标项字体优化 */
+  .detailed-metric-item {
+    padding: var(--spacing-sm);
+    min-height: 80px;
+  }
+  
+  .metric-header .metric-icon {
+    font-size: var(--text-lg);
+  }
+  
+  .metric-header .metric-title {
+    font-size: var(--text-sm);
+  }
+  
+  .metric-value-large {
+    font-size: var(--text-xl);
+  }
+  
+  .metric-subtitle {
+    font-size: var(--text-xs);
+  }
+  
+  .metric-comparison {
+    font-size: var(--text-xs);
+  }
 }
 
 /* 使用统一卡片样式 */
@@ -854,6 +961,31 @@ body::after {
   margin-bottom: var(--spacing-md);
 }
 
+/* 手机端图表行优化 */
+@media (max-width: 768px) {
+  .chart-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  /* 手机端图表容器高度优化 */
+  .chart-container-small {
+    height: 120px;
+    min-height: 120px;
+  }
+  
+  .chart-container-large {
+    height: 150px;
+    min-height: 150px;
+  }
+  
+  .chart-container {
+    height: 120px;
+    min-height: 120px;
+  }
+}
+
 .chart-container-small {
   height: var(--height-lg);
   background: transparent;
@@ -928,6 +1060,26 @@ body::after {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-md);
+}
+
+/* 手机端环境监控网格优化 */
+@media (max-width: 768px) {
+  .environment-monitoring-section .environment-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  /* 手机端触摸反馈 */
+  .env-item:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 手机端字体大小优化 */
+  .environment-monitoring-section .section-title {
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-xs);
+  }
 }
 
 .environment-monitoring-section .env-item {
@@ -1071,6 +1223,27 @@ body::after {
   gap: var(--spacing-md);
 }
 
+/* 手机端停车场网络监控优化 */
+@media (max-width: 768px) {
+  .parking-network-section {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+  }
+  
+  /* 手机端停车场网络监控字体优化 */
+  .parking-network-section .section-title {
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .parking-network-section .parking-chart-container,
+  .parking-network-section .network-chart-container {
+    height: 100px;
+    min-height: 100px;
+  }
+}
+
 .parking-network-section .parking-part,
 .parking-network-section .network-part {
   background: transparent;
@@ -1107,6 +1280,14 @@ body::after {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-sm);
+}
+
+/* 手机端停车场统计优化 */
+@media (max-width: 768px) {
+  .parking-network-section .parking-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xs);
+  }
 }
 
 .parking-network-section .parking-stat {
@@ -1153,6 +1334,15 @@ body::after {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
+}
+
+/* 手机端网络统计优化 */
+@media (max-width: 768px) {
+  .parking-network-section .network-stats {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+  }
 }
 
 .parking-network-section .network-item {
@@ -1400,6 +1590,41 @@ body::after {
   gap: var(--spacing-md);
 }
 
+/* 手机端科室网格优化 */
+@media (max-width: 768px) {
+  .department-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  /* 手机端触摸反馈 */
+  .department-item:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 手机端科室项字体优化 */
+  .department-item {
+    padding: var(--spacing-sm);
+    min-height: 70px;
+  }
+  
+  .department-name {
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .department-metrics {
+    font-size: var(--text-xs);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .department-status {
+    font-size: var(--text-xs);
+    padding: 2px var(--spacing-xs);
+  }
+}
+
 .department-item {
   background: transparent;
   backdrop-filter: var(--blur-md);
@@ -1480,6 +1705,39 @@ body::after {
   margin-bottom: 15px;
 }
 
+/* 手机端质量指标网格优化 */
+@media (max-width: 768px) {
+  .quality-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  /* 手机端触摸反馈 */
+  .quality-item:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 手机端质量指标项字体优化 */
+  .quality-item {
+    padding: var(--spacing-sm);
+    min-height: 60px;
+  }
+  
+  .quality-icon {
+    font-size: var(--text-xl);
+  }
+  
+  .quality-value {
+    font-size: var(--text-lg);
+  }
+  
+  .quality-label {
+    font-size: var(--text-xs);
+  }
+}
+
 .quality-item {
   background: transparent;
   backdrop-filter: var(--blur-md);
@@ -1533,6 +1791,47 @@ body::after {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* 手机端系统网格优化 */
+@media (max-width: 768px) {
+  .systems-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs);
+    max-height: 200px;
+    overflow-y: auto;
+    /* 手机端滚动优化 */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* 手机端系统卡片字体优化 */
+  .system-card {
+    padding: var(--spacing-sm);
+    min-height: 60px;
+  }
+  
+  .system-card h4 {
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .system-icon {
+    font-size: var(--text-lg);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .system-status {
+    font-size: var(--text-xs);
+    padding: 2px var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .system-metrics {
+    font-size: var(--text-xs);
+    line-height: 1.2;
+  }
 }
 
 /* 系统网格自定义滚动条 */
