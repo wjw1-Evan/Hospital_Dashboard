@@ -2792,6 +2792,101 @@ body.dark-mode .alert-item.info {
   color: #2196f3;
 }
 
+/* 统一对话框基础样式 */
+.modal-base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: var(--blur-sm);
+  z-index: 10000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.modal-base.show {
+  opacity: 1;
+}
+
+.modal-content-base {
+  width: 1200px;
+  height: 800px;
+  max-width: 90vw;
+  max-height: 90vh;
+  position: absolute;
+  background: rgba(10, 14, 39, 0.95);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  resize: both;
+  min-width: 600px;
+  min-height: 400px;
+}
+
+.modal-header-base {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.modal-header-base:active {
+  cursor: grabbing;
+}
+
+.modal-header-base h2 {
+  font-size: var(--text-2xl);
+  color: var(--primary-color);
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6);
+  margin: 0;
+  font-weight: bold;
+}
+
+.modal-close-base {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: var(--text-4xl);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-base:hover {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+  transform: scale(1.1);
+}
+
+.modal-body-base {
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 /* 视频监控窗口样式 */
 .video-modal {
   position: fixed;
@@ -2799,7 +2894,7 @@ body.dark-mode .alert-item.info {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: var(--blur-sm);
   z-index: 10000;
   display: none;
@@ -3294,6 +3389,218 @@ body.dark-mode .camera-video {
 body.dark-mode .camera-location {
   color: var(--primary-color);
 }
+
+/* 车辆管理窗口样式 */
+.vehicle-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: var(--blur-sm);
+  z-index: 10000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.vehicle-modal.show {
+  opacity: 1;
+}
+
+.vehicle-modal-content {
+  width: 1200px;
+  height: 800px;
+  max-width: 90vw;
+  max-height: 90vh;
+  position: absolute;
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: var(--blur-xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+  resize: both;
+  min-width: 600px;
+  min-height: 400px;
+}
+
+.vehicle-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.vehicle-modal-header:active {
+  cursor: grabbing;
+}
+
+.vehicle-modal-header h2 {
+  font-size: var(--text-2xl);
+  color: var(--primary-color);
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6);
+  margin: 0;
+  font-weight: bold;
+}
+
+.vehicle-modal-close {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: var(--text-4xl);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicle-modal-close:hover {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+  transform: scale(1.1);
+}
+
+.vehicle-modal-body {
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 车辆统计信息 */
+.vehicle-stats {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.vehicle-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.vehicle-stat-label {
+  font-size: var(--text-sm);
+  color: #cccccc;
+  margin-bottom: var(--spacing-xs);
+}
+
+.vehicle-stat-value {
+  font-size: var(--text-2xl);
+  font-weight: bold;
+  color: var(--primary-color);
+  text-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.6);
+}
+
+
+
+/* 响应式设计 */
+@media (max-width: 1600px) {
+  .vehicle-modal-content {
+    width: 1000px;
+    height: 700px;
+  }
+  
+}
+
+@media (max-width: 1200px) {
+  .vehicle-modal-content {
+    width: 900px;
+    height: 600px;
+  }
+  
+  .vehicle-stats {
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .vehicle-modal-content {
+    width: 95vw;
+    height: 80vh;
+    min-width: 300px;
+    min-height: 300px;
+  }
+  
+  .vehicle-stats {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .vehicle-modal-header h2 {
+    font-size: var(--text-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .vehicle-modal-content {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+  
+  .vehicle-modal-header {
+    padding: var(--spacing-md);
+  }
+  
+  .vehicle-modal-header h2 {
+    font-size: var(--text-lg);
+  }
+}
+
+/* 夜间模式 */
+body.dark-mode .vehicle-modal {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .vehicle-modal-content {
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.3);
+}
+
+body.dark-mode .vehicle-modal-header {
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.3);
+}
+
+body.dark-mode .vehicle-modal-header h2 {
+  color: var(--primary-color);
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6);
+}
+
+body.dark-mode .vehicle-stats {
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.3);
+}
+
 
 /* 夜间模式告警时间显示 */
 body.dark-mode .alert-time {

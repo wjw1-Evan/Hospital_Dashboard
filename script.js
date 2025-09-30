@@ -1,6 +1,21 @@
 // 患者流量趋势图表显示模式状态
 let patientFlowChartMode = 'day'; // 'day' 或 'month'
 
+// DOM元素缓存
+const domCache = new Map();
+
+/**
+ * 获取DOM元素（带缓存）
+ * @param {string} id - 元素ID
+ * @returns {HTMLElement|null} DOM元素
+ */
+function getCachedElement(id) {
+    if (!domCache.has(id)) {
+        domCache.set(id, document.getElementById(id));
+    }
+    return domCache.get(id);
+}
+
 // 时间显示更新
 function updateTime() {
     const now = new Date();
@@ -252,34 +267,66 @@ function updateChartsData() {
 }
 
 // 更新详细运营指标
+/**
+ * 更新收入指标
+ * 生成随机收入数据并更新页面显示
+ */
+function updateRevenueMetrics() {
+    try {
+        const dailyRevenue = Math.floor(Math.random() * 500000) + 2000000;
+        const revenueComparison = (Math.random() * 20 - 5).toFixed(1);
+        
+        const dailyRevenueEl = getCachedElement('daily-revenue');
+        const revenueComparisonElement = getCachedElement('revenue-comparison');
+        
+        if (dailyRevenueEl) dailyRevenueEl.textContent = '¥' + dailyRevenue.toLocaleString();
+        if (revenueComparisonElement) {
+            revenueComparisonElement.textContent = (revenueComparison > 0 ? '+' : '') + revenueComparison + '%';
+            revenueComparisonElement.className = 'comparison-value ' + (revenueComparison > 0 ? 'up' : 'down');
+        }
+    } catch (error) {
+        console.error('更新收入指标时出错:', error);
+    }
+}
+
+/**
+ * 更新患者流量指标
+ * 生成随机患者数据并更新页面显示
+ */
+function updatePatientMetrics() {
+    try {
+        const todayPatients = Math.floor(Math.random() * 300) + 1000;
+        const patientComparison = (Math.random() * 15 - 5).toFixed(1);
+        
+        const todayPatientsEl = getCachedElement('today-patients');
+        const patientComparisonEl = getCachedElement('patient-comparison');
+        
+        if (todayPatientsEl) todayPatientsEl.textContent = todayPatients.toLocaleString();
+        if (patientComparisonEl) {
+            patientComparisonEl.textContent = (patientComparison > 0 ? '+' : '') + patientComparison + '%';
+            patientComparisonEl.className = 'patient-value ' + (patientComparison > 0 ? 'up' : 'down');
+        }
+    } catch (error) {
+        console.error('更新患者流量指标时出错:', error);
+    }
+}
+
+/**
+ * 更新详细运营指标
+ * 调用各个子函数更新不同的指标数据
+ */
 function updateDetailedMetrics() {
-    // 收入情况
-    const dailyRevenue = Math.floor(Math.random() * 500000) + 2000000;
-    const revenueComparison = (Math.random() * 20 - 5).toFixed(1);
+    updateRevenueMetrics();
+    updatePatientMetrics();
     
-    const dailyRevenueEl = document.getElementById('daily-revenue');
-    const revenueComparisonElement = document.getElementById('revenue-comparison');
-    
-    if (dailyRevenueEl) dailyRevenueEl.textContent = '¥' + dailyRevenue.toLocaleString();
-    if (revenueComparisonElement) {
-        revenueComparisonElement.textContent = (revenueComparison > 0 ? '+' : '') + revenueComparison + '%';
-        revenueComparisonElement.className = 'comparison-value ' + (revenueComparison > 0 ? 'up' : 'down');
-    }
-    
-    // 患者流量统计 - 检查元素是否存在
-    const todayPatients = Math.floor(Math.random() * 300) + 1000;
-    const patientComparison = (Math.random() * 15 - 5).toFixed(1);
-    
-    const todayPatientsEl = document.getElementById('today-patients');
-    const patientComparisonEl = document.getElementById('patient-comparison');
-    
-    if (todayPatientsEl) todayPatientsEl.textContent = todayPatients.toLocaleString();
-    if (patientComparisonEl) {
-        patientComparisonEl.textContent = (patientComparison > 0 ? '+' : '') + patientComparison + '%';
-        patientComparisonEl.className = 'patient-value ' + (patientComparison > 0 ? 'up' : 'down');
-    }
-    
-    // 更新患者流量趋势图表数据（仅在日模式下）
+    updatePatientFlowChart();
+    updateStaffMetrics();
+    updateMedicationMetrics();
+    updateEfficiencyMetrics();
+}
+
+// 更新患者流量图表
+function updatePatientFlowChart() {
     if (window.patientFlowChart && typeof window.patientFlowChart.setOption === 'function' && patientFlowChartMode === 'day') {
         const currentData = [45, 23, 156, 234, 189, 78].map(val => val + Math.floor(Math.random() * 20 - 10));
         const lastYearData = [38, 45, 142, 198, 165, 89].map(val => val + Math.floor(Math.random() * 15 - 8));
@@ -293,8 +340,10 @@ function updateDetailedMetrics() {
             ]
         });
     }
-    
-    // 医护人员 - 检查元素是否存在
+}
+
+// 更新医护人员指标
+function updateStaffMetrics() {
     const staffOnDuty = Math.floor(Math.random() * 100) + 1200;
     const attendanceRate = (Math.random() * 5 + 95).toFixed(1);
     
@@ -303,8 +352,10 @@ function updateDetailedMetrics() {
     
     if (staffOnDutyEl) staffOnDutyEl.textContent = staffOnDuty.toLocaleString();
     if (attendanceRateEl) attendanceRateEl.textContent = attendanceRate + '%';
-    
-    // 药品库存 - 检查元素是否存在
+}
+
+// 更新药品库存指标
+function updateMedicationMetrics() {
     const medicationStock = Math.floor(Math.random() * 20) + 80;
     const outOfStock = Math.floor(Math.random() * 20) + 5;
     
@@ -316,8 +367,10 @@ function updateDetailedMetrics() {
         outOfStockElement.textContent = outOfStock + '种';
         outOfStockElement.className = 'comparison-value ' + (outOfStock > 15 ? 'warning' : 'normal');
     }
-    
-    // 工作效率 - 检查元素是否存在
+}
+
+// 更新工作效率指标
+function updateEfficiencyMetrics() {
     const efficiencyRate = (Math.random() * 10 + 85).toFixed(1);
     const targetAchievement = (Math.random() * 20 + 90).toFixed(1);
     
@@ -466,14 +519,41 @@ function updateMonitoringData() {
     const powerStatus = document.getElementById('power-status');
     
     if (hospitalLoadStatus) {
-        hospitalLoadStatus.textContent = hospitalLoad > 85 ? '高负荷' : hospitalLoad > 70 ? '正常' : '低负荷';
-        hospitalLoadStatus.className = hospitalLoad > 85 ? 'comparison-value warning' : 'comparison-value normal';
+        // 确定医院负荷状态
+        let loadStatus, loadClass;
+        if (hospitalLoad > 85) {
+            loadStatus = '高负荷';
+            loadClass = 'comparison-value warning';
+        } else if (hospitalLoad > 70) {
+            loadStatus = '正常';
+            loadClass = 'comparison-value normal';
+        } else {
+            loadStatus = '低负荷';
+            loadClass = 'comparison-value normal';
+        }
+        
+        hospitalLoadStatus.textContent = loadStatus;
+        hospitalLoadStatus.className = loadClass;
     }
     
     if (powerStatus) {
         const powerValue = parseFloat(powerConsumption);
-        powerStatus.textContent = powerValue > 50 ? '高功耗' : powerValue > 35 ? '正常' : '低功耗';
-        powerStatus.className = powerValue > 50 ? 'comparison-value warning' : 'comparison-value normal';
+        
+        // 确定功耗状态
+        let powerStatusText, powerClass;
+        if (powerValue > 50) {
+            powerStatusText = '高功耗';
+            powerClass = 'comparison-value warning';
+        } else if (powerValue > 35) {
+            powerStatusText = '正常';
+            powerClass = 'comparison-value normal';
+        } else {
+            powerStatusText = '低功耗';
+            powerClass = 'comparison-value normal';
+        }
+        
+        powerStatus.textContent = powerStatusText;
+        powerStatus.className = powerClass;
     }
     
     // 更新能源统计
@@ -486,7 +566,10 @@ function updateMonitoringData() {
     if (dailyPowerEl) dailyPowerEl.textContent = dailyPower.toLocaleString() + ' kWh';
     if (comparisonElement) {
         comparisonElement.textContent = powerComparison + '%';
-        comparisonElement.className = powerComparison > 0 ? 'energy-value up' : 'energy-value down';
+        
+        // 确定比较结果的样式
+        const comparisonClass = powerComparison > 0 ? 'energy-value up' : 'energy-value down';
+        comparisonElement.className = comparisonClass;
     }
     
     // 更新环境数据
@@ -2769,7 +2852,7 @@ class ColorThemeManager {
         }
 
         // 更新网格颜色
-        if (currentOption.grid && currentOption.grid.splitLine) {
+        if (currentOption.grid?.splitLine) {
             currentOption.grid.splitLine.lineStyle.color = colors.gridColor;
         }
 
@@ -2804,7 +2887,7 @@ class ColorThemeManager {
                 if (series.lineStyle) {
                     series.lineStyle.color = colors.primaryColor;
                 }
-                if (series.areaStyle && series.areaStyle.color) {
+                if (series.areaStyle?.color) {
                     const alpha = isDarkMode ? '20' : '30';
                     series.areaStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: colors.primaryColor + alpha },
@@ -2834,7 +2917,7 @@ class ColorThemeManager {
                 if (series.lineStyle) {
                     series.lineStyle.color = colorScheme.secondary;
                 }
-                if (series.areaStyle && series.areaStyle.color) {
+                if (series.areaStyle?.color) {
                     series.areaStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: colorScheme.primary + '30' },
                         { offset: 1, color: colorScheme.primary + '05' }
@@ -2912,6 +2995,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // 初始化视频监控模态框
         initVideoModal();
         
+        // 初始化车辆管理模态框
+        initVehicleModal();
+        
         console.log('医院数据看板初始化完成');
     } catch (error) {
         console.error('初始化过程中发生错误:', error);
@@ -2977,18 +3063,6 @@ function showFullscreenTip() {
     }, 3000);
 }
 
-// CSS动画
-// 移除动画样式
-// const style = document.createElement('style');
-// style.textContent = `
-//     @keyframes fadeInOut {
-//         0% { opacity: 0; transform: translateX(100%); }
-//         20% { opacity: 1; transform: translateX(0); }
-//         80% { opacity: 1; transform: translateX(0); }
-//         100% { opacity: 0; transform: translateX(100%); }
-//     }
-// `;
-// document.head.appendChild(style);
 
 // 页面加载后显示提示
 setTimeout(showFullscreenTip, 2000);
@@ -3207,48 +3281,61 @@ function updateSearchResultsCount() {
 }
 
 function showVideoModal() {
-    const modal = document.getElementById('video-modal');
+    showModal('video-modal', updateVideoModalData, centerVideoWindow, initVideoWindowDrag, startVideoModalUpdates);
+}
+
+function hideVideoModal() {
+    hideModal('video-modal', stopVideoModalUpdates);
+}
+
+// 通用模态框显示函数
+function showModal(modalId, updateDataFunction, centerFunction, initDragFunction, startUpdatesFunction, additionalSetup) {
+    const modal = document.getElementById(modalId);
     if (modal) {
         // 更新实时数据
-        updateVideoModalData();
+        if (updateDataFunction) updateDataFunction();
         
         // 显示窗口
         modal.style.display = 'block';
         
         // 等待DOM更新后居中显示窗口
         setTimeout(() => {
-            centerVideoWindow();
+            if (centerFunction) centerFunction();
             
             // 添加淡入动画
             modal.classList.add('show');
             
             // 初始化拖动功能
-            initVideoWindowDrag();
+            if (initDragFunction) initDragFunction();
+            
+            // 执行额外设置
+            if (additionalSetup) additionalSetup();
         }, 50);
         
         // 开始实时更新
-        startVideoModalUpdates();
+        if (startUpdatesFunction) startUpdatesFunction();
     }
 }
 
-function hideVideoModal() {
-    const modal = document.getElementById('video-modal');
+// 通用模态框隐藏函数
+function hideModal(modalId, stopUpdatesFunction, additionalCleanup) {
+    const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('show');
         setTimeout(() => {
             modal.style.display = 'none';
+            if (stopUpdatesFunction) stopUpdatesFunction();
+            if (additionalCleanup) additionalCleanup();
         }, 300);
-        
-        // 停止实时更新
-        stopVideoModalUpdates();
     }
 }
 
 // 居中视频窗口
-function centerVideoWindow() {
-    const modal = document.getElementById('video-modal');
+// 通用窗口居中函数
+function centerModalWindow(modalId, contentSelector) {
+    const modal = document.getElementById(modalId);
     if (modal) {
-        const content = modal.querySelector('.video-modal-content');
+        const content = modal.querySelector(contentSelector);
         if (content) {
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
@@ -3266,9 +3353,13 @@ function centerVideoWindow() {
             content.style.top = finalTop + 'px';
             content.style.transform = 'none';
             
-            console.log(`窗口居中: ${finalLeft}, ${finalTop}, 尺寸: ${contentWidth}x${contentHeight}`);
+            console.log(`${modalId}窗口居中: ${finalLeft}, ${finalTop}, 尺寸: ${contentWidth}x${contentHeight}`);
         }
     }
+}
+
+function centerVideoWindow() {
+    centerModalWindow('video-modal', '.video-modal-content');
 }
 
 function updateVideoModalData() {
@@ -3320,11 +3411,11 @@ function stopVideoModalUpdates() {
     }
 }
 
-// 视频窗口拖动功能
-function initVideoWindowDrag() {
-    const modal = document.getElementById('video-modal');
-    const content = modal.querySelector('.video-modal-content');
-    const header = modal.querySelector('.video-modal-header');
+// 通用窗口拖拽功能
+function initModalWindowDrag(modalId, contentSelector, headerSelector) {
+    const modal = document.getElementById(modalId);
+    const content = modal.querySelector(contentSelector);
+    const header = modal.querySelector(headerSelector);
     
     if (!content || !header) return;
     
@@ -3422,4 +3513,168 @@ function initVideoWindowDrag() {
             header.style.cursor = 'grab';
         }
     }
+}
+
+// 视频窗口拖动功能
+function initVideoWindowDrag() {
+    initModalWindowDrag('video-modal', '.video-modal-content', '.video-modal-header');
+}
+
+// 车辆管理模态框功能
+function initVehicleModal() {
+    // 创建模态框HTML结构
+    createVehicleModalHTML();
+    
+    // 添加点击事件监听器
+    const vehicleSystemCard = document.querySelector('.vehicle-system');
+    if (vehicleSystemCard) {
+        vehicleSystemCard.style.cursor = 'pointer';
+        vehicleSystemCard.addEventListener('click', function() {
+            showVehicleModal();
+        });
+    }
+    
+    // 添加关闭按钮事件监听器
+    const closeBtn = document.getElementById('vehicle-modal-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideVehicleModal);
+    }
+    
+    // 添加ESC键关闭功能
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('vehicle-modal');
+        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
+            hideVehicleModal();
+        }
+    });
+}
+
+function createVehicleModalHTML() {
+    // 检查是否已经存在模态框
+    if (document.getElementById('vehicle-modal')) {
+        return;
+    }
+    
+    const modalHTML = `
+        <div id="vehicle-modal" class="vehicle-modal" style="display: none;">
+            <div class="vehicle-modal-content">
+                <div class="vehicle-modal-header">
+                    <h2>停车场管理系统</h2>
+                    <button id="vehicle-modal-close" class="vehicle-modal-close">&times;</button>
+                </div>
+                <div class="vehicle-modal-body">
+                    <div class="vehicle-stats">
+                        <div class="vehicle-stat-item">
+                            <span class="vehicle-stat-label">总车位</span>
+                            <span class="vehicle-stat-value" id="total-parking-spots">245</span>
+                        </div>
+                        <div class="vehicle-stat-item">
+                            <span class="vehicle-stat-label">已占用</span>
+                            <span class="vehicle-stat-value" id="occupied-spots">191</span>
+                        </div>
+                        <div class="vehicle-stat-item">
+                            <span class="vehicle-stat-label">使用率</span>
+                            <span class="vehicle-stat-value" id="usage-rate">78%</span>
+                        </div>
+                        <div class="vehicle-stat-item">
+                            <span class="vehicle-stat-label">空余车位</span>
+                            <span class="vehicle-stat-value" id="available-spots">54</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// 全局停车场数据
+let parkingData = {
+    totalSpots: 245,
+    occupiedSpots: 191,
+    availableSpots: 54,
+    usageRate: 78,
+    dailyRevenue: 12580,
+    hourlyFlow: [45, 52, 38, 41, 48, 55, 62, 58, 49, 43, 39, 35],
+    vehicleTypes: {
+        'VIP': 15,
+        '普通': 120,
+        '临时': 56
+    }
+};
+
+
+function showVehicleModal() {
+    showModal('vehicle-modal', updateVehicleModalData, centerVehicleWindow, initVehicleWindowDrag, startVehicleModalUpdates, 
+        () => window.addEventListener('resize', handleVehicleModalResize));
+}
+
+function handleVehicleModalResize() {
+    // 窗口大小变化处理
+}
+
+function hideVehicleModal() {
+    hideModal('vehicle-modal', stopVehicleModalUpdates, 
+        () => window.removeEventListener('resize', handleVehicleModalResize));
+}
+
+// 居中车辆管理窗口
+function centerVehicleWindow() {
+    centerModalWindow('vehicle-modal', '.vehicle-modal-content');
+}
+
+function updateVehicleModalData() {
+    // 随机更新停车场数据
+    const variation = Math.floor(Math.random() * 6) - 3; // -3 到 +3 的变化
+    parkingData.occupiedSpots = Math.max(0, Math.min(245, parkingData.occupiedSpots + variation));
+    parkingData.availableSpots = parkingData.totalSpots - parkingData.occupiedSpots;
+    parkingData.usageRate = Math.round((parkingData.occupiedSpots / parkingData.totalSpots) * 100);
+    
+    // 更新收费金额
+    const revenueVariation = Math.floor(Math.random() * 2000) - 1000; // -1000 到 +1000 的变化
+    parkingData.dailyRevenue = Math.max(5000, parkingData.dailyRevenue + revenueVariation);
+    
+    // 更新小时流量数据
+    parkingData.hourlyFlow = parkingData.hourlyFlow.map(value => {
+        const change = Math.floor(Math.random() * 6) - 3;
+        return Math.max(0, value + change);
+    });
+    
+    // 更新车辆类型分布
+    const typeVariation = Math.floor(Math.random() * 4) - 2;
+    parkingData.vehicleTypes['普通'] = Math.max(0, parkingData.vehicleTypes['普通'] + typeVariation);
+    parkingData.vehicleTypes['临时'] = Math.max(0, parkingData.vehicleTypes['临时'] - typeVariation);
+    
+    // 更新显示
+    const totalSpotsEl = document.getElementById('total-parking-spots');
+    const occupiedSpotsEl = document.getElementById('occupied-spots');
+    const availableSpotsEl = document.getElementById('available-spots');
+    const usageRateEl = document.getElementById('usage-rate');
+    
+    if (totalSpotsEl) totalSpotsEl.textContent = parkingData.totalSpots;
+    if (occupiedSpotsEl) occupiedSpotsEl.textContent = parkingData.occupiedSpots;
+    if (availableSpotsEl) availableSpotsEl.textContent = parkingData.availableSpots;
+    if (usageRateEl) usageRateEl.textContent = parkingData.usageRate + '%';
+    
+}
+
+
+let vehicleModalUpdateInterval;
+
+function startVehicleModalUpdates() {
+    // 每10秒更新一次数据
+    vehicleModalUpdateInterval = setInterval(updateVehicleModalData, 10000);
+}
+
+function stopVehicleModalUpdates() {
+    if (vehicleModalUpdateInterval) {
+        clearInterval(vehicleModalUpdateInterval);
+        vehicleModalUpdateInterval = null;
+    }
+}
+
+// 车辆管理窗口拖动功能
+function initVehicleWindowDrag() {
+    initModalWindowDrag('vehicle-modal', '.vehicle-modal-content', '.vehicle-modal-header');
 }
