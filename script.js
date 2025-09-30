@@ -1007,63 +1007,64 @@ function initCharts() {
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
-            center: ['50%', '75%'],
-            radius: '90%',
-            min: 15,
-            max: 30,
+            
+            center: ['50%', '85%'],
+            radius: '140%',
+            min: 0,
+            max: 40,
             splitNumber: 3,
             axisLine: {
                 lineStyle: {
-                    width: 6,
+                    width: 5,
                     color: [[0.3, '#4caf50'], [0.7, '#ff9800'], [1, '#f44336']]
                 }
             },
             pointer: {
                 icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
                 length: '12%',
-                width: 20,
+                width: 18,
                 offsetCenter: [0, '-60%'],
                 itemStyle: {
                     color: '#00ffff'
                 }
             },
             axisTick: {
-                length: 12,
+                length: 10,
                 lineStyle: {
                     color: 'auto',
                     width: 2
                 }
             },
             splitLine: {
-                length: 20,
+                length: 18,
                 lineStyle: {
                     color: 'auto',
-                    width: 5
+                    width: 4
                 }
             },
             axisLabel: {
                 color: '#ffffff',
-                fontSize: 8,
+                fontSize: 9,
                 distance: -60,
                 rotate: 'tangential',
                 formatter: function (value) {
-                    if (value === 18) {
-                        return '18°C';
-                    } else if (value === 24) {
-                        return '24°C';
-                    } else if (value === 30) {
-                        return '30°C';
+                    if (value === 0) {
+                        return '冷';
+                    } else if (value === 20) {
+                        return '温';
+                    } else if (value === 40) {
+                        return '热';
                     }
                     return '';
                 }
             },
             title: {
                 offsetCenter: [0, '-10%'],
-                fontSize: 8,
+                fontSize: 9,
                 color: '#ffffff'
             },
             detail: {
-                fontSize: 10,
+                fontSize: 12,
                 offsetCenter: [0, '-35%'],
                 valueAnimation: true,
                 formatter: function (value) {
@@ -1093,43 +1094,43 @@ function initCharts() {
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
-            center: ['50%', '75%'],
-            radius: '90%',
+            center: ['50%', '85%'],
+            radius: '140%',
             min: 0,
             max: 100,
             splitNumber: 5,
             axisLine: {
                 lineStyle: {
-                    width: 6,
+                    width: 5,
                     color: [[0.4, '#4caf50'], [0.7, '#ff9800'], [1, '#f44336']]
                 }
             },
             pointer: {
                 icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
                 length: '12%',
-                width: 20,
+                width: 18,
                 offsetCenter: [0, '-60%'],
                 itemStyle: {
                     color: '#00ffff'
                 }
             },
             axisTick: {
-                length: 12,
+                length: 10,
                 lineStyle: {
                     color: 'auto',
                     width: 2
                 }
             },
             splitLine: {
-                length: 20,
+                length: 18,
                 lineStyle: {
                     color: 'auto',
-                    width: 5
+                    width: 4
                 }
             },
             axisLabel: {
                 color: '#ffffff',
-                fontSize: 8,
+                fontSize: 9,
                 distance: -60,
                 rotate: 'tangential',
                 formatter: function (value) {
@@ -1145,11 +1146,11 @@ function initCharts() {
             },
             title: {
                 offsetCenter: [0, '-10%'],
-                fontSize: 8,
+                fontSize: 9,
                 color: '#ffffff'
             },
             detail: {
-                fontSize: 10,
+                fontSize: 12,
                 offsetCenter: [0, '-35%'],
                 valueAnimation: true,
                 formatter: function (value) {
@@ -1179,43 +1180,43 @@ function initCharts() {
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
-            center: ['50%', '75%'],
-            radius: '90%',
+            center: ['50%', '85%'],
+            radius: '140%',
             min: 0,
             max: 500,
             splitNumber: 5,
             axisLine: {
                 lineStyle: {
-                    width: 6,
+                    width: 5,
                     color: [[0.2, '#4caf50'], [0.4, '#ff9800'], [0.6, '#ff5722'], [1, '#f44336']]
                 }
             },
             pointer: {
                 icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
                 length: '12%',
-                width: 20,
+                width: 18,
                 offsetCenter: [0, '-60%'],
                 itemStyle: {
                     color: '#00ffff'
                 }
             },
             axisTick: {
-                length: 12,
+                length: 10,
                 lineStyle: {
                     color: 'auto',
                     width: 2
                 }
             },
             splitLine: {
-                length: 20,
+                length: 18,
                 lineStyle: {
                     color: 'auto',
-                    width: 5
+                    width: 4
                 }
             },
             axisLabel: {
                 color: '#ffffff',
-                fontSize: 8,
+                fontSize: 9,
                 distance: -60,
                 rotate: 'tangential',
                 formatter: function (value) {
@@ -1231,11 +1232,11 @@ function initCharts() {
             },
             title: {
                 offsetCenter: [0, '-10%'],
-                fontSize: 8,
+                fontSize: 9,
                 color: '#ffffff'
             },
             detail: {
-                fontSize: 10,
+                fontSize: 12,
                 offsetCenter: [0, '-35%'],
                 valueAnimation: true,
                 formatter: function (value) {
@@ -1273,43 +1274,43 @@ function initCharts() {
             type: 'gauge',
             startAngle: 180,
             endAngle: 0,
-            center: ['50%', '75%'],
-            radius: '90%',
+            center: ['50%', '85%'],
+            radius: '140%', 
             min: 800,
             max: 1600,
             splitNumber: 8,
             axisLine: {
                 lineStyle: {
-                    width: 6,
+                    width: 5,
                     color: [[0.6, '#4caf50'], [0.8, '#ff9800'], [1, '#f44336']]
                 }
             },
             pointer: {
                 icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
                 length: '12%',
-                width: 20,
+                width: 18,
                 offsetCenter: [0, '-60%'],
                 itemStyle: {
                     color: '#00ffff'
                 }
             },
             axisTick: {
-                length: 12,
+                length: 10,
                 lineStyle: {
                     color: 'auto',
                     width: 2
                 }
             },
             splitLine: {
-                length: 20,
+                length: 18,
                 lineStyle: {
                     color: 'auto',
-                    width: 5
+                    width: 4
                 }
             },
             axisLabel: {
                 color: '#ffffff',
-                fontSize: 8,
+                fontSize: 9,
                 distance: -60,
                 rotate: 'tangential',
                 formatter: function (value) {
@@ -1325,11 +1326,11 @@ function initCharts() {
             },
             title: {
                 offsetCenter: [0, '-10%'],
-                fontSize: 8,
+                fontSize: 9,
                 color: '#ffffff'
             },
             detail: {
-                fontSize: 10,
+                fontSize: 12,
                 offsetCenter: [0, '-35%'],
                 valueAnimation: true,
                 formatter: function (value) {
@@ -2024,10 +2025,188 @@ function addNewAlert() {
     }
 }
 
+// 颜色主题管理
+class ColorThemeManager {
+    constructor() {
+        this.currentTheme = 'light-blue';
+        this.themes = {
+            'light-blue': {
+                name: '浅蓝色',
+                primary: '#87CEEB',
+                secondary: '#00ffff',
+                accent: '#00e5ff'
+            },
+            'haze-blue': {
+                name: '雾霾蓝',
+                primary: '#B0C4DE',
+                secondary: '#87CEEB',
+                accent: '#B0C4DE'
+            },
+            'blue-gray': {
+                name: '蓝灰色',
+                primary: '#708090',
+                secondary: '#B0C4DE',
+                accent: '#708090'
+            },
+            'light-green': {
+                name: '浅绿色',
+                primary: '#98FB98',
+                secondary: '#90EE90',
+                accent: '#98FB98'
+            },
+            'light-purple': {
+                name: '浅紫色',
+                primary: '#DDA0DD',
+                secondary: '#DA70D6',
+                accent: '#DDA0DD'
+            },
+            'light-pink': {
+                name: '浅粉色',
+                primary: '#FFB6C1',
+                secondary: '#FFC0CB',
+                accent: '#FFB6C1'
+            }
+        };
+        this.init();
+    }
+
+    init() {
+        // 从本地存储加载保存的主题
+        const savedTheme = localStorage.getItem('dashboard-theme');
+        if (savedTheme && this.themes[savedTheme]) {
+            this.currentTheme = savedTheme;
+        }
+        
+        // 应用当前主题
+        this.applyTheme(this.currentTheme);
+        
+        // 绑定事件监听器
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        const colorOptions = document.querySelectorAll('.color-option');
+        colorOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                const theme = e.currentTarget.getAttribute('data-theme');
+                this.switchTheme(theme);
+            });
+        });
+    }
+
+    switchTheme(themeName) {
+        if (!this.themes[themeName]) {
+            console.warn('未知的主题:', themeName);
+            return;
+        }
+
+        // 更新当前主题
+        this.currentTheme = themeName;
+        
+        // 应用主题
+        this.applyTheme(themeName);
+        
+        // 更新UI状态
+        this.updateUI(themeName);
+        
+        // 保存到本地存储
+        localStorage.setItem('dashboard-theme', themeName);
+        
+        console.log('主题已切换到:', this.themes[themeName].name);
+    }
+
+    applyTheme(themeName) {
+        // 设置body的data-theme属性
+        document.body.setAttribute('data-theme', themeName);
+        
+        // 更新图表颜色（如果图表已初始化）
+        this.updateChartColors(themeName);
+    }
+
+    updateUI(themeName) {
+        // 移除所有active类
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('active');
+        });
+        
+        // 添加active类到当前选中的主题
+        const activeOption = document.querySelector(`[data-theme="${themeName}"]`);
+        if (activeOption) {
+            activeOption.classList.add('active');
+        }
+    }
+
+    updateChartColors(themeName) {
+        const theme = this.themes[themeName];
+        if (!theme) return;
+
+        // 更新ECharts图表颜色
+        const chartInstances = [
+            'patientFlowChart', 'energyChart', 'trafficChart', 'qualityChart',
+            'temperatureChart', 'humidityChart', 'airQualityChart', 'powerChart',
+            'networkChart', 'revenueChart', 'equipmentStatusChart',
+            'patientTrendChart', 'bedUsageGauge', 'emergencyChart', 'surgeryChart',
+            'waitingTimeChart', 'satisfactionChart'
+        ];
+
+        chartInstances.forEach(chartName => {
+            const chart = window[chartName];
+            if (chart && typeof chart.setOption === 'function') {
+                try {
+                    // 根据主题更新图表颜色
+                    this.updateChartOption(chart, theme, chartName);
+                } catch (error) {
+                    console.warn(`更新图表 ${chartName} 颜色失败:`, error);
+                }
+            }
+        });
+    }
+
+    updateChartOption(chart, theme, chartName) {
+        // 根据不同的图表类型应用不同的颜色方案
+        const colorScheme = this.getColorScheme(theme);
+        
+        // 这里可以根据具体图表类型进行更精细的颜色控制
+        // 由于图表配置比较复杂，这里提供一个通用的颜色更新方法
+        const currentOption = chart.getOption();
+        
+        // 更新系列颜色
+        if (currentOption.series) {
+            currentOption.series.forEach(series => {
+                if (series.itemStyle) {
+                    series.itemStyle.color = colorScheme.primary;
+                }
+                if (series.lineStyle) {
+                    series.lineStyle.color = colorScheme.secondary;
+                }
+                if (series.areaStyle && series.areaStyle.color) {
+                    series.areaStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: colorScheme.primary + '30' },
+                        { offset: 1, color: colorScheme.primary + '05' }
+                    ]);
+                }
+            });
+        }
+        
+        chart.setOption(currentOption, true);
+    }
+
+    getColorScheme(theme) {
+        return {
+            primary: theme.primary,
+            secondary: theme.secondary,
+            accent: theme.accent
+        };
+    }
+}
+
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
     try {
         console.log('开始初始化医院数据看板...');
+        
+        // 初始化颜色主题管理器
+        window.colorThemeManager = new ColorThemeManager();
         
         // 初始化时间显示
         updateTime();

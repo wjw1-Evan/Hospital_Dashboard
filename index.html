@@ -13,8 +13,39 @@
         <!-- 头部标题区域 -->
         <header class="dashboard-header">
             <h1 class="main-title">医院数据看板展示大屏</h1>
-            <div class="datetime-display">
-                <span id="current-time"></span>
+            <div class="header-controls">
+                <div class="color-switcher">
+                    <span class="color-switcher-label">色调切换</span>
+                    <div class="color-options">
+                        <button class="color-option active" data-theme="light-blue" title="浅蓝色">
+                            <div class="color-preview" style="background: #87CEEB;"></div>
+                            <span>浅蓝</span>
+                        </button>
+                        <button class="color-option" data-theme="haze-blue" title="雾霾蓝">
+                            <div class="color-preview" style="background: #B0C4DE;"></div>
+                            <span>雾霾蓝</span>
+                        </button>
+                        <button class="color-option" data-theme="blue-gray" title="蓝灰色">
+                            <div class="color-preview" style="background: #708090;"></div>
+                            <span>蓝灰</span>
+                        </button>
+                        <button class="color-option" data-theme="light-green" title="浅绿色">
+                            <div class="color-preview" style="background: #98FB98;"></div>
+                            <span>浅绿</span>
+                        </button>
+                        <button class="color-option" data-theme="light-purple" title="浅紫色">
+                            <div class="color-preview" style="background: #DDA0DD;"></div>
+                            <span>浅紫</span>
+                        </button>
+                        <button class="color-option" data-theme="light-pink" title="浅粉色">
+                            <div class="color-preview" style="background: #FFB6C1;"></div>
+                            <span>浅粉</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="datetime-display">
+                    <span id="current-time"></span>
+                </div>
             </div>
         </header>
 
@@ -211,15 +242,15 @@
                             
                             <div class="detailed-metric-item">
                                 <div class="metric-header">
-                                    <span class="metric-icon">🌡️</span>
-                                    <span class="metric-title">环境监测</span>
+                                    <span class="metric-icon">👥</span>
+                                    <span class="metric-title">医护人员</span>
                                 </div>
                                 <div class="metric-details">
-                                    <div class="metric-value-large" id="avg-temp">22.5°C</div>
-                                    <div class="metric-subtitle">温度/湿度</div>
+                                    <div class="metric-value-large" id="staff-on-duty">1,245</div>
+                                    <div class="metric-subtitle">在岗人数</div>
                                     <div class="metric-comparison">
-                                        <span class="comparison-label">湿度</span>
-                                        <span class="comparison-value normal" id="humidity">58%</span>
+                                        <span class="comparison-label">出勤率</span>
+                                        <span class="comparison-value normal" id="attendance-rate">98.5%</span>
                                     </div>
                                 </div>
                             </div>
@@ -257,40 +288,20 @@
                                 <div class="env-chart">
                                     <div id="temperatureChart" class="mini-chart"></div>
                                 </div>
-                                <div class="env-info">
-                                    <div class="env-label">温度</div>
-                                    <div class="env-value" id="current-temp">22.5°C</div>
-                                    <div class="env-range">18-26°C</div>
-                                </div>
                             </div>
                             <div class="env-item">
                                 <div class="env-chart">
                                     <div id="humidityChart" class="mini-chart"></div>
-                                </div>
-                                <div class="env-info">
-                                    <div class="env-label">湿度</div>
-                                    <div class="env-value" id="current-humidity">58%</div>
-                                    <div class="env-range">40-70%</div>
                                 </div>
                             </div>
                             <div class="env-item">
                                 <div class="env-chart">
                                     <div id="airQualityChart" class="mini-chart"></div>
                                 </div>
-                                <div class="env-info">
-                                    <div class="env-label">空气质量</div>
-                                    <div class="env-value" id="current-air-quality">优</div>
-                                    <div class="env-range">PM2.5: 15</div>
-                                </div>
                             </div>
                             <div class="env-item">
                                 <div class="env-chart">
                                     <div id="powerChart" class="mini-chart"></div>
-                                </div>
-                                <div class="env-info">
-                                    <div class="env-label">今日用电</div>
-                                    <div class="env-value" id="current-power">1,245kWh</div>
-                                    <div class="env-range">目标: 1,200kWh</div>
                                 </div>
                             </div>
                         </div>
@@ -491,7 +502,7 @@
                             <h3>能源管理</h3>
                             <div class="system-status online">在线</div>
                             <div class="system-metrics">
-                                <span>今日用电: 45,678kWh</span>
+                                <span>系统设备: 234台</span>
                                 <span>节能率: 12%</span>
                             </div>
                         </div>

@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: color 0.3s ease, text-shadow 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 body {
@@ -22,9 +23,9 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(0, 200, 255, 0.05) 0%, transparent 70%);
+        radial-gradient(circle at 25% 25%, var(--background-gradient-1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, var(--background-gradient-2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, var(--background-gradient-3) 0%, transparent 70%);
     z-index: -1;
     /* 移除背景动画 */
 }
@@ -67,9 +68,79 @@ body::after {
     align-items: center;
     padding: 0 40px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    border-bottom: 2px solid var(--border-color);
     position: relative;
     overflow: hidden;
+}
+
+/* 头部控制区域 */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 色调切换器样式 */
+.color-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-switcher-label {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.color-options {
+    display: flex;
+    gap: 8px;
+}
+
+.color-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.color-option:hover {
+    border-color: rgba(0, 255, 255, 0.5);
+    background: rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.color-option.active {
+    border-color: #00ffff;
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.color-preview {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.color-option.active .color-preview {
+    border-color: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.color-option span {
+    font-size: 10px;
+    color: #ffffff;
+    font-weight: 500;
 }
 
 /* 移除头部闪光动画效果 */
@@ -82,8 +153,8 @@ body::after {
 .main-title {
     font-size: 36px;
     font-weight: bold;
-    color: #00ffff;
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    color: var(--secondary-color);
+    text-shadow: var(--text-shadow);
     letter-spacing: 2px;
     position: relative;
 }
@@ -185,10 +256,10 @@ body::after {
 .card-title {
     font-size: 16px;
     font-weight: bold;
-    color: #00ffff;
+    color: var(--secondary-color);
     margin-bottom: 10px;
     text-align: center;
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    text-shadow: 0 0 8px var(--glow-color);
 }
 
 /* 主要焦点区域 */
@@ -269,9 +340,9 @@ body::after {
 .unified-card-value {
     font-size: 16px;
     font-weight: bold;
-    color: #00ffff;
+    color: var(--secondary-color);
     margin-bottom: 1px;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 10px var(--glow-color);
 }
 
 .unified-card-trend {
@@ -374,9 +445,9 @@ body::after {
 .chart-value {
     font-size: 16px;
     font-weight: bold;
-    color: #00ffff;
+    color: var(--secondary-color);
     margin-bottom: 1px;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 10px var(--glow-color);
 }
 
 /* 使用统一趋势样式 */
@@ -478,9 +549,9 @@ body::after {
 .main-metric-value {
     font-size: 24px;
     font-weight: bold;
-    color: #00ffff;
+    color: var(--secondary-color);
     margin-bottom: 4px;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    text-shadow: 0 0 15px var(--glow-color);
 }
 
 .main-metric-label {
@@ -569,9 +640,9 @@ body::after {
 
 .metric-header .metric-title {
     font-size: 14px;
-    color: #00ffff;
+    color: var(--secondary-color);
     font-weight: 600;
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    text-shadow: 0 0 8px var(--glow-color);
 }
 
 .metric-details {
@@ -698,16 +769,18 @@ body::after {
     background: transparent;
     backdrop-filter: blur(10px);
     border-radius: 8px;
-    padding: 8px;
+    padding: 4px;
     border: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
     transition: all 0.3s ease;
     box-shadow: 
         0 2px 8px rgba(0, 255, 255, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    min-height: 140px;
+    position: relative;
 }
 
 .environment-monitoring-section .env-item:hover {
@@ -719,34 +792,12 @@ body::after {
 }
 
 .environment-monitoring-section .env-chart {
-    width: 35px;
-    height: 35px;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    position: relative;
 }
 
-.environment-monitoring-section .env-info {
-    text-align: center;
-}
-
-.environment-monitoring-section .env-label {
-    font-size: 10px;
-    color: #ffffff;
-    opacity: 0.8;
-    margin-bottom: 2px;
-}
-
-.environment-monitoring-section .env-value {
-    font-size: 12px;
-    font-weight: bold;
-    color: #00ffff;
-    margin-bottom: 2px;
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
-}
-
-.environment-monitoring-section .env-range {
-    font-size: 8px;
-    color: #ffffff;
-    opacity: 0.6;
-}
 
 
 /* 收入分析特殊样式 */
@@ -1154,9 +1205,9 @@ body::after {
 .metric-value {
     font-size: 20px;
     font-weight: bold;
-    color: #00ffff;
+    color: var(--secondary-color);
     margin-bottom: 3px;
-    text-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 12px var(--glow-color);
 }
 
 .metric-label {
@@ -1225,7 +1276,7 @@ body::after {
 .department-name {
     font-size: 14px;
     font-weight: bold;
-    color: #00e5ff;
+    color: var(--accent-color);
     margin-bottom: 8px;
     text-align: center;
 }
@@ -1636,64 +1687,7 @@ body::after {
     color: #f44336;
 }
 
-/* 环境监控 */
-.environment-monitoring {
-    margin-bottom: 20px;
-}
-
-.environment-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.env-item {
-    background: transparent;
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    padding: 12px;
-    border: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-}
-
-.env-item:hover {
-    background: transparent;
-    transform: translateY(-1px);
-}
-
-.env-chart {
-    width: 40px;
-    height: 40px;
-}
-
-/* 移除重复的mini-chart选择器 */
-
-.env-info {
-    flex: 1;
-}
-
-.env-label {
-    font-size: 11px;
-    color: #ffffff;
-    opacity: 0.7;
-    margin-bottom: 2px;
-}
-
-.env-value {
-    font-size: 14px;
-    font-weight: bold;
-    color: #00ffff;
-    margin-bottom: 2px;
-}
-
-.env-range {
-    font-size: 10px;
-    color: #ffffff;
-    opacity: 0.6;
-}
+/* 移除重复的环境监控样式定义 */
 
 /* 停车场监控 */
 .parking-monitoring {
@@ -2121,3 +2115,119 @@ body::after {
         gap: 20px;
     }
 }
+
+/* 颜色主题变量定义 */
+:root {
+    /* 默认主题 - 浅蓝色 */
+    --primary-color: #87CEEB;
+    --primary-color-rgb: 135, 206, 235;
+    --secondary-color: #00ffff;
+    --secondary-color-rgb: 0, 255, 255;
+    --accent-color: #00e5ff;
+    --accent-color-rgb: 0, 229, 255;
+    --background-gradient-1: rgba(135, 206, 235, 0.1);
+    --background-gradient-2: rgba(0, 150, 255, 0.1);
+    --background-gradient-3: rgba(0, 200, 255, 0.05);
+    --border-color: rgba(135, 206, 235, 0.3);
+    --text-shadow: 0 0 20px rgba(135, 206, 235, 0.6);
+    --glow-color: rgba(135, 206, 235, 0.4);
+}
+
+/* 雾霾蓝主题 */
+[data-theme="haze-blue"] {
+    --primary-color: #B0C4DE;
+    --primary-color-rgb: 176, 196, 222;
+    --secondary-color: #87CEEB;
+    --secondary-color-rgb: 135, 206, 235;
+    --accent-color: #B0C4DE;
+    --accent-color-rgb: 176, 196, 222;
+    --background-gradient-1: rgba(176, 196, 222, 0.1);
+    --background-gradient-2: rgba(135, 206, 235, 0.1);
+    --background-gradient-3: rgba(176, 196, 222, 0.05);
+    --border-color: rgba(176, 196, 222, 0.3);
+    --text-shadow: 0 0 20px rgba(176, 196, 222, 0.6);
+    --glow-color: rgba(176, 196, 222, 0.4);
+}
+
+/* 蓝灰色主题 */
+[data-theme="blue-gray"] {
+    --primary-color: #708090;
+    --primary-color-rgb: 112, 128, 144;
+    --secondary-color: #B0C4DE;
+    --secondary-color-rgb: 176, 196, 222;
+    --accent-color: #708090;
+    --accent-color-rgb: 112, 128, 144;
+    --background-gradient-1: rgba(112, 128, 144, 0.1);
+    --background-gradient-2: rgba(176, 196, 222, 0.1);
+    --background-gradient-3: rgba(112, 128, 144, 0.05);
+    --border-color: rgba(112, 128, 144, 0.3);
+    --text-shadow: 0 0 20px rgba(112, 128, 144, 0.6);
+    --glow-color: rgba(112, 128, 144, 0.4);
+}
+
+/* 浅绿色主题 */
+[data-theme="light-green"] {
+    --primary-color: #98FB98;
+    --primary-color-rgb: 152, 251, 152;
+    --secondary-color: #90EE90;
+    --secondary-color-rgb: 144, 238, 144;
+    --accent-color: #98FB98;
+    --accent-color-rgb: 152, 251, 152;
+    --background-gradient-1: rgba(152, 251, 152, 0.1);
+    --background-gradient-2: rgba(144, 238, 144, 0.1);
+    --background-gradient-3: rgba(152, 251, 152, 0.05);
+    --border-color: rgba(152, 251, 152, 0.3);
+    --text-shadow: 0 0 20px rgba(152, 251, 152, 0.6);
+    --glow-color: rgba(152, 251, 152, 0.4);
+}
+
+/* 浅紫色主题 */
+[data-theme="light-purple"] {
+    --primary-color: #DDA0DD;
+    --primary-color-rgb: 221, 160, 221;
+    --secondary-color: #DA70D6;
+    --secondary-color-rgb: 218, 112, 214;
+    --accent-color: #DDA0DD;
+    --accent-color-rgb: 221, 160, 221;
+    --background-gradient-1: rgba(221, 160, 221, 0.1);
+    --background-gradient-2: rgba(218, 112, 214, 0.1);
+    --background-gradient-3: rgba(221, 160, 221, 0.05);
+    --border-color: rgba(221, 160, 221, 0.3);
+    --text-shadow: 0 0 20px rgba(221, 160, 221, 0.6);
+    --glow-color: rgba(221, 160, 221, 0.4);
+}
+
+/* 浅粉色主题 */
+[data-theme="light-pink"] {
+    --primary-color: #FFB6C1;
+    --primary-color-rgb: 255, 182, 193;
+    --secondary-color: #FFC0CB;
+    --secondary-color-rgb: 255, 192, 203;
+    --accent-color: #FFB6C1;
+    --accent-color-rgb: 255, 182, 193;
+    --background-gradient-1: rgba(255, 182, 193, 0.1);
+    --background-gradient-2: rgba(255, 192, 203, 0.1);
+    --background-gradient-3: rgba(255, 182, 193, 0.05);
+    --border-color: rgba(255, 182, 193, 0.3);
+    --text-shadow: 0 0 20px rgba(255, 182, 193, 0.6);
+    --glow-color: rgba(255, 182, 193, 0.4);
+}
+
+/* 图表颜色主题适配 */
+[data-theme="haze-blue"] .chart-item,
+[data-theme="blue-gray"] .chart-item {
+    filter: hue-rotate(20deg) saturate(0.8);
+}
+
+[data-theme="light-green"] .chart-item {
+    filter: hue-rotate(120deg) saturate(1.2);
+}
+
+[data-theme="light-purple"] .chart-item {
+    filter: hue-rotate(280deg) saturate(1.1);
+}
+
+[data-theme="light-pink"] .chart-item {
+    filter: hue-rotate(320deg) saturate(1.3);
+}
+
