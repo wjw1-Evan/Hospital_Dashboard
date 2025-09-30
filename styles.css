@@ -168,10 +168,8 @@ body::after {
     width: 100vw;
     height: auto;
     min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    overflow: visible;
+    /* 移除手机端滚动设置 */
   }
 }
 
@@ -403,11 +401,8 @@ body::after {
     max-height: 60vh;
     order: 1;
     margin-bottom: var(--spacing-sm);
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* 手机端滚动优化 */
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    overflow: visible;
+    /* 移除手机端滚动设置 */
   }
 }
 
@@ -428,11 +423,8 @@ body::after {
     max-height: 70vh;
     order: 2;
     margin-bottom: var(--spacing-sm);
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* 手机端滚动优化 */
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    overflow: visible;
+    /* 移除手机端滚动设置 */
   }
 }
 
@@ -453,12 +445,9 @@ body::after {
     min-height: 30vh;
     max-height: 50vh;
     order: 3;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: visible;
     padding-bottom: var(--spacing-sm);
-    /* 手机端滚动优化 */
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    /* 移除手机端滚动设置 */
   }
 }
 
@@ -1824,11 +1813,9 @@ body::after {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs);
-    max-height: 200px;
-    overflow-y: auto;
-    /* 手机端滚动优化 */
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    max-height: none;
+    overflow: visible;
+    /* 移除手机端滚动设置 */
   }
   
   /* 手机端系统卡片字体优化 */
@@ -4282,10 +4269,9 @@ body.dark-mode .monitoring-item:hover {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* 手机端滚动优化 */
+  /* 手机端滚动优化 - 已移除 */
   .dashboard-container {
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    /* 移除手机端滚动设置 */
   }
 
   /* 手机端滚动容器通用样式 */
@@ -4298,9 +4284,8 @@ body.dark-mode .monitoring-item:hover {
   .environment-monitoring-section,
   .charts-section,
   .parking-network-section {
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+    /* 移除手机端滚动设置 */
+    overflow: visible;
   }
 
   /* 手机端滚动条优化 */
@@ -4337,7 +4322,7 @@ body.dark-mode .monitoring-item:hover {
   .dashboard-container {
     min-width: 100vw;
     min-height: 100vh;
-    overflow-x: auto;
+    overflow: visible;
   }
 
   /* 头部区域手机端优化 */
@@ -4440,11 +4425,9 @@ body.dark-mode .monitoring-item:hover {
   /* 科室运营情况手机端优化 */
   .department-operations {
     min-height: 600px;
-    max-height: 80vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    max-height: none;
+    overflow: visible;
+    /* 移除手机端滚动设置 */
   }
 
   .department-grid {
@@ -4495,7 +4478,7 @@ body.dark-mode .monitoring-item:hover {
   @media (max-width: 480px) {
     .department-operations {
       min-height: 500px;
-      max-height: 75vh;
+      max-height: none;
     }
 
     .department-grid {
@@ -4691,8 +4674,8 @@ body.dark-mode .monitoring-item:hover {
   .alert-panel {
     flex: none;
     height: auto;
-    max-height: 150px;
-    overflow-y: auto;
+    max-height: none;
+    overflow: visible;
   }
 
   .alert-item {
@@ -4786,9 +4769,8 @@ body.dark-mode .monitoring-item:hover {
   .systems-grid,
   .alert-list,
   .detailed-metrics-section {
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+    /* 移除手机端滚动设置 */
+    overflow: visible;
   }
 }
 
