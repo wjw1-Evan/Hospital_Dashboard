@@ -86,6 +86,73 @@
   /* 移除全局过渡效果以提升性能 */
 }
 
+/* 性能优化 - 启用硬件加速 */
+.card,
+.department-item,
+.quality-item,
+.system-card,
+.detailed-metric-item,
+.chart-item {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 优化重绘和重排 */
+.dashboard-container,
+.dashboard-main,
+.left-section,
+.middle-section,
+.right-section {
+  contain: layout style;
+}
+
+/* 优化字体渲染 */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 浏览器兼容性支持 */
+@supports not (backdrop-filter: blur(10px)) {
+  .card,
+  .dashboard-header,
+  .datetime-display,
+  .unified-metric-card,
+  .detailed-metric-item,
+  .system-card {
+    background: rgba(10, 14, 39, 0.8);
+  }
+}
+
+/* 旧版浏览器Grid支持 */
+@supports not (display: grid) {
+  .dashboard-main {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .left-section,
+  .middle-section,
+  .right-section {
+    flex: 1;
+  }
+  
+  .metrics-row,
+  .environment-grid,
+  .systems-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .metrics-row > *,
+  .environment-grid > *,
+  .systems-grid > * {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
 body {
   font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif;
   background: #0a0e27;
@@ -573,23 +640,23 @@ body::after {
 /* 主要焦点区域 */
 .main-focus {
   margin-bottom: var(--spacing-xl);
-  background: transparent !important;
-  border: none !important;
+  background: transparent;
+  border: none;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 移除旋转背景动画效果 */
 
 .main-title-large {
-  font-size: var(--text-2xl) !important;
-  color: var(--primary-color) !important;
-  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6) !important;
-  margin-bottom: var(--spacing-md) !important;
+  font-size: var(--text-2xl);
+  color: var(--primary-color);
+  text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6);
+  margin-bottom: var(--spacing-md);
 }
 
 /* 统一卡片基础样式 */
@@ -1204,30 +1271,54 @@ body::after {
 
 /* 收入分析特殊样式 */
 .revenue-analysis-item .revenue-chart-mini {
-  height: var(--height-sm);
+  height: 100px; 
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 220px; /* 进一步减少最小宽度 */
+  padding: 0; /* 移除上下内边距 */
+  margin: 0; /* 移除上下外边距 */
 }
 
 .revenue-analysis-item .mini-chart {
-  height: var(--height-sm);
-  width: 100px;
+  height: 120px; /* 减小高度为120px */
+  width: 200px; /* 进一步减少宽度 */
+}
+
+/* 收入分析图表容器特殊样式 */
+.revenue-analysis-item {
+  min-width: 240px; /* 进一步减少容器宽度 */
+  flex-shrink: 0; /* 防止容器被压缩 */
+  min-height: 120px; /* 减小最小高度为120px */
+  padding: 2px var(--spacing-sm); /* 进一步减少上下内边距到2px */
+  margin: 0; /* 移除上下外边距 */
 }
 
 /* 设备状态特殊样式 */
 .equipment-status-item .equipment-chart-mini {
-  height: var(--height-sm);
+  height: 100px; 
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 220px; /* 进一步减少最小宽度 */
+  padding: 0; /* 移除上下内边距 */
+  margin: 0; /* 移除上下外边距 */
 }
 
 .equipment-status-item .mini-chart {
-  height: var(--height-sm);
-  width: 100px;
+  height: 120px; /* 减小高度为120px */
+  width: 200px; /* 进一步减少宽度 */
+}
+
+/* 设备状态图表容器特殊样式 */
+.equipment-status-item {
+  min-width: 240px; /* 进一步减少容器宽度 */
+  flex-shrink: 0; /* 防止容器被压缩 */
+  min-height: 120px; /* 减小最小高度为120px */
+  padding: 2px var(--spacing-sm); /* 进一步减少上下内边距到2px */
+  margin: 0; /* 移除上下外边距 */
 }
 
 /* 停车场监控区域 */
@@ -2466,155 +2557,146 @@ body::after {
   scrollbar-width: none;
 }
 
-/* 响应式设计 */
-@media (max-width: 1920px) {
+/* 响应式设计 - 优化断点设置 */
+/* 大屏幕优化 (1920px+) */
+@media (min-width: 1920px) {
+  .dashboard-main {
+    grid-template-columns: 350px 1fr 380px;
+    height: calc(100vh - 80px);
+  }
+  
+  .core-metrics-charts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .chart-container-small {
+    height: 160px;
+  }
+  
+  .chart-container-large {
+    height: 200px;
+  }
+}
+
+/* 中等屏幕 (1600px - 1919px) */
+@media (max-width: 1919px) and (min-width: 1600px) {
   .dashboard-main {
     grid-template-columns: 320px 1fr 360px;
     height: calc(100vh - 70px);
   }
-
+  
   .core-metrics-charts {
     grid-template-columns: repeat(3, 1fr);
   }
-
+  
   .chart-container-small {
     height: 140px;
   }
-
+  
   .chart-container-large {
-    height: var(--height-xl);
-  }
-
-  .main-chart-container {
-    height: 160px;
+    height: 180px;
   }
 }
 
-@media (max-width: 1600px) {
+/* 小屏幕 (1200px - 1599px) */
+@media (max-width: 1599px) and (min-width: 1200px) {
   .dashboard-main {
     grid-template-columns: 300px 1fr 340px;
     height: calc(100vh - 60px);
   }
-
+  
   .core-metrics-charts {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   .systems-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   .chart-container-small {
-    height: var(--height-md);
+    height: 120px;
   }
-
+  
   .chart-container-large {
     height: 160px;
   }
-
-  .main-chart-container {
-    height: 140px;
-  }
-
+  
   .detailed-metric-item {
-    padding: var(--spacing-sm);
-  }
-
-  .main-metric-item {
     padding: var(--spacing-sm);
   }
 }
 
-@media (max-width: 1200px) {
+/* 平板屏幕 (768px - 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
   .dashboard-main {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
     height: calc(100vh - 50px);
   }
-
+  
   .core-metrics-charts {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   .systems-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   .chart-container-small {
     height: 100px;
   }
-
+  
   .chart-container-large {
     height: 140px;
   }
-
-  .main-chart-container {
-    height: var(--height-md);
-  }
-
+  
   .metrics-row {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   .environment-monitoring-section .environment-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .parking-monitoring-section .parking-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .parking-chart-container {
-    height: 100px;
-  }
-
-  .network-monitoring-section .network-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .network-chart-container {
-    height: 100px;
-  }
-
+  
   .parking-network-section {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
   }
-
-  .parking-network-section .parking-chart-container,
-  .parking-network-section .network-chart-container {
-    height: 100px;
-  }
 }
 
+/* 手机屏幕 (768px以下) */
 @media (max-width: 768px) {
   .dashboard-main {
     padding: var(--spacing-sm);
     gap: var(--spacing-sm);
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+    min-height: calc(100vh - 60px);
   }
-
+  
   .core-metrics-charts {
     grid-template-columns: 1fr;
   }
-
+  
   .metrics-row {
     grid-template-columns: 1fr;
   }
-
+  
   .chart-row {
     grid-template-columns: 1fr;
   }
-
+  
   .chart-container-small {
-    height: var(--height-sm);
+    height: 120px;
   }
-
+  
   .chart-container-large {
-    height: var(--height-md);
+    height: 140px;
   }
-
+  
   .main-chart-container {
-    height: 100px;
+    height: 120px;
   }
 }
 
@@ -3820,110 +3902,7 @@ body.dark-mode .comparison-value.error {
 
 /* 响应式缩放支持 - 添加到现有的:root选择器中 */
 
-/* 超小屏幕优化 */
-@media (max-width: 1024px) {
-  .dashboard-container {
-    min-width: 100vw;
-    min-height: 100vh;
-  }
-  
-  .dashboard-main {
-    grid-template-columns: 280px 1fr 320px;
-    gap: var(--spacing-sm);
-  }
-  
-  .main-title {
-    font-size: var(--text-2xl);
-  }
-  
-  .card-title {
-    font-size: var(--text-md);
-  }
-  
-  .metric-value-large {
-    font-size: var(--text-2xl);
-  }
-  
-  .systems-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-sm);
-  }
-  
-  .system-card {
-    min-height: 100px;
-    padding: var(--spacing-sm);
-  }
-  
-  .system-card h4 {
-    font-size: var(--text-sm);
-  }
-  
-  .chart-container-small {
-    height: 120px;
-  }
-  
-  .chart-container-large {
-    height: 160px;
-  }
-}
-
-/* 小屏幕优化 */
-@media (max-width: 768px) {
-  .dashboard-container {
-    min-width: 100vw;
-    min-height: 100vh;
-  }
-  
-  .dashboard-main {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs);
-  }
-  
-  .left-section,
-  .right-section {
-    max-height: none;
-    overflow-y: visible;
-  }
-  
-  .main-title {
-    font-size: var(--text-xl);
-  }
-  
-  .card-title {
-    font-size: var(--text-sm);
-  }
-  
-  .metric-value-large {
-    font-size: var(--text-xl);
-  }
-  
-  .metrics-row {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xs);
-  }
-  
-  .detailed-metric-item {
-    padding: var(--spacing-xs);
-  }
-  
-  .chart-container-small {
-    height: 100px;
-  }
-  
-  .chart-container-large {
-    height: 120px;
-  }
-  
-  .environment-monitoring-section .environment-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .parking-network-section {
-    grid-template-columns: 1fr;
-  }
-}
+/* 超小屏幕优化 (1024px以下) - 合并到现有规则中 */
 
 /* 超宽屏优化 */
 @media (min-width: 2560px) {

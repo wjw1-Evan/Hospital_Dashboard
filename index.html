@@ -6,43 +6,46 @@
     <title>医院数据看板展示大屏</title>
     <link rel="stylesheet" href="styles.css">
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" as="script" crossorigin="anonymous">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <!-- DNS预解析 -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <!-- 使用压缩版本的库 -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="dashboard-container" role="main" aria-label="医院数据看板展示大屏">
         <!-- 头部标题区域 -->
-        <header class="dashboard-header">
+        <header class="dashboard-header" role="banner">
             <h1 class="main-title">医院数据看板展示大屏</h1>
-            <div class="header-controls">
-                <div class="color-switcher">
-                   
-                    <div class="color-options" style="display: flex; gap: 8px;">
-                        <button class="color-option active" data-theme="light-blue" title="浅蓝色" style="display: flex; align-items: center; gap: 6px;">
-                            <div class="color-preview" style="background: #87CEEB; width: 18px; height: 18px; border-radius: 50%;"></div>
+            <div class="header-controls" role="toolbar" aria-label="页面控制工具">
+                <div class="color-switcher" role="group" aria-label="主题颜色选择">
+                    <div class="color-options" style="display: flex; gap: 8px;" role="radiogroup" aria-label="选择主题颜色">
+                        <button class="color-option active" data-theme="light-blue" title="浅蓝色主题" aria-label="切换到浅蓝色主题" aria-pressed="true" style="display: flex; align-items: center; gap: 6px;">
+                            <div class="color-preview" style="background: #87CEEB; width: 18px; height: 18px; border-radius: 50%;" aria-hidden="true"></div>
                             <span>浅蓝</span>
                         </button>
-                        <button class="color-option" data-theme="light-green" title="浅绿色" style="display: flex; align-items: center; gap: 6px;">
-                            <div class="color-preview" style="background: #98FB98; width: 18px; height: 18px; border-radius: 50%;"></div>
+                        <button class="color-option" data-theme="light-green" title="浅绿色主题" aria-label="切换到浅绿色主题" aria-pressed="false" style="display: flex; align-items: center; gap: 6px;">
+                            <div class="color-preview" style="background: #98FB98; width: 18px; height: 18px; border-radius: 50%;" aria-hidden="true"></div>
                             <span>浅绿</span>
                         </button>
-                        <button class="color-option" data-theme="light-purple" title="浅紫色" style="display: flex; align-items: center; gap: 6px;">
-                            <div class="color-preview" style="background: #DDA0DD; width: 18px; height: 18px; border-radius: 50%;"></div>
+                        <button class="color-option" data-theme="light-purple" title="浅紫色主题" aria-label="切换到浅紫色主题" aria-pressed="false" style="display: flex; align-items: center; gap: 6px;">
+                            <div class="color-preview" style="background: #DDA0DD; width: 18px; height: 18px; border-radius: 50%;" aria-hidden="true"></div>
                             <span>浅紫</span>
                         </button>
-                        <button class="color-option" data-theme="light-pink" title="浅粉色" style="display: flex; align-items: center; gap: 6px;">
-                            <div class="color-preview" style="background: #FFB6C1; width: 18px; height: 18px; border-radius: 50%;"></div>
+                        <button class="color-option" data-theme="light-pink" title="浅粉色主题" aria-label="切换到浅粉色主题" aria-pressed="false" style="display: flex; align-items: center; gap: 6px;">
+                            <div class="color-preview" style="background: #FFB6C1; width: 18px; height: 18px; border-radius: 50%;" aria-hidden="true"></div>
                             <span>浅粉</span>
                         </button>
                     </div>
                 </div>
-                <div class="datetime-display">
-                    <span id="current-time"></span>
+                <div class="datetime-display" role="timer" aria-label="当前时间">
+                    <span id="current-time" aria-live="polite"></span>
                 </div>
                 <div class="theme-mode-switcher">
-                    <button id="theme-toggle" class="theme-toggle-btn" title="切换白天/夜间模式">
-                        <span class="theme-icon">☀️</span>
+                    <button id="theme-toggle" class="theme-toggle-btn" title="切换白天/夜间模式" aria-label="切换白天和夜间模式" aria-pressed="false">
+                        <span class="theme-icon" aria-hidden="true">☀️</span>
                         <span class="theme-text">白天</span>
                     </button>
                 </div>
@@ -339,28 +342,28 @@
                         </div>
                         
                         <!-- 图表区域 -->
-                        <div class="charts-section">
+                        <div class="charts-section" role="region" aria-label="数据图表区域">
                             <div class="chart-row">
-                                <div class="chart-container-small">
+                                <div class="chart-container-small" role="img" aria-label="患者流量趋势图表">
                                     <div class="chart-header">
                                         <h3 class="chart-title">患者流量趋势</h3>
-                                        <div class="chart-toggle">
-                                            <button class="toggle-btn active" data-period="day">日</button>
-                                            <button class="toggle-btn" data-period="month">月</button>
+                                        <div class="chart-toggle" role="group" aria-label="选择时间周期">
+                                            <button class="toggle-btn active" data-period="day" aria-pressed="true" aria-label="显示日数据">日</button>
+                                            <button class="toggle-btn" data-period="month" aria-pressed="false" aria-label="显示月数据">月</button>
                                         </div>
                                     </div>
-                                    <div id="patientFlowChart" class="chart-item"></div>
+                                    <div id="patientFlowChart" class="chart-item" aria-label="患者流量趋势图，显示不同时间段的患者数量变化"></div>
                                 </div>
                             
-                                <div class="chart-container-small">
+                                <div class="chart-container-small" role="img" aria-label="能源消耗趋势图表">
                                     <div class="chart-header">
                                         <h3 class="chart-title">能源消耗趋势</h3>
-                                        <div class="chart-toggle">
-                                            <button class="toggle-btn active" data-period="day">日</button>
-                                            <button class="toggle-btn" data-period="month">月</button>
+                                        <div class="chart-toggle" role="group" aria-label="选择时间周期">
+                                            <button class="toggle-btn active" data-period="day" aria-pressed="true" aria-label="显示日数据">日</button>
+                                            <button class="toggle-btn" data-period="month" aria-pressed="false" aria-label="显示月数据">月</button>
                                         </div>
                                     </div>
-                                    <div id="energyChart" class="chart-item"></div>
+                                    <div id="energyChart" class="chart-item" aria-label="能源消耗趋势图，显示不同时间段的能源使用情况"></div>
                                 </div>
                             </div>
                         </div>
