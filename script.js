@@ -5,24 +5,127 @@ let patientFlowChartMode = 'day'; // 'day' 或 'month'
 let currentMobileSection = 0;
 let isMobile = window.innerWidth <= 768;
 
+// 开发模式配置 - 控制日志输出
+const DEBUG_MODE = false; // 生产环境设为false，开发环境设为true
+
 // DOM元素缓存
 const domCache = new Map();
 
+// 已记录的缺失元素，避免重复警告
+const missingElements = new Set();
+
 /**
- * 获取DOM元素（带缓存）
+ * 防抖函数 - 性能优化
+ * @param {Function} func - 需要防抖的函数
+ * @param {number} wait - 等待时间(毫秒)
+ * @returns {Function} 防抖后的函数
+ */
+function debounce(func, wait = 300) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+/**
+ * 节流函数 - 性能优化
+ * @param {Function} func - 需要节流的函数
+ * @param {number} limit - 时间限制(毫秒)
+ * @returns {Function} 节流后的函数
+ */
+function throttle(func, limit = 100) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+/**
+ * 性能监控工具
+ */
+const performanceMonitor = {
+    marks: new Map(),
+    
+    start(label) {
+        this.marks.set(label, performance.now());
+    },
+    
+    end(label) {
+        if (this.marks.has(label)) {
+            const duration = performance.now() - this.marks.get(label);
+            if (DEBUG_MODE) {
+                console.log(`⏱️ ${label}: ${duration.toFixed(2)}ms`);
+            }
+            this.marks.delete(label);
+            return duration;
+        }
+        return 0;
+    },
+    
+    measure(label, callback) {
+        this.start(label);
+        const result = callback();
+        this.end(label);
+        return result;
+    }
+};
+
+/**
+ * 获取DOM元素（带缓存）- 优化版本
  * @param {string} id - 元素ID
+ * @param {boolean} silent - 是否静默模式（不输出警告）
  * @returns {HTMLElement|null} DOM元素
  */
-function getCachedElement(id) {
+function getCachedElement(id, silent = false) {
+    if (!id) {
+        if (DEBUG_MODE && !silent) {
+            console.warn('getCachedElement: 元素ID为空');
+        }
+        return null;
+    }
+    
     if (!domCache.has(id)) {
-        domCache.set(id, document.getElementById(id));
+        const element = document.getElementById(id);
+        if (!element) {
+            // 只在开发模式且未记录过时才警告
+            if (DEBUG_MODE && !silent && !missingElements.has(id)) {
+                console.warn(`getCachedElement: 未找到元素 #${id}`);
+                missingElements.add(id);
+            }
+        }
+        domCache.set(id, element);
     }
     return domCache.get(id);
 }
 
-// 时间显示更新
+/**
+ * 批量获取DOM元素（带缓存）
+ * @param {string[]} ids - 元素ID数组
+ * @returns {Object} 包含元素的对象
+ */
+function getCachedElements(ids) {
+    const elements = {};
+    ids.forEach(id => {
+        elements[id] = getCachedElement(id);
+    });
+    return elements;
+}
+
+// 时间显示更新 - 优化DOM查询，添加星期显示
 function updateTime() {
     const now = new Date();
+    const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    const weekday = weekdays[now.getDay()];
+    
     const timeString = now.toLocaleString('zh-CN', {
         year: 'numeric',
         month: '2-digit',
@@ -32,8 +135,9 @@ function updateTime() {
         second: '2-digit',
         hour12: false
     });
-    const currentTimeEl = document.getElementById('current-time');
-    if (currentTimeEl) currentTimeEl.textContent = timeString;
+    
+    const currentTimeEl = getCachedElement('current-time');
+    if (currentTimeEl) currentTimeEl.textContent = `${timeString} ${weekday}`;
 }
 
 // 确保所有数据元素可见
@@ -162,8 +266,8 @@ function initMobileQuickActions() {
                 case 'fullscreen':
                     // 全屏切换
                     if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(err => {
-                            console.log('无法进入全屏模式:', err);
+                        document.documentElement.requestFullscreen().catch(() => {
+                            // 静默处理，某些浏览器可能不支持全屏
                         });
                     } else {
                         document.exitFullscreen();
@@ -192,13 +296,13 @@ function updateData() {
     const waitingTime = Math.floor(Math.random() * 15) + 20;
     const satisfaction = (Math.random() * 3 + 95).toFixed(1);
     
-    // 更新核心指标 - 检查元素是否存在
-    const totalPatientsEl = document.getElementById('total-patients');
-    const occupiedBedsEl = document.getElementById('occupied-beds');
-    const emergencyCasesEl = document.getElementById('emergency-cases');
-    const surgeryCountEl = document.getElementById('surgery-count');
-    const waitingTimeEl = document.getElementById('waiting-time');
-    const satisfactionRateEl = document.getElementById('satisfaction-rate');
+    // 更新核心指标 - 使用缓存优化
+    const totalPatientsEl = getCachedElement('total-patients');
+    const occupiedBedsEl = getCachedElement('occupied-beds');
+    const emergencyCasesEl = getCachedElement('emergency-cases');
+    const surgeryCountEl = getCachedElement('surgery-count');
+    const waitingTimeEl = getCachedElement('waiting-time');
+    const satisfactionRateEl = getCachedElement('satisfaction-rate');
     
     if (totalPatientsEl) totalPatientsEl.textContent = patients.toLocaleString();
     if (occupiedBedsEl) occupiedBedsEl.textContent = beds + '%';
@@ -230,7 +334,6 @@ function updateData() {
 function reinitWaitingTimeChart() {
     const waitingTimeElement = document.getElementById('waitingTimeChart');
     if (waitingTimeElement && !window.waitingTimeChart) {
-        console.log('重新初始化等待时间图表...');
         window.waitingTimeChart = echarts.init(waitingTimeElement);
         const waitingTimeOption = {
             backgroundColor: 'transparent',
@@ -303,106 +406,150 @@ function reinitWaitingTimeChart() {
             }]
         };
         window.waitingTimeChart.setOption(waitingTimeOption);
-        console.log('等待时间图表重新初始化完成');
     }
 }
 
-// 安全的图表更新函数
-function safeChartUpdate(chartInstance, option) {
-    if (chartInstance && typeof chartInstance.setOption === 'function') {
-        try {
-            chartInstance.setOption(option);
-            return true;
-        } catch (error) {
-            console.error('图表更新失败:', error);
-            return false;
+// 安全的图表更新函数 - 增强错误处理
+function safeChartUpdate(chartInstance, option, chartName = '未知图表') {
+    if (!chartInstance) {
+        if (DEBUG_MODE) {
+            console.warn(`safeChartUpdate: ${chartName} 实例不存在`);
         }
+        return false;
     }
-    return false;
+    
+    if (typeof chartInstance.setOption !== 'function') {
+        if (DEBUG_MODE) {
+            console.error(`safeChartUpdate: ${chartName} 的 setOption 方法不可用`);
+        }
+        return false;
+    }
+    
+    try {
+        chartInstance.setOption(option, true); // 使用 notMerge 选项以提升性能
+        return true;
+    } catch (error) {
+        if (DEBUG_MODE) {
+            console.error(`safeChartUpdate: ${chartName} 更新失败:`, error);
+        }
+        return false;
+    }
 }
 
-// 更新图表数据
-function updateChartsData() {
-    // 更新就诊人数趋势图
-    const newData = Array.from({length: 6}, () => Math.floor(Math.random() * 200) + 50);
-    safeChartUpdate(window.patientTrendChart, {
-        series: [{
-            data: newData
-        }]
-    });
-
-    // 更新床位使用率仪表盘
-    const bedUsage = Math.floor(Math.random() * 30) + 70;
-    safeChartUpdate(window.bedUsageGauge, {
-        series: [{
-            data: [{
-                value: bedUsage,
-                name: '床位使用率'
-            }]
-        }]
-    });
-
-    // 更新急诊病例柱状图
-    const emergencyData = Array.from({length: 4}, () => Math.floor(Math.random() * 10) + 1);
-    safeChartUpdate(window.emergencyChart, {
-        series: [{
-            data: emergencyData
-        }]
-    });
-
-    // 更新手术数量环形图
-    const completed = Math.floor(Math.random() * 8) + 5;
-    const ongoing = Math.floor(Math.random() * 5) + 1;
-    const pending = Math.floor(Math.random() * 3) + 1;
-    safeChartUpdate(window.surgeryChart, {
-        series: [{
-            data: [
-                { value: completed, name: '已完成', itemStyle: { color: '#4caf50' } },
-                { value: ongoing, name: '进行中', itemStyle: { color: '#ff9800' } },
-                { value: pending, name: '待开始', itemStyle: { color: '#2196f3' } }
-            ]
-        }]
-    });
-
-    // 更新等待时间折线图
-    if (!window.waitingTimeChart) {
-        reinitWaitingTimeChart();
-    }
-    const waitingData = Array.from({length: 6}, () => Math.floor(Math.random() * 20) + 15);
-    safeChartUpdate(window.waitingTimeChart, {
-        series: [{
-            data: waitingData,
-            type: 'line',
-            smooth: true,
-            lineStyle: {
-                color: '#ff9800',
-                width: 3
-            },
-            itemStyle: {
-                color: '#ff9800',
-                borderColor: '#ffffff',
-                borderWidth: 2
-            },
-            symbol: 'circle',
-            symbolSize: 6,
-            areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: 'rgba(255, 152, 0, 0.3)' },
-                    { offset: 1, color: 'rgba(255, 152, 0, 0.05)' }
-                ])
+/**
+ * 安全的图表初始化函数
+ * @param {string} elementId - 图表容器ID
+ * @param {string} chartName - 图表名称
+ * @returns {Object|null} ECharts实例或null
+ */
+function safeChartInit(elementId, chartName = '未知图表') {
+    try {
+        const element = getCachedElement(elementId, true); // 静默模式
+        if (!element) {
+            if (DEBUG_MODE) {
+                console.error(`safeChartInit: ${chartName} 容器元素 #${elementId} 不存在`);
             }
-        }]
-    });
+            return null;
+        }
+        
+        if (typeof echarts === 'undefined' || typeof echarts.init !== 'function') {
+            console.error('safeChartInit: ECharts 库未正确加载');
+            return null;
+        }
+        
+        return echarts.init(element);
+    } catch (error) {
+        console.error(`safeChartInit: 初始化 ${chartName} 时出错:`, error);
+        return null;
+    }
+}
 
-    // 更新满意度雷达图
-    const satisfactionData = Array.from({length: 4}, () => Math.floor(Math.random() * 10) + 90);
-    safeChartUpdate(window.satisfactionChart, {
-        series: [{
-            data: [{
-                value: satisfactionData
+// 更新图表数据 - 添加性能监控
+function updateChartsData() {
+    try {
+        // 更新就诊人数趋势图
+        const newData = Array.from({length: 6}, () => Math.floor(Math.random() * 200) + 50);
+        safeChartUpdate(window.patientTrendChart, {
+            series: [{
+                data: newData
             }]
-        }]
-    });
+        }, '就诊人数趋势图');
+
+        // 更新床位使用率仪表盘
+        const bedUsage = Math.floor(Math.random() * 30) + 70;
+        safeChartUpdate(window.bedUsageGauge, {
+            series: [{
+                data: [{
+                    value: bedUsage,
+                    name: '床位使用率'
+                }]
+            }]
+        }, '床位使用率');
+
+        // 更新急诊病例柱状图
+        const emergencyData = Array.from({length: 4}, () => Math.floor(Math.random() * 10) + 1);
+        safeChartUpdate(window.emergencyChart, {
+            series: [{
+                data: emergencyData
+            }]
+        }, '急诊病例');
+
+        // 更新手术数量环形图
+        const completed = Math.floor(Math.random() * 8) + 5;
+        const ongoing = Math.floor(Math.random() * 5) + 1;
+        const pending = Math.floor(Math.random() * 3) + 1;
+        safeChartUpdate(window.surgeryChart, {
+            series: [{
+                data: [
+                    { value: completed, name: '已完成', itemStyle: { color: '#4caf50' } },
+                    { value: ongoing, name: '进行中', itemStyle: { color: '#ff9800' } },
+                    { value: pending, name: '待开始', itemStyle: { color: '#2196f3' } }
+                ]
+            }]
+        }, '手术数量');
+
+        // 更新等待时间折线图
+        if (!window.waitingTimeChart) {
+            reinitWaitingTimeChart();
+        }
+        const waitingData = Array.from({length: 6}, () => Math.floor(Math.random() * 20) + 15);
+        safeChartUpdate(window.waitingTimeChart, {
+            series: [{
+                data: waitingData,
+                type: 'line',
+                smooth: true,
+                lineStyle: {
+                    color: '#ff9800',
+                    width: 3
+                },
+                itemStyle: {
+                    color: '#ff9800',
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                },
+                symbol: 'circle',
+                symbolSize: 6,
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255, 152, 0, 0.3)' },
+                        { offset: 1, color: 'rgba(255, 152, 0, 0.05)' }
+                    ])
+                }
+            }]
+        }, '等待时间');
+
+        // 更新满意度雷达图
+        const satisfactionData = Array.from({length: 4}, () => Math.floor(Math.random() * 10) + 90);
+        safeChartUpdate(window.satisfactionChart, {
+            series: [{
+                data: [{
+                    value: satisfactionData
+                }]
+            }]
+        }, '满意度');
+    } catch (error) {
+        console.error('更新图表数据时出错:', error);
+    }
 }
 
 // 更新详细运营指标
@@ -481,25 +628,25 @@ function updatePatientFlowChart() {
     }
 }
 
-// 更新医护人员指标
+// 更新医护人员指标 - 优化DOM查询
 function updateStaffMetrics() {
     const staffOnDuty = Math.floor(Math.random() * 100) + 1200;
     const attendanceRate = (Math.random() * 5 + 95).toFixed(1);
     
-    const staffOnDutyEl = document.getElementById('staff-on-duty');
-    const attendanceRateEl = document.getElementById('attendance-rate');
+    const staffOnDutyEl = getCachedElement('staff-on-duty');
+    const attendanceRateEl = getCachedElement('attendance-rate');
     
     if (staffOnDutyEl) staffOnDutyEl.textContent = staffOnDuty.toLocaleString();
     if (attendanceRateEl) attendanceRateEl.textContent = attendanceRate + '%';
 }
 
-// 更新药品库存指标
+// 更新药品库存指标 - 优化DOM查询
 function updateMedicationMetrics() {
     const medicationStock = Math.floor(Math.random() * 20) + 80;
     const outOfStock = Math.floor(Math.random() * 20) + 5;
     
-    const medicationStockEl = document.getElementById('medication-stock');
-    const outOfStockElement = document.getElementById('out-of-stock');
+    const medicationStockEl = getCachedElement('medication-stock');
+    const outOfStockElement = getCachedElement('out-of-stock');
     
     if (medicationStockEl) medicationStockEl.textContent = medicationStock + '%';
     if (outOfStockElement) {
@@ -508,13 +655,13 @@ function updateMedicationMetrics() {
     }
 }
 
-// 更新工作效率指标
+// 更新工作效率指标 - 优化DOM查询
 function updateEfficiencyMetrics() {
     const efficiencyRate = (Math.random() * 10 + 85).toFixed(1);
     const targetAchievement = (Math.random() * 20 + 90).toFixed(1);
     
-    const efficiencyRateEl = document.getElementById('efficiency-rate');
-    const targetElement = document.getElementById('target-achievement');
+    const efficiencyRateEl = getCachedElement('efficiency-rate');
+    const targetElement = getCachedElement('target-achievement');
     
     if (efficiencyRateEl) efficiencyRateEl.textContent = efficiencyRate + '%';
     if (targetElement) {
@@ -522,12 +669,12 @@ function updateEfficiencyMetrics() {
         targetElement.className = 'comparison-value ' + (targetAchievement > 100 ? 'up' : 'stable');
     }
     
-    // 检查设备 - 检查元素是否存在
+    // 检查设备 - 使用缓存优化
     const equipmentUsage = Math.floor(Math.random() * 30) + 70;
     const faultyEquipment = Math.floor(Math.random() * 8) + 1;
     
-    const equipmentUsageEl = document.getElementById('equipment-usage');
-    const faultyElement = document.getElementById('faulty-equipment');
+    const equipmentUsageEl = getCachedElement('equipment-usage');
+    const faultyElement = getCachedElement('faulty-equipment');
     
     if (equipmentUsageEl) equipmentUsageEl.textContent = equipmentUsage + '%';
     if (faultyElement) {
@@ -535,12 +682,12 @@ function updateEfficiencyMetrics() {
         faultyElement.className = 'comparison-value ' + (faultyEquipment > 5 ? 'warning' : 'normal');
     }
     
-    // 预约管理 - 检查元素是否存在
+    // 预约管理 - 使用缓存优化
     const appointmentCount = Math.floor(Math.random() * 500) + 2000;
     const cancellationRate = (Math.random() * 5 + 2).toFixed(1);
     
-    const appointmentCountEl = document.getElementById('appointment-count');
-    const cancellationElement = document.getElementById('cancellation-rate');
+    const appointmentCountEl = getCachedElement('appointment-count');
+    const cancellationElement = getCachedElement('cancellation-rate');
     
     if (appointmentCountEl) appointmentCountEl.textContent = appointmentCount.toLocaleString();
     if (cancellationElement) {
@@ -617,17 +764,17 @@ function updateDepartmentData() {
     });
 }
 
-// 更新质量指标
+// 更新质量指标 - 优化DOM查询
 function updateQualityMetrics() {
     const infectionRate = (Math.random() * 0.5 + 0.5).toFixed(1);
     const readmissionRate = (Math.random() * 2 + 2).toFixed(1);
     const avgStay = (Math.random() * 2 + 6).toFixed(1);
     const safetyScore = (Math.random() * 2 + 97).toFixed(1);
     
-    const infectionRateEl = document.getElementById('infection-rate');
-    const readmissionRateEl = document.getElementById('readmission-rate');
-    const avgStayEl = document.getElementById('avg-stay');
-    const safetyScoreEl = document.getElementById('safety-score');
+    const infectionRateEl = getCachedElement('infection-rate');
+    const readmissionRateEl = getCachedElement('readmission-rate');
+    const avgStayEl = getCachedElement('avg-stay');
+    const safetyScoreEl = getCachedElement('safety-score');
     
     if (infectionRateEl) infectionRateEl.textContent = infectionRate + '%';
     if (readmissionRateEl) readmissionRateEl.textContent = readmissionRate + '%';
@@ -635,7 +782,7 @@ function updateQualityMetrics() {
     if (safetyScoreEl) safetyScoreEl.textContent = safetyScore;
 }
 
-// 更新实时监控数据
+// 更新实时监控数据 - 优化DOM查询
 function updateMonitoringData() {
     // 更新监控概览数据
     const hospitalLoad = Math.floor(Math.random() * 30) + 70;
@@ -643,19 +790,19 @@ function updateMonitoringData() {
     const avgTemp = (Math.random() * 4 + 20).toFixed(1);
     const humidity = Math.floor(Math.random() * 20) + 50;
     
-    const hospitalLoadEl = document.getElementById('hospital-load');
-    const powerConsumptionEl = document.getElementById('power-consumption');
-    const avgTempEl = document.getElementById('avg-temp');
-    const humidityEl = document.getElementById('humidity');
+    const hospitalLoadEl = getCachedElement('hospital-load');
+    const powerConsumptionEl = getCachedElement('power-consumption');
+    const avgTempEl = getCachedElement('avg-temp');
+    const humidityEl = getCachedElement('humidity');
     
     if (hospitalLoadEl) hospitalLoadEl.textContent = hospitalLoad + '%';
     if (powerConsumptionEl) powerConsumptionEl.textContent = powerConsumption + 'kW';
     if (avgTempEl) avgTempEl.textContent = avgTemp + '°C';
     if (humidityEl) humidityEl.textContent = humidity + '%';
     
-    // 更新状态指示器
-    const hospitalLoadStatus = document.getElementById('hospital-load-status');
-    const powerStatus = document.getElementById('power-status');
+    // 更新状态指示器 - 使用缓存优化
+    const hospitalLoadStatus = getCachedElement('hospital-load-status');
+    const powerStatus = getCachedElement('power-status');
     
     if (hospitalLoadStatus) {
         // 确定医院负荷状态
@@ -695,12 +842,12 @@ function updateMonitoringData() {
         powerStatus.className = powerClass;
     }
     
-    // 更新能源统计
+    // 更新能源统计 - 使用缓存优化
     const dailyPower = Math.floor(Math.random() * 200) + 1200;
     const powerComparison = (Math.random() * 10 - 5).toFixed(1);
     
-    const dailyPowerEl = document.getElementById('daily-power');
-    const comparisonElement = document.getElementById('power-comparison');
+    const dailyPowerEl = getCachedElement('daily-power');
+    const comparisonElement = getCachedElement('power-comparison');
     
     if (dailyPowerEl) dailyPowerEl.textContent = dailyPower.toLocaleString() + ' kWh';
     if (comparisonElement) {
@@ -711,16 +858,16 @@ function updateMonitoringData() {
         comparisonElement.className = comparisonClass;
     }
     
-    // 更新环境数据
+    // 更新环境数据 - 使用缓存优化
     const currentTemp = (Math.random() * 4 + 20).toFixed(1);
     const currentHumidity = Math.floor(Math.random() * 20) + 50;
     const currentPower = Math.floor(Math.random() * 400) + 1000;
     const airQuality = Math.floor(Math.random() * 30) + 10;
     
-    const currentTempEl = document.getElementById('current-temp');
-    const currentHumidityEl = document.getElementById('current-humidity');
-    const currentPowerEl = document.getElementById('current-power');
-    const currentAirQualityEl = document.getElementById('current-air-quality');
+    const currentTempEl = getCachedElement('current-temp');
+    const currentHumidityEl = getCachedElement('current-humidity');
+    const currentPowerEl = getCachedElement('current-power');
+    const currentAirQualityEl = getCachedElement('current-air-quality');
     
     if (currentTempEl) currentTempEl.textContent = currentTemp + '°C';
     if (currentHumidityEl) currentHumidityEl.textContent = currentHumidity + '%';
@@ -739,16 +886,16 @@ function updateMonitoringData() {
         });
     }
     
-    // 更新网络数据
+    // 更新网络数据 - 使用缓存优化
     const uploadSpeed = Math.floor(Math.random() * 50) + 100;
     const downloadSpeed = Math.floor(Math.random() * 200) + 800;
     const onlineDevices = Math.floor(Math.random() * 100) + 2300;
     const networkLatency = Math.floor(Math.random() * 10) + 8;
     
-    const uploadSpeedEl = document.getElementById('upload-speed');
-    const downloadSpeedEl = document.getElementById('download-speed');
-    const onlineDevicesEl = document.getElementById('online-devices');
-    const networkLatencyEl = document.getElementById('network-latency');
+    const uploadSpeedEl = getCachedElement('upload-speed');
+    const downloadSpeedEl = getCachedElement('download-speed');
+    const onlineDevicesEl = getCachedElement('online-devices');
+    const networkLatencyEl = getCachedElement('network-latency');
     
     if (uploadSpeedEl) uploadSpeedEl.textContent = uploadSpeed + ' Mbps';
     if (downloadSpeedEl) downloadSpeedEl.textContent = downloadSpeed + ' Mbps';
@@ -802,11 +949,11 @@ function updateStatusIndicators() {
 // 检查ECharts是否可用
 function checkEChartsAvailable() {
     if (typeof echarts === 'undefined') {
-        console.error('ECharts 库未加载');
+        if (DEBUG_MODE) console.error('ECharts 库未加载');
         return false;
     }
     if (typeof echarts.init !== 'function') {
-        console.error('echarts.init 方法不可用');
+        if (DEBUG_MODE) console.error('echarts.init 方法不可用');
         return false;
     }
     return true;
@@ -828,35 +975,49 @@ function getPerformanceOptimizedConfig() {
     };
 }
 
-// 清理定时器和事件监听器
+// 清理定时器和事件监听器 - 优化内存管理
 function cleanup() {
-    // 清理所有定时器
-    const highestTimeoutId = setTimeout(() => {}, 0);
-    for (let i = 0; i < highestTimeoutId; i++) {
-        clearTimeout(i);
-    }
-    
-    const highestIntervalId = setInterval(() => {}, 9999);
-    for (let i = 0; i < highestIntervalId; i++) {
-        clearInterval(i);
-    }
-    
-    // 清理图表实例
-    const chartInstances = [
-        'patientFlowChart', 'energyChart', 'trafficChart', 'qualityChart',
-        'temperatureChart', 'humidityChart', 'airQualityChart', 'powerChart',
-        'networkChart', 'revenueChart', 'equipmentStatusChart', 'waitingTimeChart'
-    ];
-    
-    chartInstances.forEach(chartName => {
-        if (window[chartName]) {
-            window[chartName].dispose();
-            window[chartName] = null;
+    try {
+        // 清理所有定时器 - 使用更安全的方法
+        const highestTimeoutId = setTimeout(() => {}, 0);
+        for (let i = 0; i < highestTimeoutId; i++) {
+            clearTimeout(i);
         }
-    });
-    
-    // 清理DOM缓存
-    domCache.clear();
+        
+        const highestIntervalId = setInterval(() => {}, 9999);
+        for (let i = 0; i < highestIntervalId; i++) {
+            clearInterval(i);
+        }
+        
+        // 清理图表实例 - 添加错误处理
+        const chartInstances = [
+            'patientFlowChart', 'energyChart', 'trafficChart', 'qualityChart',
+            'temperatureChart', 'humidityChart', 'airQualityChart', 'powerChart',
+            'networkChart', 'revenueChart', 'equipmentStatusChart', 'waitingTimeChart',
+            'patientTrendChart', 'bedUsageGauge', 'emergencyChart', 'surgeryChart', 'satisfactionChart'
+        ];
+        
+        chartInstances.forEach(chartName => {
+            try {
+                if (window[chartName] && typeof window[chartName].dispose === 'function') {
+                    window[chartName].dispose();
+                    window[chartName] = null;
+                }
+            } catch (error) {
+                // 静默处理清理错误
+            }
+        });
+        
+        // 清理DOM缓存
+        domCache.clear();
+        
+        // 清理缺失元素记录
+        missingElements.clear();
+    } catch (error) {
+        if (DEBUG_MODE) {
+            console.error('清理资源时发生错误:', error);
+        }
+    }
 }
 
 // 初始化图表
@@ -864,7 +1025,6 @@ function initCharts() {
     try {
         // 检查ECharts是否可用
         if (!checkEChartsAvailable()) {
-            console.error('ECharts 不可用，跳过图表初始化');
             return;
         }
     // 患者流量图表
@@ -2000,13 +2160,11 @@ function initCharts() {
     if (powerElement) {
         try {
             window.powerChart = echarts.init(powerElement);
-            console.log('powerChart 初始化成功');
         } catch (error) {
-            console.error('powerChart 初始化失败:', error);
+            if (DEBUG_MODE) console.error('powerChart 初始化失败:', error);
             window.powerChart = null;
         }
     } else {
-        console.warn('powerChart 元素未找到');
         window.powerChart = null;
     }
     const powerOption = {
@@ -2302,9 +2460,8 @@ function initCharts() {
     if (patientTrendElement) {
         try {
             window.patientTrendChart = echarts.init(patientTrendElement);
-            console.log('patientTrendChart 初始化成功');
         } catch (error) {
-            console.error('patientTrendChart 初始化失败:', error);
+            if (DEBUG_MODE) console.error('patientTrendChart 初始化失败:', error);
             window.patientTrendChart = null;
         }
     const patientTrendOption = {
@@ -2373,7 +2530,6 @@ function initCharts() {
     };
     if (window.patientTrendChart && typeof window.patientTrendChart.setOption === 'function') {
         window.patientTrendChart.setOption(patientTrendOption);
-        console.log('patientTrendChart 配置设置成功');
     }
     }
 
@@ -2382,9 +2538,8 @@ function initCharts() {
     if (bedUsageElement && typeof echarts !== 'undefined') {
         try {
             window.bedUsageGauge = echarts.init(bedUsageElement);
-            console.log('bedUsageGauge 初始化成功');
         } catch (error) {
-            console.error('bedUsageGauge 初始化失败:', error);
+            if (DEBUG_MODE) console.error('bedUsageGauge 初始化失败:', error);
         }
     const bedUsageOption = {
         backgroundColor: 'transparent',
@@ -2531,86 +2686,12 @@ function initCharts() {
     window.surgeryChart.setOption(surgeryOption);
     }
 
-    // 等待时间折线图
-    const waitingTimeElement = document.getElementById('waitingTimeChart');
-    if (waitingTimeElement) {
-        console.log('初始化等待时间图表...');
-        window.waitingTimeChart = echarts.init(waitingTimeElement);
-    const waitingTimeOption = {
-        backgroundColor: 'transparent',
-        textStyle: {
-            color: '#ffffff'
-        },
-        grid: {
-            left: '15%',
-            right: '15%',
-            top: '15%',
-            bottom: '15%'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 9
-            },
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            }
-        },
-        yAxis: {
-            type: 'value',
-            min: 0,
-            max: 50,
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 9
-            },
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.1)',
-                    type: 'dashed'
-                }
-            }
-        },
-        series: [{
-            data: [35, 28, 32, 25, 30, 28],
-            type: 'line',
-            smooth: true,
-            lineStyle: {
-                color: '#ff9800',
-                width: 3
-            },
-            itemStyle: {
-                color: '#ff9800',
-                borderColor: '#ffffff',
-                borderWidth: 2
-            },
-            symbol: 'circle',
-            symbolSize: 6,
-            areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: 'rgba(255, 152, 0, 0.3)' },
-                    { offset: 1, color: 'rgba(255, 152, 0, 0.05)' }
-                ])
-            }
-        }]
-    };
-    window.waitingTimeChart.setOption(waitingTimeOption);
-    console.log('等待时间图表初始化完成');
-    } else {
-        console.error('等待时间图表容器未找到');
-    }
+    // 等待时间折线图（容器不存在，跳过初始化）
+    // const waitingTimeElement = document.getElementById('waitingTimeChart');
+    // if (waitingTimeElement) {
+    //     window.waitingTimeChart = echarts.init(waitingTimeElement);
+    //     // ... 图表配置代码
+    // }
 
     // 满意度雷达图
     const satisfactionElement = document.getElementById('satisfactionChart');
@@ -2694,7 +2775,7 @@ function initCharts() {
         }, 100);
     });
     } catch (error) {
-        console.error('图表初始化错误:', error);
+        if (DEBUG_MODE) console.error('图表初始化错误:', error);
     }
 }
 
@@ -2778,35 +2859,21 @@ class ThemeModeManager {
     }
 
     bindEvents() {
-        console.log('开始绑定主题切换事件');
         const themeToggleBtn = document.getElementById('theme-toggle');
-        console.log('找到主题切换按钮:', themeToggleBtn);
-        
         if (themeToggleBtn) {
             themeToggleBtn.addEventListener('click', () => {
-                console.log('主题切换按钮被点击');
                 this.toggleMode();
             });
-            console.log('已绑定点击事件到主题切换按钮');
-        } else {
-            console.error('未找到主题切换按钮 (id: theme-toggle)');
         }
     }
 
     toggleMode() {
-        console.log('开始切换主题模式，当前模式:', this.isDarkMode ? '夜间模式' : '白天模式');
-        
         this.isDarkMode = !this.isDarkMode;
-        console.log('切换后模式:', this.isDarkMode ? '夜间模式' : '白天模式');
-        
         this.applyMode();
         
         // 保存到本地存储
         const modeValue = this.isDarkMode ? 'dark' : 'light';
         localStorage.setItem('dashboard-theme-mode', modeValue);
-        console.log('已保存到本地存储:', modeValue);
-        
-        console.log('主题模式切换完成:', this.isDarkMode ? '夜间模式' : '白天模式');
     }
 
     applyMode() {
@@ -2815,46 +2882,21 @@ class ThemeModeManager {
         const themeIcon = themeToggleBtn?.querySelector('.theme-icon');
         const themeText = themeToggleBtn?.querySelector('.theme-text');
 
-        console.log('应用主题模式:', this.isDarkMode ? '夜间模式' : '白天模式');
-
         if (this.isDarkMode) {
             body.classList.add('dark-mode');
-            console.log('已添加dark-mode类到body');
-            if (themeIcon) {
-                themeIcon.textContent = '🌙';
-                console.log('已更新图标为月亮');
-            }
-            if (themeText) {
-                themeText.textContent = '夜间';
-                console.log('已更新文字为夜间');
-            }
-            if (themeToggleBtn) {
-                themeToggleBtn.classList.add('active');
-                console.log('已添加active类到按钮');
-            }
+            if (themeIcon) themeIcon.textContent = '🌙';
+            if (themeText) themeText.textContent = '夜间';
+            if (themeToggleBtn) themeToggleBtn.classList.add('active');
         } else {
             body.classList.remove('dark-mode');
-            console.log('已移除dark-mode类从body');
-            if (themeIcon) {
-                themeIcon.textContent = '☀️';
-                console.log('已更新图标为太阳');
-            }
-            if (themeText) {
-                themeText.textContent = '白天';
-                console.log('已更新文字为白天');
-            }
-            if (themeToggleBtn) {
-                themeToggleBtn.classList.remove('active');
-                console.log('已移除active类从按钮');
-            }
+            if (themeIcon) themeIcon.textContent = '☀️';
+            if (themeText) themeText.textContent = '白天';
+            if (themeToggleBtn) themeToggleBtn.classList.remove('active');
         }
 
         // 更新图表颜色以适应主题模式
         if (window.colorThemeManager) {
-            console.log('开始更新图表颜色');
             window.colorThemeManager.updateChartsForDarkMode(this.isDarkMode);
-        } else {
-            console.warn('colorThemeManager未初始化');
         }
     }
 }
@@ -2918,7 +2960,6 @@ class ColorThemeManager {
 
     switchTheme(themeName) {
         if (!this.themes[themeName]) {
-            console.warn('未知的主题:', themeName);
             return;
         }
 
@@ -2933,8 +2974,6 @@ class ColorThemeManager {
         
         // 保存到本地存储
         localStorage.setItem('dashboard-theme', themeName);
-        
-        console.log('主题已切换到:', this.themes[themeName].name);
     }
 
     applyTheme(themeName) {
@@ -2978,7 +3017,7 @@ class ColorThemeManager {
                     // 根据主题更新图表颜色
                     this.updateChartOption(chart, theme, chartName);
                 } catch (error) {
-                    console.warn(`更新图表 ${chartName} 颜色失败:`, error);
+                    if (DEBUG_MODE) console.warn(`更新图表 ${chartName} 颜色失败:`, error);
                 }
             }
         });
@@ -3000,7 +3039,7 @@ class ColorThemeManager {
                 try {
                     this.updateChartForDarkMode(chart, isDarkMode, chartName);
                 } catch (error) {
-                    console.warn(`更新图表 ${chartName} 夜间模式失败:`, error);
+                    if (DEBUG_MODE) console.warn(`更新图表 ${chartName} 夜间模式失败:`, error);
                 }
             }
         });
@@ -3128,13 +3167,11 @@ class ColorThemeManager {
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
     try {
-        console.log('开始初始化医院数据看板...');
-        
-        // 初始化主题模式管理器
-        window.themeModeManager = new ThemeModeManager();
-        
         // 初始化颜色主题管理器
         window.colorThemeManager = new ColorThemeManager();
+        
+        // 再初始化主题模式管理器（依赖colorThemeManager）
+        window.themeModeManager = new ThemeModeManager();
         
         // 检测是否为手机端
         isMobile = window.innerWidth <= 768;
@@ -3155,15 +3192,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // 初始化时间显示
+        // 初始化时间显示 - 每秒更新
         updateTime();
-        setInterval(updateTime, 2000); // 优化：从1秒改为2秒以提升性能
+        setInterval(updateTime, 1000); // 每秒更新一次
         
         // 延迟初始化图表，确保DOM和ECharts库完全加载
         setTimeout(function() {
             // 检查ECharts是否可用
             if (typeof echarts === 'undefined') {
-                console.log('ECharts 未加载，等待加载...');
                 setTimeout(function() {
                     initCharts();
                 }, 1000);
@@ -3174,10 +3210,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // 额外检查等待时间图表
             setTimeout(function() {
                 if (!window.waitingTimeChart) {
-                    console.log('等待时间图表未初始化，尝试重新初始化...');
                     reinitWaitingTimeChart();
                 } else {
-                    console.log('等待时间图表已成功初始化');
                     // 测试图表是否能正常显示
                     window.waitingTimeChart.resize();
                 }
@@ -3207,8 +3241,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 初始化车辆管理模态框
         initVehicleModal();
-        
-        console.log('医院数据看板初始化完成');
     } catch (error) {
         console.error('初始化过程中发生错误:', error);
         
@@ -3512,28 +3544,33 @@ function hideVideoModal() {
 function showModal(modalId, updateDataFunction, centerFunction, initDragFunction, startUpdatesFunction, additionalSetup) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        // 手机端：简单阻止滚动
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('modal-open');
+        }
+        
         // 更新实时数据
         if (updateDataFunction) updateDataFunction();
         
         // 显示窗口
         modal.style.display = 'block';
         
-        // 等待DOM更新后居中显示窗口
+        // 等待DOM更新后处理
         setTimeout(() => {
-            if (centerFunction) centerFunction();
-            
-            // 添加淡入动画
             modal.classList.add('show');
             
-            // 初始化拖动功能
-            if (initDragFunction) initDragFunction();
+            if (window.innerWidth > 768) {
+                // 仅桌面端执行居中计算和拖动
+                if (centerFunction) centerFunction();
+                if (initDragFunction) initDragFunction();
+            }
+            
+            // 开始实时更新
+            if (startUpdatesFunction) startUpdatesFunction();
             
             // 执行额外设置
             if (additionalSetup) additionalSetup();
-        }, 50);
-        
-        // 开始实时更新
-        if (startUpdatesFunction) startUpdatesFunction();
+        }, 10);
     }
 }
 
@@ -3542,8 +3579,15 @@ function hideModal(modalId, stopUpdatesFunction, additionalCleanup) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('show');
+        
+        // 手机端：移除modal-open类恢复滚动
+        if (window.innerWidth <= 768) {
+            document.body.classList.remove('modal-open');
+        }
+        
         setTimeout(() => {
             modal.style.display = 'none';
+            
             if (stopUpdatesFunction) stopUpdatesFunction();
             if (additionalCleanup) additionalCleanup();
         }, 300);
@@ -3553,6 +3597,11 @@ function hideModal(modalId, stopUpdatesFunction, additionalCleanup) {
 // 居中视频窗口
 // 通用窗口居中函数
 function centerModalWindow(modalId, contentSelector) {
+    // 手机端使用CSS居中，不需要JS计算
+    if (window.innerWidth <= 768) {
+        return;
+    }
+    
     const modal = document.getElementById(modalId);
     if (modal) {
         const content = modal.querySelector(contentSelector);
@@ -3572,8 +3621,6 @@ function centerModalWindow(modalId, contentSelector) {
             content.style.left = finalLeft + 'px';
             content.style.top = finalTop + 'px';
             content.style.transform = 'none';
-            
-            console.log(`${modalId}窗口居中: ${finalLeft}, ${finalTop}, 尺寸: ${contentWidth}x${contentHeight}`);
         }
     }
 }
@@ -3913,3 +3960,4 @@ function stopVehicleModalUpdates() {
 function initVehicleWindowDrag() {
     initModalWindowDrag('vehicle-modal', '.vehicle-modal-content', '.vehicle-modal-header');
 }
+
