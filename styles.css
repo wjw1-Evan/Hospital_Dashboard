@@ -486,8 +486,7 @@ body::after {
 @media (max-width: 768px) {
   .left-section {
     height: auto;
-    min-height: 40vh;
-    max-height: 60vh;
+    min-height: auto;
     order: 1;
     margin-bottom: var(--spacing-sm);
     overflow: visible;
@@ -508,8 +507,7 @@ body::after {
 @media (max-width: 768px) {
   .middle-section {
     height: auto;
-    min-height: 50vh;
-    max-height: 70vh;
+    min-height: auto;
     order: 2;
     margin-bottom: var(--spacing-sm);
     overflow: visible;
@@ -531,8 +529,7 @@ body::after {
 @media (max-width: 768px) {
   .right-section {
     height: auto;
-    min-height: 30vh;
-    max-height: 50vh;
+    min-height: auto;
     order: 3;
     overflow: visible;
     padding-bottom: var(--spacing-sm);
@@ -919,7 +916,7 @@ body::after {
 /* 手机端指标行优化 */
 @media (max-width: 768px) {
   .metrics-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-sm);
   }
@@ -1442,7 +1439,7 @@ body::after {
 /* 手机端网络统计优化 */
 @media (max-width: 768px) {
   .parking-network-section .network-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xs);
     margin-bottom: var(--spacing-xs);
   }
@@ -1696,7 +1693,7 @@ body::after {
 /* 手机端科室网格优化 */
 @media (max-width: 768px) {
   .department-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
   }
   
@@ -1811,7 +1808,7 @@ body::after {
 /* 手机端质量指标网格优化 */
 @media (max-width: 768px) {
   .quality-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-sm);
   }
@@ -1898,8 +1895,15 @@ body::after {
 
 /* 手机端系统网格优化 */
 @media (max-width: 768px) {
+  .systems-overview {
+    flex: none;
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
   .systems-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs);
     max-height: none;
@@ -2978,6 +2982,15 @@ body.dark-mode .systems-overview {
   margin-bottom: 0;
 }
 
+/* 手机端夜间模式系统概览 */
+@media (max-width: 768px) {
+  body.dark-mode .systems-overview {
+    flex: none;
+    min-height: auto;
+    max-height: none;
+  }
+}
+
 /* 夜间模式系统网格 - 与白天模式统一 */
 body.dark-mode .systems-grid {
   background: transparent;
@@ -3284,6 +3297,76 @@ body.dark-mode .alert-item.info {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+/* 基础modal手机端适配 */
+@media (max-width: 768px) {
+  .modal-content-base {
+    width: 95vw;
+    height: 80vh;
+    min-width: 300px;
+    min-height: 300px;
+    resize: none;
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  
+  .modal-body-base {
+    padding: var(--spacing-md);
+  }
+  
+  .modal-close-base {
+    font-size: var(--text-2xl);
+    width: 36px;
+    height: 36px;
+    z-index: 100;
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .modal-header-base {
+    cursor: default;
+    user-select: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content-base {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    resize: none;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+  
+  .modal-body-base {
+    padding: var(--spacing-sm);
+  }
+  
+  .modal-close-base {
+    font-size: var(--text-xl);
+    width: 32px;
+    height: 32px;
+    z-index: 100;
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .modal-header-base {
+    cursor: default;
+    user-select: auto;
+  }
+  
+  .modal-header-base h2 {
+    font-size: var(--text-lg);
+  }
 }
 
 /* 视频监控窗口样式 */
@@ -3641,6 +3724,11 @@ body.dark-mode .alert-item.info {
     height: 80vh;
     min-width: 300px;
     min-height: 300px;
+    resize: none; /* 禁用resize功能 */
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
   }
   
   .video-grid {
@@ -3679,6 +3767,19 @@ body.dark-mode .alert-item.info {
   .video-modal-header h2 {
     font-size: var(--text-xl);
   }
+  
+  .video-modal-close {
+    font-size: var(--text-2xl);
+    padding: var(--spacing-xs);
+    z-index: 100;
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .video-modal-header {
+    cursor: default;
+    user-select: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -3688,6 +3789,11 @@ body.dark-mode .alert-item.info {
     border-radius: 0;
     min-width: 100vw;
     min-height: 100vh;
+    resize: none; /* 禁用resize功能 */
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
   }
   
   .video-grid {
@@ -3728,6 +3834,19 @@ body.dark-mode .alert-item.info {
   
   .video-modal-body {
     padding: var(--spacing-md);
+  }
+  
+  .video-modal-close {
+    font-size: var(--text-xl);
+    padding: 4px;
+    z-index: 100;
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .video-modal-header {
+    cursor: default;
+    user-select: auto;
   }
 }
 
@@ -3945,6 +4064,11 @@ body.dark-mode .camera-location {
     height: 80vh;
     min-width: 300px;
     min-height: 300px;
+    resize: none; /* 禁用resize功能 */
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
   }
   
   .vehicle-stats {
@@ -3955,6 +4079,24 @@ body.dark-mode .camera-location {
   .vehicle-modal-header h2 {
     font-size: var(--text-lg);
   }
+  
+  .vehicle-modal-body {
+    padding: var(--spacing-md);
+  }
+  
+  .vehicle-modal-close {
+    font-size: var(--text-2xl);
+    width: 36px;
+    height: 36px;
+    z-index: 100;
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .vehicle-modal-header {
+    cursor: default;
+    user-select: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -3964,6 +4106,11 @@ body.dark-mode .camera-location {
     border-radius: 0;
     min-width: 100vw;
     min-height: 100vh;
+    resize: none; /* 禁用resize功能 */
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
   }
   
   .vehicle-modal-header {
@@ -3972,6 +4119,24 @@ body.dark-mode .camera-location {
   
   .vehicle-modal-header h2 {
     font-size: var(--text-lg);
+  }
+  
+  .vehicle-modal-body {
+    padding: var(--spacing-sm);
+  }
+  
+  .vehicle-modal-close {
+    font-size: var(--text-xl);
+    width: 32px;
+    height: 32px;
+    z-index: 100;
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .vehicle-modal-header {
+    cursor: default;
+    user-select: auto;
   }
 }
 
@@ -4058,7 +4223,7 @@ body.dark-mode .comparison-value.error {
   }
   
   .systems-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
   }
   
@@ -4096,8 +4261,8 @@ body.dark-mode .comparison-value.error {
   
   .left-section,
   .right-section {
-    max-height: 300px;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
   }
   
   .main-title {
@@ -4465,16 +4630,23 @@ body.dark-mode .monitoring-item:hover {
   .color-options {
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--spacing-xs);
+    gap: 4px;
   }
 
   .color-option {
-    padding: var(--spacing-xs);
-    font-size: var(--text-xs);
+    padding: 4px 8px;
+    font-size: 10px;
+    min-height: 32px;
+    min-width: auto;
   }
 
   .color-option span {
-    font-size: var(--text-xs);
+    font-size: 10px;
+  }
+
+  .color-preview {
+    width: 14px;
+    height: 14px;
   }
 
   /* 主题切换按钮手机端优化 */
@@ -4502,29 +4674,26 @@ body.dark-mode .monitoring-item:hover {
   /* 左侧区域手机端优化 - 科室运营情况 */
   .left-section {
     height: auto;
-    min-height: 50vh;
-    max-height: 60vh;
+    min-height: auto;
     padding: var(--spacing-sm);
-    overflow-y: auto;
+    overflow-y: visible;
     order: 1;
   }
 
   /* 中间区域手机端优化 - 医院运营数据 */
   .middle-section {
     height: auto;
-    min-height: 40vh;
-    max-height: 50vh;
-    overflow-y: auto;
+    min-height: auto;
+    overflow-y: visible;
     order: 2;
   }
 
   /* 右侧区域手机端优化 - 系统功能模块 */
   .right-section {
     height: auto;
-    min-height: 30vh;
-    max-height: 40vh;
+    min-height: auto;
     padding-bottom: var(--spacing-sm);
-    overflow-y: auto;
+    overflow-y: visible;
     order: 3;
   }
 
@@ -4532,6 +4701,15 @@ body.dark-mode .monitoring-item:hover {
   .card-title {
     font-size: var(--text-md);
     margin-bottom: var(--spacing-xs);
+  }
+
+  /* 系统功能模块手机端优化 */
+  .systems-overview {
+    flex: none;
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: var(--spacing-md);
   }
 
   /* 科室运营情况手机端优化 */
@@ -4544,7 +4722,7 @@ body.dark-mode .monitoring-item:hover {
   }
 
   .department-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-md);
     min-height: auto;
   }
@@ -4590,12 +4768,13 @@ body.dark-mode .monitoring-item:hover {
   /* 超小屏幕优化 - 480px以下 */
   @media (max-width: 480px) {
     .department-operations {
-      min-height: 500px;
+      min-height: auto;
       max-height: none;
     }
 
     .department-grid {
-      min-height: 400px;
+      grid-template-columns: 1fr 1fr;
+      min-height: auto;
       gap: var(--spacing-xs);
     }
 
@@ -4620,7 +4799,7 @@ body.dark-mode .monitoring-item:hover {
 
   /* 医疗质量指标手机端优化 */
   .quality-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
   }
 
@@ -4642,7 +4821,7 @@ body.dark-mode .monitoring-item:hover {
 
   /* 详细指标区域手机端优化 - 更紧凑的显示 */
   .metrics-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xs);
     margin-bottom: var(--spacing-xs);
   }
@@ -4751,7 +4930,7 @@ body.dark-mode .monitoring-item:hover {
   }
 
   .parking-network-section .network-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .parking-network-section .parking-chart-container,
@@ -4761,10 +4940,10 @@ body.dark-mode .monitoring-item:hover {
 
   /* 系统功能模块手机端优化 - 更紧凑的显示 */
   .systems-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xs);
-    max-height: 200px;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 
   .system-card {
@@ -4860,7 +5039,6 @@ body.dark-mode .monitoring-item:hover {
   }
 
   /* 手机端触摸优化 */
-  .color-option,
   .theme-toggle-btn,
   .toggle-btn,
   .system-card,
@@ -4872,6 +5050,13 @@ body.dark-mode .monitoring-item:hover {
     /* 确保触摸区域足够大 */
     padding: var(--spacing-sm);
     /* 添加触摸反馈 */
+    -webkit-tap-highlight-color: rgba(var(--primary-color-rgb), 0.2);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* 颜色选择器保持紧凑 */
+  .color-option {
     -webkit-tap-highlight-color: rgba(var(--primary-color-rgb), 0.2);
     cursor: pointer;
     user-select: none;
@@ -4935,25 +5120,22 @@ body.dark-mode .monitoring-item:hover {
   /* 横屏模式下给左右两侧更多空间 */
   .left-section {
     height: auto;
-    min-height: 40vh;
-    max-height: 50vh;
-    overflow-y: auto;
+    min-height: auto;
+    overflow-y: visible;
     order: 1;
   }
 
   .middle-section {
     height: auto;
-    min-height: 35vh;
-    max-height: 45vh;
-    overflow-y: auto;
+    min-height: auto;
+    overflow-y: visible;
     order: 2;
   }
 
   .right-section {
     height: auto;
-    min-height: 25vh;
-    max-height: 35vh;
-    overflow-y: auto;
+    min-height: auto;
+    overflow-y: visible;
     order: 3;
   }
 
@@ -4994,12 +5176,17 @@ body.dark-mode .monitoring-item:hover {
   }
 
   .color-options {
-    gap: var(--spacing-xs);
+    gap: 4px;
   }
 
   .color-option {
-    padding: var(--spacing-xs);
-    font-size: var(--text-xs);
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .color-preview {
+    width: 14px;
+    height: 14px;
   }
 
   .theme-toggle-btn {
@@ -5116,15 +5303,22 @@ body.dark-mode .monitoring-item:hover {
   }
 
   .color-options {
-    gap: 2px;
+    gap: 3px;
   }
 
   .color-option {
-    padding: 2px var(--spacing-xs);
+    padding: 4px 6px;
+    min-height: 28px;
+    min-width: 28px;
   }
 
   .color-option span {
     display: none; /* 隐藏文字，只显示颜色圆点 */
+  }
+
+  .color-preview {
+    width: 12px;
+    height: 12px;
   }
 
   .theme-toggle-btn {

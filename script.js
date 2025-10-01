@@ -3297,6 +3297,16 @@ function initVideoModal() {
         closeBtn.addEventListener('click', hideVideoModal);
     }
     
+    // 添加点击背景关闭功能
+    const modal = document.getElementById('video-modal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                hideVideoModal();
+            }
+        });
+    }
+    
     // 添加ESC键关闭功能
     document.addEventListener('keydown', function(e) {
         const modal = document.getElementById('video-modal');
@@ -3623,6 +3633,11 @@ function stopVideoModalUpdates() {
 
 // 通用窗口拖拽功能
 function initModalWindowDrag(modalId, contentSelector, headerSelector) {
+    // 在手机端禁用拖动功能
+    if (window.innerWidth <= 768) {
+        return;
+    }
+    
     const modal = document.getElementById(modalId);
     const content = modal.querySelector(contentSelector);
     const header = modal.querySelector(headerSelector);
@@ -3748,6 +3763,16 @@ function initVehicleModal() {
     const closeBtn = document.getElementById('vehicle-modal-close');
     if (closeBtn) {
         closeBtn.addEventListener('click', hideVehicleModal);
+    }
+    
+    // 添加点击背景关闭功能
+    const modal = document.getElementById('vehicle-modal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                hideVehicleModal();
+            }
+        });
     }
     
     // 添加ESC键关闭功能
