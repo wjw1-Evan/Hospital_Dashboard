@@ -75,13 +75,15 @@
   --morandi-spacing-xl: var(--morandi-spacing-6);    /* 24px */
   --morandi-spacing-2xl: var(--morandi-spacing-8);   /* 32px */
   
-  /* 组件特定间距 */
-  --morandi-spacing-card: var(--morandi-spacing-4);     /* 卡片内边距 */
-  --morandi-spacing-section: var(--morandi-spacing-6);  /* 区域间距 */
-  --morandi-spacing-grid: var(--morandi-spacing-3);     /* 网格间距 */
-  --morandi-spacing-list: var(--morandi-spacing-2);     /* 列表项间距 */
-  --morandi-spacing-button: var(--morandi-spacing-2);   /* 按钮内边距 */
-  --morandi-spacing-input: var(--morandi-spacing-2);    /* 输入框内边距 */
+  /* 组件特定间距 - 统一间距标准 */
+  --morandi-spacing-card: var(--morandi-spacing-4);     /* 卡片内边距：16px */
+  --morandi-spacing-section: var(--morandi-spacing-6);  /* 区域间距：24px */
+  --morandi-spacing-grid: var(--morandi-spacing-3);     /* 网格间距：12px */
+  --morandi-spacing-list: var(--morandi-spacing-2);     /* 列表项间距：8px */
+  --morandi-spacing-button: var(--morandi-spacing-2);   /* 按钮内边距：8px */
+  --morandi-spacing-input: var(--morandi-spacing-2);    /* 输入框内边距：8px */
+  --morandi-spacing-header: var(--morandi-spacing-4);   /* 头部内边距：16px */
+  --morandi-spacing-content: var(--morandi-spacing-3);  /* 内容区域内边距：12px */
   
   /* 字体大小 */
   --morandi-text-xs: 12px;
@@ -153,14 +155,14 @@ body {
 .dashboard-header {
   background: var(--morandi-bg-card);
   border-bottom: 1px solid var(--morandi-border);
-  padding: var(--morandi-spacing-4) var(--morandi-spacing-6);
+  padding: var(--morandi-spacing-header) var(--morandi-spacing-6);
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--morandi-shadow-sm);
   position: relative;
   z-index: 100;
-  flex-shrink: 0;
+  flex-shrink: 0;  margin-bottom: 10px;
 }
 
 .header-content {
@@ -255,7 +257,7 @@ body {
   display: grid;
   grid-template-columns: 320px 1fr 320px;
   gap: var(--morandi-spacing-section);
-  padding: var(--morandi-spacing-4);
+  padding: var(--morandi-spacing-content);
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
@@ -312,6 +314,7 @@ body {
 /* 核心指标卡片 - 移除额外边距，使用gap统一管理 */
 .core-metrics {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
+  position: relative;
 }
 
 /* 核心指标网格 */
@@ -325,7 +328,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-content);
   display: flex;
   align-items: center;
   gap: var(--morandi-spacing-2);
@@ -425,6 +428,7 @@ body {
 /* 科室运营状态 - 移除额外边距，使用gap统一管理 */
 .department-status {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
+  position: relative;
 }
 
 /* 科室列表 */
@@ -438,7 +442,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--morandi-spacing-2) var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-content);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -495,6 +499,7 @@ body {
 /* 医疗质量指标 - 移除额外边距，使用gap统一管理 */
 .quality-indicators {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
+  position: relative;
 }
 
 
@@ -733,7 +738,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-card);
 }
 
 .metrics-row {
@@ -748,7 +753,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-content);
   display: flex !important;
   flex-direction: column;
   gap: var(--morandi-spacing-2);
@@ -842,7 +847,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-card);
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -851,7 +856,7 @@ body {
 .dashboard-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--morandi-spacing-4);
+  gap: var(--morandi-spacing-grid);
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -860,7 +865,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-content);
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -962,7 +967,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--morandi-spacing-2);
-  padding: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-content);
   background: var(--morandi-bg-primary);
   border-radius: var(--morandi-radius-sm);
   border: 1px solid var(--morandi-border-light);
@@ -995,7 +1000,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-card);
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -1013,7 +1018,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-content);
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -1146,7 +1151,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--morandi-spacing-2);
-  padding: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-content);
   background: var(--morandi-bg-primary);
   border-radius: var(--morandi-radius-sm);
   border: 1px solid var(--morandi-border-light);
@@ -1179,10 +1184,12 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-3);
-  display: block !important;
+  padding: var(--morandi-spacing-card);
+  display: flex !important;
+  flex-direction: column;
   visibility: visible !important;
   opacity: 1 !important;
+  min-height: 750px;
 }
 
 
@@ -1253,7 +1260,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--morandi-spacing-list);
-  max-height: 400px;
+  max-height: 650px;
   overflow-y: auto;
   flex: 1;
 }
@@ -1262,7 +1269,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--morandi-spacing-2);
-  padding: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-content);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-sm);
@@ -1340,14 +1347,14 @@ body {
 .equipment-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-grid);
 }
 
 .equipment-item {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-content);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -1413,6 +1420,7 @@ body {
 /* 系统状态概览 - 移除额外边距，使用gap统一管理 */
 .system-overview {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
+  position: relative;
 }
 
 /* 系统状态概览内的子区域 */
@@ -1429,14 +1437,14 @@ body {
 .system-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--morandi-spacing-2);
+  gap: var(--morandi-spacing-grid);
 }
 
 .system-item {
   display: flex;
   align-items: center;
   gap: var(--morandi-spacing-3);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-content);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -1580,7 +1588,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--morandi-spacing-2);
-  padding: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-content);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -1674,7 +1682,7 @@ body {
 @media (max-width: 1200px) {
   .dashboard-main {
     grid-template-columns: 280px 1fr 280px;
-    gap: var(--morandi-spacing-grid);
+    gap: var(--morandi-spacing-section);
   }
   
   .metrics-grid {
@@ -1736,13 +1744,13 @@ body {
   .dashboard-main {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
-    gap: var(--morandi-spacing-grid);
-    padding: var(--morandi-spacing-3);
+    gap: var(--morandi-spacing-section);
+    padding: var(--morandi-spacing-content);
     overflow-y: auto;
   }
   
   .dashboard-header {
-    padding: var(--morandi-spacing-3);
+    padding: var(--morandi-spacing-content);
     flex-direction: column;
     gap: var(--morandi-spacing-3);
     align-items: flex-start;
@@ -1809,11 +1817,11 @@ body {
 @media (max-width: 480px) {
   .dashboard-main {
     padding: var(--morandi-spacing-2);
-    gap: var(--morandi-spacing-2);
+    gap: var(--morandi-spacing-section);
   }
   
   .card {
-    padding: var(--morandi-spacing-3);
+    padding: var(--morandi-spacing-content);
   }
   
   .main-title {
