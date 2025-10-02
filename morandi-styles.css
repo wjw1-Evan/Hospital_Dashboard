@@ -19,9 +19,13 @@
   
   /* 状态色 - 莫兰迪风格 */
   --morandi-success: #9BB5A1;       /* 柔和绿灰 */
+  --morandi-success-light: #B5C5B5; /* 浅绿灰 */
   --morandi-warning: #D4B896;       /* 柔和黄灰 */
+  --morandi-warning-light: #E0C5A5; /* 浅黄灰 */
   --morandi-error: #C4A5A5;         /* 柔和红灰 */
+  --morandi-error-light: #D5B5B5;   /* 浅红灰 */
   --morandi-info: #A5B5C4;          /* 柔和蓝灰 */
+  --morandi-info-light: #B5C5D5;    /* 浅蓝灰 */
   
   /* 背景色系 */
   --morandi-bg-primary: #F5F5F5;    /* 主背景 */
@@ -83,11 +87,15 @@
   --morandi-text-xs: 12px;
   --morandi-text-sm: 14px;
   --morandi-text-base: 16px;
+  --morandi-text-md: 16px;        /* 添加缺失的md尺寸 */
   --morandi-text-lg: 18px;
   --morandi-text-xl: 20px;
   --morandi-text-2xl: 24px;
   --morandi-text-3xl: 32px;
   --morandi-text-4xl: 40px;
+  
+  /* 交互状态 */
+  --morandi-hover-bg: rgba(139, 157, 195, 0.08);  /* 添加悬停背景色 */
 }
 
 /* 深色模式配色 */
@@ -167,10 +175,20 @@ body {
   color: var(--morandi-primary);
   letter-spacing: -0.5px;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--morandi-spacing-4);
+}
+
+.header-logo {
+  font-size: var(--morandi-text-4xl);
+  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 .header-subtitle {
-  font-size: var(--morandi-text-sm);
+  font-size: var(--morandi-text-lg);
   color: var(--morandi-text-secondary);
   font-weight: 400;
 }
@@ -291,9 +309,9 @@ body {
   padding-right: var(--morandi-spacing-2);
 }
 
-/* 核心指标卡片 */
+/* 核心指标卡片 - 移除额外边距，使用gap统一管理 */
 .core-metrics {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
 }
 
 /* 核心指标网格 */
@@ -404,9 +422,9 @@ body {
   color: var(--morandi-text-white);
 }
 
-/* 科室运营状态 */
+/* 科室运营状态 - 移除额外边距，使用gap统一管理 */
 .department-status {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
 }
 
 /* 科室列表 */
@@ -474,9 +492,9 @@ body {
   color: var(--morandi-text-white);
 }
 
-/* 医疗质量指标 */
+/* 医疗质量指标 - 移除额外边距，使用gap统一管理 */
 .quality-indicators {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
 }
 
 
@@ -706,9 +724,9 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* 实时数据指标 */
+/* 实时数据指标 - 移除额外边距，使用gap统一管理 */
 .real-time-metrics {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -817,55 +835,10 @@ body {
   flex-shrink: 0;
 }
 
-.metric-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
 
-.metric-value {
-  font-size: var(--morandi-text-2xl);
-  font-weight: 700;
-  color: var(--morandi-text-primary);
-  line-height: 1.2;
-  margin-bottom: var(--morandi-spacing-1);
-}
-
-.metric-label {
-  font-size: var(--morandi-text-sm);
-  color: var(--morandi-text-secondary);
-  margin: 0 0 var(--morandi-spacing-1) 0;
-  line-height: 1.3;
-}
-
-.metric-trend {
-  font-size: var(--morandi-text-xs);
-  font-weight: 600;
-  padding: 3px var(--morandi-spacing-2);
-  border-radius: var(--morandi-radius-sm);
-  margin-top: 2px;
-  align-self: flex-start;
-}
-
-.metric-trend.up {
-  color: var(--morandi-success);
-  background: rgba(139, 195, 74, 0.1);
-}
-
-.metric-trend.down {
-  color: var(--morandi-error);
-  background: rgba(239, 83, 80, 0.1);
-}
-
-.metric-trend.stable {
-  color: var(--morandi-text-secondary);
-  background: rgba(141, 153, 174, 0.1);
-}
-
-/* 运营数据看板 */
+/* 运营数据看板 - 移除额外边距，使用gap统一管理 */
 .operational-dashboard {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -894,21 +867,8 @@ body {
   flex-direction: column;
 }
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--morandi-spacing-3);
-  padding-bottom: var(--morandi-spacing-2);
-  border-bottom: 1px solid var(--morandi-border-light);
-}
 
-.dashboard-header h4 {
-  font-size: var(--morandi-text-md);
-  font-weight: 600;
-  color: var(--morandi-text-primary);
-  margin: 0;
-}
+/* .dashboard-header h4 已删除，使用通用标题样式 */
 
 .efficiency-score {
   font-size: var(--morandi-text-lg);
@@ -1069,17 +1029,12 @@ body {
   border-bottom: 1px solid var(--morandi-border-light);
 }
 
-.performance-header h4 {
-  font-size: var(--morandi-text-md);
-  font-weight: 600;
-  color: var(--morandi-text-primary);
-  margin: 0;
-}
+/* .performance-header h4 已删除，使用通用标题样式 */
 
 .performance-status {
   font-size: var(--morandi-text-sm);
   font-weight: 600;
-  padding: 4px 8px;
+  padding: var(--morandi-spacing-1) var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
 }
 
@@ -1142,24 +1097,40 @@ body {
 }
 
 .bar-fill.cpu {
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  background: linear-gradient(90deg, var(--morandi-success), var(--morandi-success-light));
 }
 
 .bar-fill.memory {
-  background: linear-gradient(90deg, #2196F3, #03A9F4);
+  background: linear-gradient(90deg, var(--morandi-info), var(--morandi-info-light));
 }
 
 .bar-fill.disk {
-  background: linear-gradient(90deg, #FF9800, #FFC107);
+  background: linear-gradient(90deg, var(--morandi-warning), var(--morandi-warning-light));
 }
 
-.metric-value {
-  font-size: var(--morandi-text-sm);
-  font-weight: 600;
-  color: var(--morandi-text-primary);
-  min-width: 35px;
-  text-align: right;
+/* 性能监控条宽度类 */
+.cpu-45 { width: 45%; }
+.memory-62 { width: 62%; }
+.disk-38 { width: 38%; }
+
+/* 效率条宽度类 */
+.efficiency-88 { width: 88%; }
+.efficiency-95 { width: 95%; }
+.efficiency-91 { width: 91%; }
+.efficiency-87 { width: 87%; }
+.efficiency-93 { width: 93%; }
+.efficiency-89 { width: 89%; }
+.efficiency-94 { width: 94%; }
+
+/* 图表容器高度类 */
+.chart-height-200 { height: 200px; }
+
+/* 图表容器尺寸类 */
+.chart-full-size { 
+  width: 100%; 
+  height: 100%; 
 }
+
 
 /* 网络指标 */
 .network-metrics {
@@ -1202,9 +1173,9 @@ body {
   color: var(--morandi-text-secondary);
 }
 
-/* 实时告警 */
+/* 实时告警 - 移除额外边距，使用gap统一管理 */
 .alert-panel {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -1214,14 +1185,6 @@ body {
   opacity: 1 !important;
 }
 
-.alert-center-header {
-  display: flex !important;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: var(--morandi-spacing-3);
-  visibility: visible !important;
-  opacity: 1 !important;
-}
 
 .alert-summary {
   display: flex !important;
@@ -1265,7 +1228,7 @@ body {
 }
 
 .alert-tab {
-  padding: 6px 12px;
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-3);
   border: 1px solid var(--morandi-border);
   background: var(--morandi-bg-primary);
   color: var(--morandi-text-secondary);
@@ -1355,21 +1318,21 @@ body {
 }
 
 .alert-status.pending {
-  background: rgba(244, 67, 54, 0.1);
-  color: #F44336;
-  border-color: rgba(244, 67, 54, 0.3);
+  background: rgba(196, 165, 165, 0.1);
+  color: var(--morandi-error);
+  border-color: rgba(196, 165, 165, 0.3);
 }
 
 .alert-status.processing {
-  background: rgba(255, 152, 0, 0.1);
-  color: #FF9800;
-  border-color: rgba(255, 152, 0, 0.3);
+  background: rgba(212, 184, 150, 0.1);
+  color: var(--morandi-warning);
+  border-color: rgba(212, 184, 150, 0.3);
 }
 
 .alert-status.resolved {
-  background: rgba(76, 175, 80, 0.1);
-  color: #4CAF50;
-  border-color: rgba(76, 175, 80, 0.3);
+  background: rgba(155, 181, 161, 0.1);
+  color: var(--morandi-success);
+  border-color: rgba(155, 181, 161, 0.3);
 }
 
 /* 设备监控 */
@@ -1447,9 +1410,9 @@ body {
 }
 
 /* 系统网格 */
-/* 系统状态概览 */
+/* 系统状态概览 - 移除额外边距，使用gap统一管理 */
 .system-overview {
-  margin-bottom: var(--morandi-spacing-3);
+  /* margin-bottom 已移除，由父容器的 gap 统一管理 */
 }
 
 /* 系统状态概览内的子区域 */
@@ -1461,14 +1424,7 @@ body {
   margin-bottom: 0;
 }
 
-.section-title {
-  font-size: var(--morandi-text-md);
-  font-weight: 600;
-  color: var(--morandi-text-primary);
-  margin-bottom: var(--morandi-spacing-3);
-  padding-bottom: var(--morandi-spacing-1);
-  border-bottom: 1px solid var(--morandi-border);
-}
+/* .section-title 已删除，统一使用 .card-title */
 
 .system-grid {
   display: grid;
@@ -1506,15 +1462,15 @@ body {
 }
 
 .system-status-corner.online {
-  background: rgba(76, 175, 80, 0.1);
-  color: #4CAF50;
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: rgba(155, 181, 161, 0.1);
+  color: var(--morandi-success);
+  border: 1px solid rgba(155, 181, 161, 0.3);
 }
 
 .system-status-corner.offline {
-  background: rgba(244, 67, 54, 0.1);
-  color: #F44336;
-  border: 1px solid rgba(244, 67, 54, 0.3);
+  background: rgba(196, 165, 165, 0.1);
+  color: var(--morandi-error);
+  border: 1px solid rgba(196, 165, 165, 0.3);
 }
 
 
@@ -1538,36 +1494,21 @@ body {
 }
 
 
-.status-indicator {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid var(--morandi-bg-secondary);
-  animation: pulse 2s infinite;
-}
-
-.status-indicator.online {
-  background: #4CAF50;
-  box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-}
 
 .status-indicator.offline {
-  background: #F44336;
-  box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+  background: var(--morandi-error);
+  box-shadow: 0 0 0 0 rgba(196, 165, 165, 0.7);
 }
 
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    box-shadow: 0 0 0 0 rgba(155, 181, 161, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    box-shadow: 0 0 0 10px rgba(155, 181, 161, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    box-shadow: 0 0 0 0 rgba(155, 181, 161, 0);
   }
 }
 
@@ -1625,69 +1566,6 @@ body {
   color: var(--morandi-text-white);
 }
 
-/* 告警面板 */
-.alert-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.alert-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--morandi-spacing-sm);
-  flex: 1;
-  overflow-y: auto;
-  padding-right: var(--morandi-spacing-sm);
-}
-
-.alert-item {
-  display: flex;
-  align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-sm) var(--morandi-spacing-md);
-  border-radius: var(--morandi-radius-md);
-  border-left: 4px solid;
-  transition: all 0.3s ease;
-}
-
-.alert-item.warning {
-  background: rgba(212, 184, 150, 0.1);
-  border-left-color: var(--morandi-warning);
-}
-
-.alert-item.info {
-  background: rgba(165, 181, 196, 0.1);
-  border-left-color: var(--morandi-info);
-}
-
-.alert-item.success {
-  background: rgba(155, 181, 161, 0.1);
-  border-left-color: var(--morandi-success);
-}
-
-.alert-item.error {
-  background: rgba(196, 165, 165, 0.1);
-  border-left-color: var(--morandi-error);
-}
-
-.alert-item:hover {
-  background: var(--morandi-hover-bg);
-}
-
-.alert-time {
-  font-size: var(--morandi-text-xs);
-  color: var(--morandi-text-secondary);
-  font-weight: 500;
-  min-width: 50px;
-}
-
-.alert-content {
-  font-size: var(--morandi-text-sm);
-  color: var(--morandi-text-primary);
-  font-weight: 500;
-  flex: 1;
-}
 
 /* 环境监控 */
 
@@ -1901,9 +1779,7 @@ body {
   }
   
   
-  .metric-value {
-    font-size: var(--morandi-text-xl);
-  }
+  /* .metric-value 样式已在主定义中处理，无需重复 */
   
   .dashboard-grid,
   .performance-grid {
