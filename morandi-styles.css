@@ -279,6 +279,15 @@ body {
   box-shadow: var(--morandi-shadow-md);
 }
 
+/* 统一所有卡片的悬停效果 */
+.real-time-metrics:hover,
+.operational-dashboard:hover,
+.alert-panel:hover,
+.system-overview:hover,
+.environment-monitoring:hover {
+  box-shadow: var(--morandi-shadow-md);
+}
+
 .card-title {
   font-size: var(--morandi-text-lg);
   font-weight: 600;
@@ -735,10 +744,14 @@ body {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  background: var(--morandi-bg-secondary);
+  background: var(--morandi-bg-card);
   border: 1px solid var(--morandi-border);
-  border-radius: var(--morandi-radius-md);
+  border-radius: var(--morandi-radius-lg);
   padding: var(--morandi-spacing-card);
+  box-shadow: var(--morandi-shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .metrics-row {
@@ -844,10 +857,14 @@ body {
 /* 运营数据看板 - 移除额外边距，使用gap统一管理 */
 .operational-dashboard {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
-  background: var(--morandi-bg-secondary);
+  background: var(--morandi-bg-card);
   border: 1px solid var(--morandi-border);
-  border-radius: var(--morandi-radius-md);
+  border-radius: var(--morandi-radius-lg);
   padding: var(--morandi-spacing-card);
+  box-shadow: var(--morandi-shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -1181,10 +1198,14 @@ body {
 /* 实时告警 - 移除额外边距，使用gap统一管理 */
 .alert-panel {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
-  background: var(--morandi-bg-secondary);
+  background: var(--morandi-bg-card);
   border: 1px solid var(--morandi-border);
-  border-radius: var(--morandi-radius-md);
+  border-radius: var(--morandi-radius-lg);
   padding: var(--morandi-spacing-card);
+  box-shadow: var(--morandi-shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
   display: flex !important;
   flex-direction: column;
   visibility: visible !important;
@@ -1420,7 +1441,14 @@ body {
 /* 系统状态概览 - 移除额外边距，使用gap统一管理 */
 .system-overview {
   /* margin-bottom 已移除，由父容器的 gap 统一管理 */
+  background: var(--morandi-bg-card);
+  border: 1px solid var(--morandi-border);
+  border-radius: var(--morandi-radius-lg);
+  padding: var(--morandi-spacing-card);
+  box-shadow: var(--morandi-shadow-sm);
+  transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
 }
 
 /* 系统状态概览内的子区域 */
@@ -1576,6 +1604,16 @@ body {
 
 
 /* 环境监控 */
+.environment-monitoring {
+  background: var(--morandi-bg-card);
+  border: 1px solid var(--morandi-border);
+  border-radius: var(--morandi-radius-lg);
+  padding: var(--morandi-spacing-card);
+  box-shadow: var(--morandi-shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
 
 .environment-grid {
   display: grid;
