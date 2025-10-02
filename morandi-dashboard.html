@@ -171,36 +171,36 @@
                     <h2 class="card-title">实时数据指标</h2>
                     <div class="metrics-row">
                         <div class="metric-item">
-                            <div class="metric-icon">👥</div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="current-patients">1,234</div>
+                            <div class="metric-header">
+                                <div class="metric-icon">👥</div>
                                 <div class="metric-label">当前在院患者</div>
-                                <div class="metric-trend up">+5.2%</div>
+                                <div class="metric-realtime-count" id="current-patients-count">1,234</div>
                             </div>
+                            <div class="metric-chart" id="current-patients-chart"></div>
                         </div>
                         <div class="metric-item">
-                            <div class="metric-icon">🛏️</div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="bed-utilization">87.3%</div>
+                            <div class="metric-header">
+                                <div class="metric-icon">🛏️</div>
                                 <div class="metric-label">床位使用率</div>
-                                <div class="metric-trend stable">0.0%</div>
+                                <div class="metric-realtime-count" id="bed-utilization-count">85%</div>
                             </div>
+                            <div class="metric-chart" id="bed-utilization-chart"></div>
                         </div>
                         <div class="metric-item">
-                            <div class="metric-icon">⚡</div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="avg-wait-time">12.5</div>
+                            <div class="metric-header">
+                                <div class="metric-icon">⚡</div>
                                 <div class="metric-label">平均等待时间(分钟)</div>
-                                <div class="metric-trend down">-2.1%</div>
+                                <div class="metric-realtime-count" id="avg-wait-time-count">12</div>
                             </div>
+                            <div class="metric-chart" id="avg-wait-time-chart"></div>
                         </div>
                         <div class="metric-item">
-                            <div class="metric-icon">💰</div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="hourly-revenue">¥45.6万</div>
+                            <div class="metric-header">
+                                <div class="metric-icon">💰</div>
                                 <div class="metric-label">小时收入</div>
-                                <div class="metric-trend up">+8.7%</div>
+                                <div class="metric-realtime-count" id="hourly-revenue-count">¥8,500</div>
                             </div>
+                            <div class="metric-chart" id="hourly-revenue-chart"></div>
                         </div>
                     </div>
                 </div>

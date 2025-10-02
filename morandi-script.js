@@ -79,6 +79,8 @@ function init() {
     
     // 立即更新实时数据指标
     setTimeout(function() {
+      // 初始化实时数据指标图表
+      initRealTimeMetricsCharts();
       updateRealTimeMetrics();
       // 强制显示实时数据指标
       forceShowRealTimeMetrics();
@@ -104,12 +106,18 @@ function cacheElements() {
   elements.resourceUtilizationChart = document.getElementById('resourceUtilizationChart');
   elements.revenueChart = document.getElementById('revenueChart');
   // 新增元素缓存
-  elements.currentPatients = document.getElementById('current-patients');
-  elements.bedUtilization = document.getElementById('bed-utilization');
-  elements.avgWaitTime = document.getElementById('avg-wait-time');
-  elements.hourlyRevenue = document.getElementById('hourly-revenue');
   elements.efficiencyScore = document.getElementById('efficiency-score');
   elements.alertList = document.getElementById('alertList');
+  // 实时数据指标图表容器
+  elements.currentPatientsChart = document.getElementById('current-patients-chart');
+  elements.bedUtilizationChart = document.getElementById('bed-utilization-chart');
+  elements.avgWaitTimeChart = document.getElementById('avg-wait-time-chart');
+  elements.hourlyRevenueChart = document.getElementById('hourly-revenue-chart');
+  // 实时人数显示
+  elements.currentPatientsCount = document.getElementById('current-patients-count');
+  elements.bedUtilizationCount = document.getElementById('bed-utilization-count');
+  elements.avgWaitTimeCount = document.getElementById('avg-wait-time-count');
+  elements.hourlyRevenueCount = document.getElementById('hourly-revenue-count');
   // 左侧区域元素缓存
   elements.leftTotalPatients = document.getElementById('left-total-patients');
   elements.leftBedOccupancy = document.getElementById('left-bed-occupancy');
@@ -689,6 +697,8 @@ function updateLeftSectionData() {
   }
 }
 
+
+
 // 更新核心指标
 function updateCoreMetrics() {
   // 模拟数据更新
@@ -919,78 +929,461 @@ function updateEnvironmentData() {
   });
 }
 
-// 更新实时数据指标
-function updateRealTimeMetrics() {
-  console.log('更新实时数据指标...');
+// 初始化实时数据指标图表
+function initRealTimeMetricsCharts() {
+  console.log('初始化实时数据指标图表...');
   
-  // 检查元素是否存在
-  console.log('DOM元素检查:', {
-    currentPatients: !!elements.currentPatients,
-    bedUtilization: !!elements.bedUtilization,
-    avgWaitTime: !!elements.avgWaitTime,
-    hourlyRevenue: !!elements.hourlyRevenue
-  });
-  
-  if (elements.currentPatients) {
-    const currentPatients = Math.floor(Math.random() * 200) + 1200;
-    elements.currentPatients.textContent = currentPatients.toLocaleString();
-    console.log('更新当前患者数:', currentPatients);
-  } else {
-    console.warn('currentPatients 元素未找到');
+  // 初始化当前在院患者图表
+  if (elements.currentPatientsChart) {
+    try {
+      charts.currentPatients = echarts.init(elements.currentPatientsChart);
+      initCurrentPatientsChart();
+      console.log('当前在院患者图表初始化成功');
+    } catch (error) {
+      console.error('当前在院患者图表初始化失败:', error);
+    }
   }
   
-  if (elements.bedUtilization) {
-    const utilization = (Math.random() * 20 + 80).toFixed(1);
-    elements.bedUtilization.textContent = utilization + '%';
-    console.log('更新床位使用率:', utilization + '%');
-  } else {
-    console.warn('bedUtilization 元素未找到');
+  // 初始化床位使用率图表
+  if (elements.bedUtilizationChart) {
+    try {
+      charts.bedUtilization = echarts.init(elements.bedUtilizationChart);
+      initBedUtilizationChart();
+      console.log('床位使用率图表初始化成功');
+    } catch (error) {
+      console.error('床位使用率图表初始化失败:', error);
+    }
   }
   
-  if (elements.avgWaitTime) {
-    const waitTime = (Math.random() * 10 + 8).toFixed(1);
-    elements.avgWaitTime.textContent = waitTime;
-    console.log('更新平均等待时间:', waitTime);
-  } else {
-    console.warn('avgWaitTime 元素未找到');
+  // 初始化平均等待时间图表
+  if (elements.avgWaitTimeChart) {
+    try {
+      charts.avgWaitTime = echarts.init(elements.avgWaitTimeChart);
+      initAvgWaitTimeChart();
+      console.log('平均等待时间图表初始化成功');
+    } catch (error) {
+      console.error('平均等待时间图表初始化失败:', error);
+    }
   }
   
-  if (elements.hourlyRevenue) {
-    const revenue = (Math.random() * 20 + 35).toFixed(1);
-    elements.hourlyRevenue.textContent = '¥' + revenue + '万';
-    console.log('更新小时收入:', '¥' + revenue + '万');
-  } else {
-    console.warn('hourlyRevenue 元素未找到');
+  // 初始化小时收入图表
+  if (elements.hourlyRevenueChart) {
+    try {
+      charts.hourlyRevenue = echarts.init(elements.hourlyRevenueChart);
+      initHourlyRevenueChart();
+      console.log('小时收入图表初始化成功');
+    } catch (error) {
+      console.error('小时收入图表初始化失败:', error);
+    }
   }
-  
-  // 更新趋势指示器
-  updateRealTimeTrends();
 }
 
-// 更新实时数据趋势指示器
-function updateRealTimeTrends() {
-  const trendElements = document.querySelectorAll('.real-time-metrics .metric-trend');
-  const trends = ['up', 'down', 'stable'];
+// 初始化当前在院患者图表
+function initCurrentPatientsChart() {
+  if (!charts.currentPatients) return;
   
-  trendElements.forEach(function(element) {
-    const randomTrend = trends[Math.floor(Math.random() * trends.length)];
-    const randomValue = (Math.random() * 15).toFixed(1);
-    
-    element.className = 'metric-trend ' + randomTrend;
-    
-    switch (randomTrend) {
-      case 'up':
-        element.textContent = '+' + randomValue + '%';
-        break;
-      case 'down':
-        element.textContent = '-' + randomValue + '%';
-        break;
-      case 'stable':
-        element.textContent = '0.0%';
-        break;
-    }
-  });
+  const option = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderColor: '#8B9DC3',
+      borderWidth: 1,
+      textStyle: {
+        color: '#4A4A4A',
+        fontSize: 12
+      },
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#8B9DC3'
+        }
+      },
+      formatter: function(params) {
+        const data = params[0];
+        return '<div style="padding: 8px;">' +
+               '<div style="font-weight: 600; margin-bottom: 4px;">当前在院患者</div>' +
+               '<div style="color: #8B9DC3;">时间: ' + data.axisValue + '</div>' +
+               '<div style="color: #8B9DC3;">患者数: ' + data.value + '人</div>' +
+               '</div>';
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '10%',
+      bottom: '10%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      },
+      splitLine: {
+        lineStyle: {
+          color: isDarkMode ? '#3A3A3A' : '#F0F0F0'
+        }
+      }
+    },
+    series: [{
+      data: [1200, 1150, 1234, 1280, 1250, 1200],
+      type: 'line',
+      smooth: true,
+      symbol: 'none',
+      itemStyle: {
+        color: '#8B9DC3'
+      },
+      lineStyle: {
+        color: '#8B9DC3',
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(139, 157, 195, 0.3)' },
+          { offset: 1, color: 'rgba(139, 157, 195, 0.05)' }
+        ])
+      }
+    }]
+  };
+  
+  charts.currentPatients.setOption(option);
 }
+
+// 初始化床位使用率图表
+function initBedUtilizationChart() {
+  if (!charts.bedUtilization) return;
+  
+  const option = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderColor: '#A8A8A8',
+      borderWidth: 1,
+      textStyle: {
+        color: '#4A4A4A',
+        fontSize: 12
+      },
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#A8A8A8'
+        }
+      },
+      formatter: function(params) {
+        const data = params[0];
+        return '<div style="padding: 8px;">' +
+               '<div style="font-weight: 600; margin-bottom: 4px;">床位使用率</div>' +
+               '<div style="color: #A8A8A8;">时间: ' + data.axisValue + '</div>' +
+               '<div style="color: #A8A8A8;">使用率: ' + data.value + '%</div>' +
+               '</div>';
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '10%',
+      bottom: '10%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      }
+    },
+    yAxis: {
+      type: 'value',
+      max: 100,
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      },
+      splitLine: {
+        lineStyle: {
+          color: isDarkMode ? '#3A3A3A' : '#F0F0F0'
+        }
+      }
+    },
+    series: [{
+      data: [85, 82, 87, 90, 88, 87],
+      type: 'line',
+      smooth: true,
+      symbol: 'none',
+      itemStyle: {
+        color: '#A8A8A8'
+      },
+      lineStyle: {
+        color: '#A8A8A8',
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(168, 168, 168, 0.3)' },
+          { offset: 1, color: 'rgba(168, 168, 168, 0.05)' }
+        ])
+      }
+    }]
+  };
+  
+  charts.bedUtilization.setOption(option);
+}
+
+// 初始化平均等待时间图表
+function initAvgWaitTimeChart() {
+  if (!charts.avgWaitTime) return;
+  
+  const option = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderColor: '#D4A5A5',
+      borderWidth: 1,
+      textStyle: {
+        color: '#4A4A4A',
+        fontSize: 12
+      },
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#D4A5A5'
+        }
+      },
+      formatter: function(params) {
+        const data = params[0];
+        return '<div style="padding: 8px;">' +
+               '<div style="font-weight: 600; margin-bottom: 4px;">平均等待时间</div>' +
+               '<div style="color: #D4A5A5;">时间: ' + data.axisValue + '</div>' +
+               '<div style="color: #D4A5A5;">等待时间: ' + data.value + '分钟</div>' +
+               '</div>';
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '10%',
+      bottom: '10%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      },
+      splitLine: {
+        lineStyle: {
+          color: isDarkMode ? '#3A3A3A' : '#F0F0F0'
+        }
+      }
+    },
+    series: [{
+      data: [15, 8, 12, 18, 14, 10],
+      type: 'line',
+      smooth: true,
+      symbol: 'none',
+      itemStyle: {
+        color: '#D4A5A5'
+      },
+      lineStyle: {
+        color: '#D4A5A5',
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(212, 165, 165, 0.3)' },
+          { offset: 1, color: 'rgba(212, 165, 165, 0.05)' }
+        ])
+      }
+    }]
+  };
+  
+  charts.avgWaitTime.setOption(option);
+}
+
+// 初始化小时收入图表
+function initHourlyRevenueChart() {
+  if (!charts.hourlyRevenue) return;
+  
+  const option = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      borderColor: '#8B9DC3',
+      borderWidth: 1,
+      textStyle: {
+        color: '#4A4A4A',
+        fontSize: 12
+      },
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#8B9DC3'
+        }
+      },
+      formatter: function(params) {
+        const data = params[0];
+        return '<div style="padding: 8px;">' +
+               '<div style="font-weight: 600; margin-bottom: 4px;">小时收入</div>' +
+               '<div style="color: #8B9DC3;">时间: ' + data.axisValue + '</div>' +
+               '<div style="color: #8B9DC3;">收入: ¥' + data.value + '万</div>' +
+               '</div>';
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '10%',
+      bottom: '10%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        lineStyle: {
+          color: isDarkMode ? '#404040' : '#E0E0E0'
+        }
+      },
+      axisLabel: { 
+        fontSize: 10,
+        color: isDarkMode ? '#B0B0B0' : '#6A6A6A'
+      },
+      splitLine: {
+        lineStyle: {
+          color: isDarkMode ? '#3A3A3A' : '#F0F0F0'
+        }
+      }
+    },
+    series: [{
+      data: [35, 20, 45, 55, 48, 42],
+      type: 'line',
+      smooth: true,
+      symbol: 'none',
+      itemStyle: {
+        color: '#8B9DC3'
+      },
+      lineStyle: {
+        color: '#8B9DC3',
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgba(139, 157, 195, 0.3)' },
+          { offset: 1, color: 'rgba(139, 157, 195, 0.05)' }
+        ])
+      }
+    }]
+  };
+  
+  charts.hourlyRevenue.setOption(option);
+}
+
+// 更新实时数据指标
+function updateRealTimeMetrics() {
+  console.log('更新实时数据指标图表...');
+  
+  // 检查图表容器是否存在
+  console.log('图表容器检查:', {
+    currentPatientsChart: !!elements.currentPatientsChart,
+    bedUtilizationChart: !!elements.bedUtilizationChart,
+    avgWaitTimeChart: !!elements.avgWaitTimeChart,
+    hourlyRevenueChart: !!elements.hourlyRevenueChart
+  });
+  
+  // 更新实时数值显示
+  if (elements.currentPatientsCount) {
+    const currentPatients = Math.floor(Math.random() * 200) + 1200;
+    elements.currentPatientsCount.textContent = currentPatients.toLocaleString();
+    console.log('更新当前在院患者数:', currentPatients);
+  }
+  
+  if (elements.bedUtilizationCount) {
+    const bedUtilization = Math.floor(Math.random() * 20) + 75; // 75-95%
+    elements.bedUtilizationCount.textContent = bedUtilization + '%';
+    console.log('更新床位使用率:', bedUtilization + '%');
+  }
+  
+  if (elements.avgWaitTimeCount) {
+    const avgWaitTime = Math.floor(Math.random() * 15) + 8; // 8-23分钟
+    elements.avgWaitTimeCount.textContent = avgWaitTime;
+    console.log('更新平均等待时间:', avgWaitTime + '分钟');
+  }
+  
+  if (elements.hourlyRevenueCount) {
+    const hourlyRevenue = Math.floor(Math.random() * 3000) + 6000; // 6000-9000元
+    elements.hourlyRevenueCount.textContent = '¥' + hourlyRevenue.toLocaleString();
+    console.log('更新小时收入:', '¥' + hourlyRevenue);
+  }
+  
+  // 图表数据会通过ECharts自动更新，这里只需要确保图表正常显示
+  console.log('实时数据指标图表更新完成');
+}
+
 
 // 强制显示实时数据指标
 function forceShowRealTimeMetrics() {
@@ -1026,29 +1419,15 @@ function forceShowRealTimeMetrics() {
     item.style.opacity = '1';
   });
   
-  // 检查所有指标值元素
-  const metricValues = document.querySelectorAll('.real-time-metrics .metric-value');
-  console.log('找到指标值元素数量:', metricValues.length);
+  // 检查图表容器
+  const chartContainers = document.querySelectorAll('.real-time-metrics .metric-chart');
+  console.log('找到图表容器数量:', chartContainers.length);
   
-  metricValues.forEach(function(value, index) {
-    console.log('指标值', index, ':', value.textContent);
-    if (!value.textContent || value.textContent.trim() === '') {
-      console.warn('指标值', index, '为空，设置默认值');
-      switch (index) {
-        case 0:
-          value.textContent = '1,234';
-          break;
-        case 1:
-          value.textContent = '87.3%';
-          break;
-        case 2:
-          value.textContent = '12.5';
-          break;
-        case 3:
-          value.textContent = '¥45.6万';
-          break;
-      }
-    }
+  chartContainers.forEach(function(chart, index) {
+    console.log('设置图表容器', index, '的显示样式');
+    chart.style.display = 'block';
+    chart.style.visibility = 'visible';
+    chart.style.opacity = '1';
   });
 }
 
