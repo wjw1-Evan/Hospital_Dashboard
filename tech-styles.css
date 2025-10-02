@@ -445,7 +445,7 @@ body {
 }
 
 .dept-card {
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border: var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
@@ -583,7 +583,7 @@ body {
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-lg);
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
 }
@@ -642,9 +642,7 @@ body {
 }
 
 .metric-card {
-  background: linear-gradient(135deg, 
-    rgba(26, 31, 46, 0.9) 0%, 
-    rgba(42, 47, 62, 0.8) 100%);
+  background: var(--bg-card);
   border: var(--border-subtle);
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl);
@@ -937,7 +935,7 @@ body {
 }
 
 .chart-container {
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
@@ -996,7 +994,7 @@ body {
 }
 
 .system-item {
-    background: rgba(42, 47, 62, 0.6);
+    background: var(--bg-card);
     border: 1px solid rgba(0, 212, 255, 0.1);
     border-radius: 12px;
     padding: 1rem;
@@ -1106,7 +1104,7 @@ body {
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
   transition: all 0.3s ease;
@@ -1206,8 +1204,7 @@ body {
   align-items: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-md) var(--spacing-lg);
- 
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
 }
@@ -1636,7 +1633,10 @@ body.light .metric-card,
 body.light .system-item,
 body.light .alert-item,
 body.light .env-item,
-body.light .chart-container {
+body.light .chart-container,
+body.light .table-header,
+body.light .table-row,
+body.light .stream-item {
     background: rgba(248, 250, 252, 0.8);
     border: 1px solid rgba(14, 165, 233, 0.1);
 }
@@ -1754,7 +1754,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
     grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1fr 1fr;
     gap: var(--spacing-lg);
     padding: var(--spacing-lg);
-    background: rgba(0, 212, 255, 0.05);
+    background: var(--bg-card);
     border-radius: var(--radius-md);
     font-weight: var(--font-weight-semibold);
     color: var(--text-accent);
@@ -1773,7 +1773,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
     grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1fr 1fr;
     gap: var(--spacing-lg);
     padding: var(--spacing-lg);
-    background: rgba(26, 31, 46, 0.3);
+    background: var(--bg-card);
     border-radius: var(--radius-md);
     border: var(--border-subtle);
     transition: all var(--transition-normal);
@@ -1807,7 +1807,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
 .col-beds .progress-bar {
     flex: 1;
     height: 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-tertiary);
     border-radius: 3px;
     overflow: hidden;
 }
@@ -1869,14 +1869,14 @@ body.light ::-webkit-scrollbar-thumb:hover {
     gap: 1rem;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
-    background: rgba(26, 31, 46, 0.3);
+    background: var(--bg-card);
     border-radius: 8px;
     border-left: 3px solid transparent;
     transition: all 0.3s ease;
 }
 
 .stream-item:hover {
-    background: rgba(0, 212, 255, 0.05);
+    background: var(--bg-hover);
     transform: translateX(5px);
 }
 
