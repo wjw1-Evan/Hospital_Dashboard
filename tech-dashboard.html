@@ -87,7 +87,7 @@
                             </div>
                             <div class="dept-progress">
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 80%"></div>
+                                    <div class="progress-fill" data-width="80"></div>
                                 </div>
                                 <span class="progress-text">80% 使用率</span>
                             </div>
@@ -115,7 +115,7 @@
                             </div>
                             <div class="dept-progress">
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 74%"></div>
+                                    <div class="progress-fill" data-width="74"></div>
                                 </div>
                                 <span class="progress-text">74% 使用率</span>
                             </div>
@@ -143,7 +143,7 @@
                             </div>
                             <div class="dept-progress">
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 75%"></div>
+                                    <div class="progress-fill" data-width="75"></div>
                                 </div>
                                 <span class="progress-text">75% 使用率</span>
                             </div>
@@ -171,7 +171,7 @@
                             </div>
                             <div class="dept-progress">
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 80%"></div>
+                                    <div class="progress-fill" data-width="80"></div>
                                 </div>
                                 <span class="progress-text">80% 使用率</span>
                             </div>
@@ -193,11 +193,11 @@
                                 <i class="fas fa-shield-virus"></i>
                             </div>
                             <div class="quality-content">
-                                <div class="quality-value">0.8%</div>
+                                <div class="quality-value">1%</div>
                                 <div class="quality-label">院内感染率</div>
                                 <div class="quality-trend down">
                                     <i class="fas fa-arrow-down"></i>
-                                    <span>较上月 -0.2%</span>
+                                    <span>较上月 -1%</span>
                                 </div>
                             </div>
                         </div>
@@ -206,11 +206,11 @@
                                 <i class="fas fa-redo"></i>
                             </div>
                             <div class="quality-content">
-                                <div class="quality-value">3.2%</div>
+                                <div class="quality-value">3%</div>
                                 <div class="quality-label">再入院率</div>
                                 <div class="quality-trend up">
                                     <i class="fas fa-arrow-up"></i>
-                                    <span>较上月 +0.1%</span>
+                                    <span>较上月 +1%</span>
                                 </div>
                             </div>
                         </div>
@@ -219,11 +219,11 @@
                                 <i class="fas fa-thumbs-up"></i>
                             </div>
                             <div class="quality-content">
-                                <div class="quality-value">96.8%</div>
+                                <div class="quality-value">97%</div>
                                 <div class="quality-label">患者满意度</div>
                                 <div class="quality-trend up">
                                     <i class="fas fa-arrow-up"></i>
-                                    <span>较上月 +1.2%</span>
+                                    <span>较上月 +1%</span>
                                 </div>
                             </div>
                         </div>
@@ -232,11 +232,11 @@
                                 <i class="fas fa-clock"></i>
                             </div>
                             <div class="quality-content">
-                                <div class="quality-value">4.2天</div>
+                                <div class="quality-value">4天</div>
                                 <div class="quality-label">平均住院日</div>
                                 <div class="quality-trend down">
                                     <i class="fas fa-arrow-down"></i>
-                                    <span>较上月 -0.3天</span>
+                                    <span>较上月 -1天</span>
                                 </div>
                             </div>
                         </div>
@@ -270,13 +270,15 @@
                                 </div>
                                 <div class="metric-title">今日收入</div>
                             </div>
-                            <div class="main-metric-value">¥2,456,789</div>
-                            <div class="metric-change positive">
-                                <i class="fas fa-arrow-up"></i>
-                                <span>+8.3%</span>
+                            <div class="metric-value-row">
+                                <div class="main-metric-value">¥2,456,789</div>
+                                <div class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+8%</span>
+                                </div>
                             </div>
                             <div class="metric-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(0,212,255,0.1), rgba(0,255,136,0.1));"></div>
+                                <div class="mini-chart" id="revenue-chart"></div>
                             </div>
                         </div>
 
@@ -287,13 +289,15 @@
                                 </div>
                                 <div class="metric-title">患者流量</div>
                             </div>
-                            <div class="main-metric-value">2,156</div>
-                            <div class="metric-change positive">
-                                <i class="fas fa-arrow-up"></i>
-                                <span>+12.5%</span>
+                            <div class="metric-value-row">
+                                <div class="main-metric-value">2,156</div>
+                                <div class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+13%</span>
+                                </div>
                             </div>
                             <div class="metric-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(0,255,136,0.1), rgba(0,212,255,0.1));"></div>
+                                <div class="mini-chart" id="patients-chart"></div>
                             </div>
                         </div>
 
@@ -304,13 +308,15 @@
                                 </div>
                                 <div class="metric-title">设备使用率</div>
                             </div>
-                            <div class="main-metric-value">78%</div>
-                            <div class="metric-change negative">
-                                <i class="fas fa-arrow-down"></i>
-                                <span>-2.1%</span>
+                            <div class="metric-value-row">
+                                <div class="main-metric-value">78%</div>
+                                <div class="metric-change negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-2%</span>
+                                </div>
                             </div>
                             <div class="metric-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(255,170,0,0.1), rgba(255,71,87,0.1));"></div>
+                                <div class="mini-chart" id="equipment-chart"></div>
                             </div>
                         </div>
 
@@ -321,41 +327,57 @@
                                 </div>
                                 <div class="metric-title">能耗监控</div>
                             </div>
-                            <div class="main-metric-value">45.6kW</div>
-                            <div class="metric-change neutral">
-                                <i class="fas fa-minus"></i>
-                                <span>0.0%</span>
+                            <div class="metric-value-row">
+                                <div class="main-metric-value">46kW</div>
+                                <div class="metric-change neutral">
+                                    <i class="fas fa-minus"></i>
+                                    <span>0.0%</span>
+                                </div>
                             </div>
                             <div class="metric-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(108,92,231,0.1), rgba(0,206,201,0.1));"></div>
+                                <div class="mini-chart" id="energy-chart"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card efficiency">
+                            <div class="metric-header">
+                                <div class="metric-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="metric-title">运营效率</div>
+                            </div>
+                            <div class="metric-value-row">
+                                <div class="main-metric-value">93%</div>
+                                <div class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+3%</span>
+                                </div>
+                            </div>
+                            <div class="metric-chart">
+                                <div class="mini-chart" id="efficiency-chart"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card satisfaction">
+                            <div class="metric-header">
+                                <div class="metric-icon">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <div class="metric-title">患者满意度</div>
+                            </div>
+                            <div class="metric-value-row">
+                                <div class="main-metric-value">97%</div>
+                                <div class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+2%</span>
+                                </div>
+                            </div>
+                            <div class="metric-chart">
+                                <div class="mini-chart" id="satisfaction-chart"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 实时监控图表 -->
-                    <div class="charts-section">
-                        <div class="chart-container">
-                            <div class="chart-header">
-                                <h3 class="chart-title">患者流量趋势</h3>
-                                <div class="chart-controls">
-                                    <button class="chart-btn active" data-type="line">线性</button>
-                                    <button class="chart-btn" data-type="bar">柱状</button>
-                                </div>
-                            </div>
-                            <div class="chart-area" id="patient-flow-chart" style="background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(0,255,136,0.05)); height: 300px;"></div>
-                        </div>
-                        
-                        <div class="chart-container">
-                            <div class="chart-header">
-                                <h3 class="chart-title">系统负载监控</h3>
-                                <div class="chart-controls">
-                                    <button class="chart-btn active" data-type="gauge">仪表</button>
-                                    <button class="chart-btn" data-type="radar">雷达</button>
-                                </div>
-                            </div>
-                            <div class="chart-area" id="system-load-chart" style="background: linear-gradient(135deg, rgba(108,92,231,0.05), rgba(0,206,201,0.05)); height: 300px;"></div>
-                        </div>
-                    </div>
 
                     <!-- 科室运营详情 -->
                     <div class="department-details">
@@ -391,7 +413,7 @@
                                         <div class="col-patients">89</div>
                                         <div class="col-beds">
                                             <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 80%"></div>
+                                                <div class="progress-fill" data-width="80"></div>
                                             </div>
                                             <span>80%</span>
                                         </div>
@@ -413,7 +435,7 @@
                                         <div class="col-patients">456</div>
                                         <div class="col-beds">
                                             <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 74%"></div>
+                                                <div class="progress-fill" data-width="74"></div>
                                             </div>
                                             <span>74%</span>
                                         </div>
@@ -435,7 +457,7 @@
                                         <div class="col-patients">234</div>
                                         <div class="col-beds">
                                             <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 65%"></div>
+                                                <div class="progress-fill" data-width="65"></div>
                                             </div>
                                             <span>65%</span>
                                         </div>
@@ -457,7 +479,7 @@
                                         <div class="col-patients">123</div>
                                         <div class="col-beds">
                                             <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 45%"></div>
+                                                <div class="progress-fill" data-width="45"></div>
                                             </div>
                                             <span>45%</span>
                                         </div>
@@ -479,7 +501,7 @@
                                         <div class="col-patients">178</div>
                                         <div class="col-beds">
                                             <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 68%"></div>
+                                                <div class="progress-fill" data-width="68"></div>
                                             </div>
                                             <span>68%</span>
                                         </div>
@@ -649,10 +671,10 @@
                             </div>
                             <div class="env-info">
                                 <div class="env-label">温度</div>
-                                <div class="env-value">22.5°C</div>
+                                <div class="env-value">23°C</div>
                             </div>
                             <div class="env-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(0,212,255,0.1), rgba(0,255,136,0.1));"></div>
+                                <div class="mini-chart temperature-chart"></div>
                             </div>
                         </div>
 
@@ -665,7 +687,7 @@
                                 <div class="env-value">45%</div>
                             </div>
                             <div class="env-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(0,206,201,0.1), rgba(0,212,255,0.1));"></div>
+                                <div class="mini-chart humidity-chart"></div>
                             </div>
                         </div>
 
@@ -678,7 +700,7 @@
                                 <div class="env-value">良好</div>
                             </div>
                             <div class="env-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(0,255,136,0.1), rgba(0,206,201,0.1));"></div>
+                                <div class="mini-chart air-quality-chart"></div>
                             </div>
                         </div>
 
@@ -688,10 +710,10 @@
                             </div>
                             <div class="env-info">
                                 <div class="env-label">功耗</div>
-                                <div class="env-value">45.6kW</div>
+                                <div class="env-value">46kW</div>
                             </div>
                             <div class="env-chart">
-                                <div class="mini-chart" style="background: linear-gradient(45deg, rgba(108,92,231,0.1), rgba(255,170,0,0.1));"></div>
+                                <div class="mini-chart power-chart"></div>
                             </div>
                         </div>
                     </div>

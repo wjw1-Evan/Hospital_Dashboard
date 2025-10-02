@@ -59,175 +59,17 @@ class ChartManager {
     setTimeout(() => {
       this.initCharts();
       this.startDataUpdates();
+      this.initProgressBars();
     }, 500);
   }
 
   initCharts() {
-    // 初始化患者流量图表
-        this.initPatientFlowChart();
-    // 初始化系统负载图表
-        this.initSystemLoadChart();
     // 初始化环境监控图表
         this.initEnvironmentCharts();
+    // 初始化核心指标图表
+        this.initCoreMetricsCharts();
     }
 
-    initPatientFlowChart() {
-    const container = getCachedElement('#patient-flow-chart');
-    if (!container) return;
-
-    // 创建图表容器
-    const chartContainer = document.createElement('div');
-    chartContainer.style.width = '100%';
-    chartContainer.style.height = '100%';
-    container.innerHTML = '';
-    container.appendChild(chartContainer);
-
-    const chart = echarts.init(chartContainer, null, {
-      renderer: 'canvas',
-      useDirtyRect: true
-    });
-
-        const option = {
-            backgroundColor: 'transparent',
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-        top: '10%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'category',
-        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-        axisLine: {
-          lineStyle: { color: '#00d4ff' }
-        },
-        axisLabel: {
-          color: '#b8c5d1',
-          fontSize: 10
-        }
-            },
-            yAxis: {
-                type: 'value',
-        axisLine: {
-          lineStyle: { color: '#00d4ff' }
-        },
-        axisLabel: {
-          color: '#b8c5d1',
-          fontSize: 10
-        },
-        splitLine: {
-          lineStyle: { color: 'rgba(0, 212, 255, 0.1)' }
-        }
-            },
-            series: [{
-        data: [120, 200, 150, 80, 70, 110, 90],
-                type: 'line',
-                smooth: true,
-        lineStyle: {
-          color: '#00d4ff',
-          width: 3
-        },
-        itemStyle: {
-          color: '#00d4ff'
-        },
-                areaStyle: {
-                    color: {
-                        type: 'linear',
-                        x: 0, y: 0, x2: 0, y2: 1,
-                        colorStops: [
-              { offset: 0, color: 'rgba(0, 212, 255, 0.3)' },
-                            { offset: 1, color: 'rgba(0, 212, 255, 0.05)' }
-                        ]
-                    }
-        }
-            }]
-        };
-
-        chart.setOption(option);
-    this.charts.set('patientFlow', chart);
-    }
-
-    initSystemLoadChart() {
-    const container = getCachedElement('#system-load-chart');
-    if (!container) return;
-    const chartContainer = document.createElement('div');
-    chartContainer.style.width = '100%';
-    chartContainer.style.height = '100%';
-    container.innerHTML = '';
-    container.appendChild(chartContainer);
-
-    const chart = echarts.init(chartContainer, null, {
-      renderer: 'canvas',
-      useDirtyRect: true
-    });
-
-        const option = {
-            backgroundColor: 'transparent',
-            series: [{
-                type: 'gauge',
-        startAngle: 200,
-        endAngle: -20,
-                radius: '80%',
-                min: 0,
-                max: 100,
-                splitNumber: 10,
-        itemStyle: {
-          color: '#6c5ce7'
-        },
-        progress: {
-          show: true,
-          width: 8
-        },
-        pointer: {
-          show: false
-        },
-                axisLine: {
-                    lineStyle: {
-                        width: 8,
-                        color: [
-                            [0.3, '#ff4757'],
-                            [0.7, '#ffaa00'],
-                            [1, '#00ff88']
-                        ]
-                    }
-                },
-                axisTick: {
-          distance: -30,
-          splitNumber: 5,
-          lineStyle: {
-            width: 2,
-            color: '#6c5ce7'
-          }
-                },
-                splitLine: {
-          distance: -30,
-          length: 30,
-          lineStyle: {
-            width: 4,
-            color: '#6c5ce7'
-          }
-                },
-                axisLabel: {
-          distance: -20,
-                    color: '#b8c5d1',
-          fontSize: 10
-                },
-                detail: {
-                    valueAnimation: true,
-                    formatter: '{value}%',
-          color: '#6c5ce7',
-          fontSize: 16
-                },
-        data: [{
-          value: 75
-        }]
-            }]
-        };
-
-        chart.setOption(option);
-    this.charts.set('systemLoad', chart);
-    }
 
     initEnvironmentCharts() {
     // 为环境监控项添加小图表
@@ -243,9 +85,9 @@ class ChartManager {
         // 清空容器并创建新的图表容器
         item.innerHTML = '';
         
-        const chartContainer = document.createElement('div');
-        chartContainer.style.width = '100%';
-        chartContainer.style.height = '100%';
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
         chartContainer.style.minHeight = '40px';
         item.appendChild(chartContainer);
 
@@ -288,6 +130,664 @@ class ChartManager {
         
       } catch (error) {
         console.error(`Failed to initialize environment chart ${index}:`, error);
+      }
+    });
+  }
+
+  initCoreMetricsCharts() {
+    // 初始化今日收入图表
+    this.initRevenueChart();
+    // 初始化患者流量图表
+    this.initPatientsChart();
+    // 初始化设备使用率图表
+    this.initEquipmentChart();
+    // 初始化能耗监控图表
+    this.initEnergyChart();
+    // 初始化运营效率图表
+    this.initEfficiencyChart();
+    // 初始化患者满意度图表
+    this.initSatisfactionChart();
+  }
+
+  initRevenueChart() {
+    const container = getCachedElement('#revenue-chart');
+    if (!container) return;
+
+    // 清空容器并创建新的图表容器
+    container.innerHTML = '';
+    
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
+    container.appendChild(chartContainer);
+
+    const chart = echarts.init(chartContainer, null, {
+      renderer: 'canvas',
+      useDirtyRect: true
+    });
+
+        const option = {
+            backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#00d4ff',
+        borderWidth: 1,
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 10
+        },
+        formatter: function(params) {
+          const value = params[0].value;
+          const formattedValue = (value / 10000).toFixed(1) + '万';
+          return `时间: ${params[0].axisValue}<br/>收入: ¥${formattedValue}`;
+        }
+      },
+      legend: {
+        show: false
+      },
+            grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '5%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        axisLine: {
+          lineStyle: { color: '#00d4ff' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8
+        },
+        axisTick: {
+          lineStyle: { color: '#00d4ff' }
+        }
+            },
+            yAxis: {
+                type: 'value',
+        axisLine: {
+          lineStyle: { color: '#00d4ff' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8,
+          formatter: function(value) {
+            return (value / 10000).toFixed(0) + '万';
+          }
+        },
+        splitLine: {
+          lineStyle: { color: 'rgba(0, 212, 255, 0.1)' }
+        }
+            },
+            series: [{
+        name: '今日收入',
+        data: [1200000, 1800000, 1500000, 2200000, 2000000, 2456789],
+                type: 'line',
+                smooth: true,
+        symbol: 'circle',
+        symbolSize: 4,
+        lineStyle: {
+          color: '#00d4ff',
+          width: 2
+        },
+        itemStyle: {
+          color: '#00d4ff',
+          borderColor: '#ffffff',
+          borderWidth: 1
+        },
+                areaStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0, y: 0, x2: 0, y2: 1,
+                        colorStops: [
+              { offset: 0, color: 'rgba(0, 212, 255, 0.3)' },
+                            { offset: 1, color: 'rgba(0, 212, 255, 0.05)' }
+                        ]
+                    }
+        }
+            }]
+        };
+
+        chart.setOption(option);
+    this.charts.set('revenue', chart);
+    }
+
+  initPatientsChart() {
+    const container = getCachedElement('#patients-chart');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
+    container.appendChild(chartContainer);
+
+    const chart = echarts.init(chartContainer, null, {
+      renderer: 'canvas',
+      useDirtyRect: true
+    });
+
+        const option = {
+            backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#00ff88',
+        borderWidth: 1,
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 10
+        },
+        formatter: function(params) {
+          const value = params[0].value;
+          return `时间: ${params[0].axisValue}<br/>患者流量: ${value}人`;
+        }
+      },
+      legend: {
+          show: false
+        },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '5%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                axisLine: {
+          lineStyle: { color: '#00ff88' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8
+        },
+        axisTick: {
+          lineStyle: { color: '#00ff88' }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: { color: '#00ff88' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8,
+          formatter: function(value) {
+            return value + '人';
+          }
+        },
+        splitLine: {
+          lineStyle: { color: 'rgba(0, 255, 136, 0.1)' }
+        }
+      },
+      series: [{
+        name: '患者流量',
+        data: [800, 1200, 1800, 2000, 1900, 2156],
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 4,
+                    lineStyle: {
+          color: '#00ff88',
+          width: 2
+        },
+        itemStyle: {
+          color: '#00ff88',
+          borderColor: '#ffffff',
+          borderWidth: 1
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(0, 255, 136, 0.3)' },
+              { offset: 1, color: 'rgba(0, 255, 136, 0.05)' }
+            ]
+          }
+        }
+      }]
+    };
+
+    chart.setOption(option);
+    this.charts.set('patients', chart);
+  }
+
+  initEquipmentChart() {
+    const container = getCachedElement('#equipment-chart');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
+    container.appendChild(chartContainer);
+
+    const chart = echarts.init(chartContainer, null, {
+      renderer: 'canvas',
+      useDirtyRect: true
+    });
+
+    const option = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#ffaa00',
+        borderWidth: 1,
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 10
+        },
+        formatter: function(params) {
+          const value = params[0].value;
+          return `时间: ${params[0].axisValue}<br/>设备使用率: ${value}%`;
+        }
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '5%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        axisLine: {
+          lineStyle: { color: '#ffaa00' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8
+                },
+                axisTick: {
+          lineStyle: { color: '#ffaa00' }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: { color: '#ffaa00' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8,
+          formatter: function(value) {
+            return value + '%';
+          }
+                },
+                splitLine: {
+          lineStyle: { color: 'rgba(255, 170, 0, 0.1)' }
+        }
+      },
+      series: [{
+        name: '设备使用率',
+        data: [65, 70, 75, 80, 78, 78],
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 4,
+          lineStyle: {
+          color: '#ffaa00',
+          width: 2
+        },
+        itemStyle: {
+          color: '#ffaa00',
+          borderColor: '#ffffff',
+          borderWidth: 1
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(255, 170, 0, 0.3)' },
+              { offset: 1, color: 'rgba(255, 170, 0, 0.05)' }
+            ]
+          }
+        }
+      }]
+    };
+
+    chart.setOption(option);
+    this.charts.set('equipment', chart);
+  }
+
+  initEnergyChart() {
+    const container = getCachedElement('#energy-chart');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
+    container.appendChild(chartContainer);
+
+    const chart = echarts.init(chartContainer, null, {
+      renderer: 'canvas',
+      useDirtyRect: true
+    });
+
+    const option = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#6c5ce7',
+        borderWidth: 1,
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 10
+        },
+        formatter: function(params) {
+          const value = params[0].value;
+          return `时间: ${params[0].axisValue}<br/>能耗: ${value}kW`;
+        }
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '5%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        axisLine: {
+          lineStyle: { color: '#6c5ce7' }
+                },
+                axisLabel: {
+                    color: '#b8c5d1',
+          fontSize: 8
+        },
+        axisTick: {
+          lineStyle: { color: '#6c5ce7' }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: { color: '#6c5ce7' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8,
+          formatter: function(value) {
+            return value + 'kW';
+          }
+        },
+        splitLine: {
+          lineStyle: { color: 'rgba(108, 92, 231, 0.1)' }
+        }
+      },
+      series: [{
+        name: '能耗监控',
+        data: [35, 39, 42, 46, 45, 46],
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 4,
+        lineStyle: {
+          color: '#6c5ce7',
+          width: 2
+        },
+        itemStyle: {
+          color: '#6c5ce7',
+          borderColor: '#ffffff',
+          borderWidth: 1
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(108, 92, 231, 0.3)' },
+              { offset: 1, color: 'rgba(108, 92, 231, 0.05)' }
+            ]
+          }
+        }
+            }]
+        };
+
+        chart.setOption(option);
+    this.charts.set('energy', chart);
+  }
+
+  initEfficiencyChart() {
+    const container = getCachedElement('#efficiency-chart');
+    if (!container) return;
+
+    container.innerHTML = '';
+        
+        const chartContainer = document.createElement('div');
+        chartContainer.style.width = '100%';
+        chartContainer.style.height = '100%';
+    container.appendChild(chartContainer);
+
+          const chart = echarts.init(chartContainer, null, {
+            renderer: 'canvas',
+            useDirtyRect: true
+          });
+
+    const option = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#00cec9',
+        borderWidth: 1,
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 10
+        },
+        formatter: function(params) {
+          const value = params[0].value;
+          return `时间: ${params[0].axisValue}<br/>运营效率: ${value}%`;
+        }
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '5%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        axisLine: {
+          lineStyle: { color: '#00cec9' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8
+        },
+        axisTick: {
+          lineStyle: { color: '#00cec9' }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: { color: '#00cec9' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8,
+          formatter: function(value) {
+            return value + '%';
+          }
+        },
+        splitLine: {
+          lineStyle: { color: 'rgba(0, 206, 201, 0.1)' }
+        }
+      },
+      series: [{
+        name: '运营效率',
+        data: [89, 90, 92, 93, 92, 93],
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 4,
+        lineStyle: {
+          color: '#00cec9',
+          width: 2
+        },
+        itemStyle: {
+          color: '#00cec9',
+          borderColor: '#ffffff',
+          borderWidth: 1
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(0, 206, 201, 0.3)' },
+              { offset: 1, color: 'rgba(0, 206, 201, 0.05)' }
+            ]
+          }
+        }
+      }]
+    };
+
+          chart.setOption(option);
+    this.charts.set('efficiency', chart);
+  }
+
+  initSatisfactionChart() {
+    const container = getCachedElement('#satisfaction-chart');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
+    container.appendChild(chartContainer);
+
+    const chart = echarts.init(chartContainer, null, {
+      renderer: 'canvas',
+      useDirtyRect: true
+    });
+
+    const option = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#ff4757',
+        borderWidth: 1,
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 10
+        },
+        formatter: function(params) {
+          const value = params[0].value;
+          return `时间: ${params[0].axisValue}<br/>患者满意度: ${value}%`;
+        }
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '5%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        axisLine: {
+          lineStyle: { color: '#ff4757' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8
+        },
+        axisTick: {
+          lineStyle: { color: '#ff4757' }
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: { color: '#ff4757' }
+        },
+        axisLabel: {
+          color: '#b8c5d1',
+          fontSize: 8,
+          formatter: function(value) {
+            return value + '%';
+          }
+        },
+        splitLine: {
+          lineStyle: { color: 'rgba(255, 71, 87, 0.1)' }
+        }
+      },
+      series: [{
+        name: '患者满意度',
+        data: [94, 95, 96, 97, 97, 97],
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 4,
+        lineStyle: {
+          color: '#ff4757',
+          width: 2
+        },
+        itemStyle: {
+          color: '#ff4757',
+          borderColor: '#ffffff',
+          borderWidth: 1
+        },
+        areaStyle: {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: 'rgba(255, 71, 87, 0.3)' },
+              { offset: 1, color: 'rgba(255, 71, 87, 0.05)' }
+            ]
+          }
+        }
+      }]
+    };
+
+    chart.setOption(option);
+    this.charts.set('satisfaction', chart);
+  }
+
+  initProgressBars() {
+    // 初始化所有进度条
+    const progressFills = document.querySelectorAll('.progress-fill[data-width]');
+    progressFills.forEach(fill => {
+      const width = fill.getAttribute('data-width');
+      if (width) {
+        fill.style.width = width + '%';
       }
     });
   }
@@ -691,29 +1191,8 @@ class ChartManager {
 
   updateCharts() {
     try {
-      // 更新患者流量图表数据
-      const patientFlowChart = this.charts.get('patientFlow');
-      if (patientFlowChart) {
-        const newData = Array.from({length: 7}, () => Math.floor(Math.random() * 200) + 50);
-        patientFlowChart.setOption({
-          series: [{
-            data: newData
-          }]
-            });
-        }
-
-        // 更新系统负载图表
-      const systemLoadChart = this.charts.get('systemLoad');
-      if (systemLoadChart) {
-        const newValue = Math.floor(Math.random() * 40) + 60; // 60-100%
-        systemLoadChart.setOption({
-          series: [{
-            data: [{
-              value: newValue
-            }]
-          }]
-        });
-      }
+      // 更新核心指标图表
+      this.updateCoreMetricsCharts();
 
       // 更新环境监控图表
       this.charts.forEach((chart, key) => {
@@ -754,6 +1233,102 @@ class ChartManager {
       });
     } catch (error) {
       console.error('Failed to update charts:', error);
+    }
+  }
+
+  updateCoreMetricsCharts() {
+    try {
+      // 更新收入图表
+      const revenueChart = this.charts.get('revenue');
+      if (revenueChart) {
+        const baseValue = 2000000;
+        const newData = Array.from({length: 6}, (_, i) => {
+          const variation = Math.floor((Math.random() - 0.5) * 800000);
+          return Math.max(Math.floor(baseValue + variation + (i * 100000)), 1000000);
+        });
+        revenueChart.setOption({
+          series: [{
+            data: newData
+          }]
+        });
+      }
+
+      // 更新患者流量图表
+      const patientsChart = this.charts.get('patients');
+      if (patientsChart) {
+        const baseValue = 1800;
+        const newData = Array.from({length: 6}, (_, i) => {
+          const variation = Math.floor((Math.random() - 0.5) * 400);
+          return Math.max(Math.floor(baseValue + variation + (i * 50)), 800);
+        });
+        patientsChart.setOption({
+          series: [{
+            data: newData
+          }]
+        });
+      }
+
+      // 更新设备使用率图表
+      const equipmentChart = this.charts.get('equipment');
+      if (equipmentChart) {
+        const baseValue = 75;
+        const newData = Array.from({length: 6}, (_, i) => {
+          const variation = Math.floor((Math.random() - 0.5) * 10);
+          return Math.max(Math.min(Math.floor(baseValue + variation + (i * 1)), 100), 50);
+        });
+        equipmentChart.setOption({
+          series: [{
+            data: newData
+          }]
+        });
+      }
+
+      // 更新能耗监控图表
+      const energyChart = this.charts.get('energy');
+      if (energyChart) {
+        const baseValue = 42;
+        const newData = Array.from({length: 6}, (_, i) => {
+          const variation = Math.floor((Math.random() - 0.5) * 8);
+          return Math.max(Math.floor(baseValue + variation + (i * 0.5)), 30);
+        });
+        energyChart.setOption({
+          series: [{
+            data: newData
+          }]
+        });
+      }
+
+      // 更新运营效率图表
+      const efficiencyChart = this.charts.get('efficiency');
+      if (efficiencyChart) {
+        const baseValue = 92;
+        const newData = Array.from({length: 6}, (_, i) => {
+          const variation = Math.floor((Math.random() - 0.5) * 4);
+          return Math.max(Math.min(Math.floor(baseValue + variation + (i * 0.2)), 100), 85);
+        });
+        efficiencyChart.setOption({
+          series: [{
+            data: newData
+          }]
+        });
+      }
+
+      // 更新患者满意度图表
+      const satisfactionChart = this.charts.get('satisfaction');
+      if (satisfactionChart) {
+        const baseValue = 96;
+        const newData = Array.from({length: 6}, (_, i) => {
+          const variation = Math.floor((Math.random() - 0.5) * 2);
+          return Math.max(Math.min(Math.floor(baseValue + variation + (i * 0.1)), 100), 90);
+        });
+        satisfactionChart.setOption({
+          series: [{
+            data: newData
+          }]
+        });
+      }
+    } catch (error) {
+      console.error('Failed to update core metrics charts:', error);
     }
   }
 
@@ -831,14 +1406,19 @@ class DataManager {
   updateMetrics() {
     // 更新主要指标
     const metrics = [
-      { selector: '.main-metric-value', values: ['¥2,456,789', '2,156', '78%', '45.6kW'] },
+      { selector: '.main-metric-value', values: ['¥2,456,789', '2,156', '78%', '45.6kW', '92.5%', '96.8%'] },
     ];
 
     metrics.forEach(metric => {
       const elements = document.querySelectorAll(metric.selector);
       elements.forEach((element, index) => {
         if (metric.values[index]) {
+          // 添加更新动画
+          element.classList.add('updating');
+          setTimeout(() => {
           element.textContent = metric.values[index];
+            element.classList.remove('updating');
+          }, 250);
         }
             });
         });
