@@ -330,58 +330,7 @@ body::after {
   font-weight: 500;
 }
 
-.color-options {
-  display: flex;
-  gap: var(--spacing-sm);
-}
 
-.color-option {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  /* 移除过渡效果以提升性能 */
-  backdrop-filter: var(--blur-md);
-}
-
-.color-option:hover {
-  border-color: rgba(var(--primary-color-rgb), 0.5);
-  background: rgba(var(--primary-color-rgb), 0.1);
-}
-
-.color-option.active {
-  border-color: var(--primary-color);
-  background: rgba(var(--primary-color-rgb), 0.2);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.color-preview {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  /* 移除过渡效果以提升性能 */
-  flex-shrink: 0;
-}
-
-.color-option.active .color-preview {
-  border-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.color-option span {
-  font-size: var(--text-sm);
-  color: #ffffff;
-  font-weight: 500;
-  white-space: nowrap;
-}
 
 /* 移除头部闪光动画效果 */
 .dashboard-header::before {
@@ -4016,25 +3965,25 @@ body.dark-mode .comparison-value.error {
 
 /* 夜间模式按钮和控件 */
 body.dark-mode .theme-toggle-btn,
-body.dark-mode .color-option,
 body.dark-mode .toggle-btn {
   background: rgba(255, 255, 255, 0.05);
   color: #ffffff;
 }
 
 body.dark-mode .theme-toggle-btn:hover,
-body.dark-mode .color-option:hover,
 body.dark-mode .toggle-btn:hover {
   background: rgba(var(--primary-color-rgb), 0.15);
   color: var(--primary-color);
 }
 
 body.dark-mode .theme-toggle-btn.active,
-body.dark-mode .color-option.active,
 body.dark-mode .toggle-btn.active {
-  background: rgba(var(--primary-color-rgb), 0.25);
+  background: rgba(var(--primary-color-rgb), 0.35);
   color: var(--primary-color);
-  box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.3);
+  border-color: var(--primary-color);
+  border-width: 2px;
+  box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6);
+  transform: scale(1.05);
 }
 
 /* 夜间模式时间显示 - 与白天模式统一 */
@@ -4163,28 +4112,6 @@ body.dark-mode .monitoring-item {
     align-items: center;
   }
 
-  /* 颜色切换器手机端优化 */
-  .color-options {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4px;
-  }
-
-  .color-option {
-    padding: 4px 8px;
-    font-size: 10px;
-    min-height: 32px;
-    min-width: auto;
-  }
-
-  .color-option span {
-    font-size: 10px;
-  }
-
-  .color-preview {
-    width: 14px;
-    height: 14px;
-  }
 
   /* 主题切换按钮手机端优化 */
   .theme-toggle-btn {
@@ -4645,19 +4572,6 @@ body.dark-mode .monitoring-item {
     gap: var(--spacing-sm);
   }
 
-  .color-options {
-    gap: 4px;
-  }
-
-  .color-option {
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-
-  .color-preview {
-    width: 14px;
-    height: 14px;
-  }
 
   .theme-toggle-btn {
     padding: var(--spacing-xs) var(--spacing-sm);
@@ -4772,24 +4686,6 @@ body.dark-mode .monitoring-item {
     font-size: var(--text-md);
   }
 
-  .color-options {
-    gap: 3px;
-  }
-
-  .color-option {
-    padding: 4px 6px;
-    min-height: 28px;
-    min-width: 28px;
-  }
-
-  .color-option span {
-    display: none; /* 隐藏文字，只显示颜色圆点 */
-  }
-
-  .color-preview {
-    width: 12px;
-    height: 12px;
-  }
 
   .theme-toggle-btn {
     padding: 2px var(--spacing-xs);
