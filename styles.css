@@ -602,11 +602,10 @@ body::after {
 /* 移除旋转背景动画效果 */
 
 .main-title-large {
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   color: var(--primary-color);
   text-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.6);
-  margin-bottom: var(--spacing-md);
-}
+ }
 
 /* 统一卡片基础样式 */
 .unified-metric-card {
