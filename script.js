@@ -580,7 +580,14 @@ function updateQualityMetrics() {
 
 // 更新实时监控数据 - 优化DOM查询
 function updateMonitoringData() {
-    // 更新监控概览数据
+    updateHospitalMetrics();
+    updateNetworkMetrics();
+    updateStatusIndicators();
+    ensureElementsVisible();
+}
+
+// 更新医院指标
+function updateHospitalMetrics() {
     const hospitalLoad = Math.floor(Math.random() * 30) + 70;
     const powerConsumption = (Math.random() * 20 + 35).toFixed(1);
     
@@ -589,65 +596,59 @@ function updateMonitoringData() {
     if (hospitalLoadEl) hospitalLoadEl.textContent = hospitalLoad + '%';
     if (powerConsumptionEl) powerConsumptionEl.textContent = powerConsumption + 'kW';
     
-    // 更新状态指示器 - 使用缓存优化
+    updateHospitalLoadStatus(hospitalLoad);
+    updatePowerStatus(powerConsumption);
+}
+
+// 更新医院负荷状态
+function updateHospitalLoadStatus(hospitalLoad) {
     const hospitalLoadStatus = getCachedElement('hospital-load-status');
+    if (!hospitalLoadStatus) return;
+    
+    let status;
+    let className;
+    
+    if (hospitalLoad > 85) {
+        status = '高负荷';
+        className = 'comparison-value warning';
+    } else if (hospitalLoad > 70) {
+        status = '正常';
+        className = 'comparison-value normal';
+    } else {
+        status = '低负荷';
+        className = 'comparison-value normal';
+    }
+    
+    hospitalLoadStatus.textContent = status;
+    hospitalLoadStatus.className = className;
+}
+
+// 更新功耗状态
+function updatePowerStatus(powerConsumption) {
     const powerStatus = getCachedElement('power-status');
+    if (!powerStatus) return;
     
-    if (hospitalLoadStatus) {
-        // 确定医院负荷状态
-        let loadStatus, loadClass;
-        if (hospitalLoad > 85) {
-            loadStatus = '高负荷';
-            loadClass = 'comparison-value warning';
-        } else if (hospitalLoad > 70) {
-            loadStatus = '正常';
-            loadClass = 'comparison-value normal';
-        } else {
-            loadStatus = '低负荷';
-            loadClass = 'comparison-value normal';
-        }
-        
-        hospitalLoadStatus.textContent = loadStatus;
-        hospitalLoadStatus.className = loadClass;
+    const powerValue = parseFloat(powerConsumption);
+    let status;
+    let className;
+    
+    if (powerValue > 50) {
+        status = '高功耗';
+        className = 'comparison-value warning';
+    } else if (powerValue > 35) {
+        status = '正常';
+        className = 'comparison-value normal';
+    } else {
+        status = '低功耗';
+        className = 'comparison-value normal';
     }
     
-    if (powerStatus) {
-        const powerValue = parseFloat(powerConsumption);
-        
-        // 确定功耗状态
-        let powerStatusText, powerClass;
-        if (powerValue > 50) {
-            powerStatusText = '高功耗';
-            powerClass = 'comparison-value warning';
-        } else if (powerValue > 35) {
-            powerStatusText = '正常';
-            powerClass = 'comparison-value normal';
-        } else {
-            powerStatusText = '低功耗';
-            powerClass = 'comparison-value normal';
-        }
-        
-        powerStatus.textContent = powerStatusText;
-        powerStatus.className = powerClass;
-    }
-    
-    // 能源统计相关代码已移除（HTML中不存在对应元素）
-    
-    // 环境数据相关代码已移除（HTML中不存在对应元素）
-    
-    // 更新电力图表
-    if (window.powerChart && typeof window.powerChart.setOption === 'function') {
-        window.powerChart.setOption({
-            series: [{
-                data: [{
-                    value: currentPower,
-                    name: '用电'
-                }]
-            }]
-        });
-    }
-    
-    // 更新网络数据 - 使用缓存优化
+    powerStatus.textContent = status;
+    powerStatus.className = className;
+}
+
+// 更新网络指标
+function updateNetworkMetrics() {
     const uploadSpeed = Math.floor(Math.random() * 50) + 100;
     const downloadSpeed = Math.floor(Math.random() * 200) + 800;
     const onlineDevices = Math.floor(Math.random() * 100) + 2300;
@@ -662,12 +663,6 @@ function updateMonitoringData() {
     if (downloadSpeedEl) downloadSpeedEl.textContent = downloadSpeed + ' Mbps';
     if (onlineDevicesEl) onlineDevicesEl.textContent = onlineDevices.toLocaleString();
     if (networkLatencyEl) networkLatencyEl.textContent = networkLatency + 'ms';
-    
-    // 更新状态指示器
-    updateStatusIndicators();
-    
-    // 确保所有元素可见
-    ensureElementsVisible();
 }
 
 // 更新状态指示器
