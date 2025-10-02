@@ -15,11 +15,11 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="dashboard-container" role="main" aria-label="医院数据看板展示大屏">
+    <div class="dashboard-container"  aria-label="医院数据看板展示大屏">
         <!-- 头部标题区域 -->
         <header class="dashboard-header" role="banner">
             <h1 class="main-title">医院数据看板展示大屏</h1>
-            <div class="header-controls" role="toolbar" aria-label="页面控制工具">
+            <div class="header-controls"  aria-label="页面控制工具">
                 <div class="datetime-display" role="timer" aria-label="当前时间">
                     <span id="current-time" aria-live="polite"></span>
                 </div>
@@ -322,12 +322,12 @@
                         </div>
                         
                         <!-- 图表区域 -->
-                        <div class="charts-section" role="region" aria-label="数据图表区域">
+                        <div class="charts-section"  aria-label="数据图表区域">
                             <div class="chart-row">
-                                <div class="chart-container-small" role="img" aria-label="患者流量趋势图表">
+                                <div class="chart-container-small"  aria-label="患者流量趋势图表">
                                     <div class="chart-header">
                                         <h3 class="chart-title">患者流量趋势</h3>
-                                        <div class="chart-toggle" role="group" aria-label="选择时间周期">
+                                        <div class="chart-toggle"  aria-label="选择时间周期">
                                             <button class="toggle-btn active" data-period="day" aria-pressed="true" aria-label="显示日数据">日</button>
                                             <button class="toggle-btn" data-period="month" aria-pressed="false" aria-label="显示月数据">月</button>
                                         </div>
@@ -335,10 +335,10 @@
                                     <div id="patientFlowChart" class="chart-item" aria-label="患者流量趋势图，显示不同时间段的患者数量变化"></div>
                                 </div>
                             
-                                <div class="chart-container-small" role="img" aria-label="能源消耗趋势图表">
+                                <div class="chart-container-small"  aria-label="能源消耗趋势图表">
                                     <div class="chart-header">
                                         <h3 class="chart-title">能源消耗趋势</h3>
-                                        <div class="chart-toggle" role="group" aria-label="选择时间周期">
+                                        <div class="chart-toggle"  aria-label="选择时间周期">
                                             <button class="toggle-btn active" data-period="day" aria-pressed="true" aria-label="显示日数据">日</button>
                                             <button class="toggle-btn" data-period="month" aria-pressed="false" aria-label="显示月数据">月</button>
                                         </div>
