@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>医院数据看板展示大屏</title>
     <link rel="stylesheet" href="styles.css">
     <!-- 预加载关键资源 -->
@@ -15,20 +15,20 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="dashboard-container"  aria-label="医院数据看板展示大屏">
+    <div class="dashboard-container">
         <!-- 头部标题区域 -->
-        <header class="dashboard-header" role="banner">
+        <header class="dashboard-header">
             <div class="header-logo-title">
                 <span class="header-logo" style="display:inline-block;vertical-align:middle;margin-right:16px;font-size:36px;line-height:1;">🏥</span>
                 <h1 class="main-title" style="display:inline-block;vertical-align:middle;">医院数据看板展示大屏</h1>
             </div>
-            <div class="header-controls"  aria-label="页面控制工具">
-                <div class="datetime-display" role="timer" aria-label="当前时间">
-                    <span id="current-time" aria-live="polite"></span>
+            <div class="header-controls">
+                <div class="datetime-display">
+                    <span id="current-time"></span>
                 </div>
                 <div class="theme-mode-switcher">
-                    <button id="theme-toggle" class="theme-toggle-btn" title="切换白天/夜间模式" aria-label="切换白天和夜间模式" aria-pressed="false">
-                        <span class="theme-icon" aria-hidden="true">☀️</span>
+                    <button id="theme-toggle" class="theme-toggle-btn" title="切换白天/夜间模式">
+                        <span class="theme-icon">☀️</span>
                         <span class="theme-text">白天</span>
                     </button>
                 </div>
@@ -37,25 +37,6 @@
 
         <!-- 主要内容区域 -->
         <main class="dashboard-main">
-            <!-- 手机端导航指示器 -->
-            <div class="mobile-nav-indicator">
-                <div class="nav-dot active" data-section="left"></div>
-                <div class="nav-dot" data-section="middle"></div>
-                <div class="nav-dot" data-section="right"></div>
-            </div>
-            
-            <!-- 手机端快速操作按钮 -->
-            <div class="mobile-quick-actions">
-                <button class="quick-action-btn" data-action="refresh" title="刷新数据">
-                    <span class="action-icon">🔄</span>
-                </button>
-                <button class="quick-action-btn" data-action="fullscreen" title="全屏显示">
-                    <span class="action-icon">⛶</span>
-                </button>
-                <button class="quick-action-btn" data-action="theme" title="切换主题">
-                    <span class="action-icon">🌙</span>
-                </button>
-            </div>
             
             <!-- 左侧区域 - 科室运营情况 -->
             <section class="left-section" data-section="left">
@@ -325,28 +306,28 @@
                         </div>
                         
                         <!-- 图表区域 -->
-                        <div class="charts-section"  aria-label="数据图表区域">
+                        <div class="charts-section">
                             <div class="chart-row">
-                                <div class="chart-container-small"  aria-label="患者流量趋势图表">
+                                <div class="chart-container-small">
                                     <div class="chart-header">
                                         <h3 class="chart-title">患者流量趋势</h3>
-                                        <div class="chart-toggle"  aria-label="选择时间周期">
-                                            <button class="toggle-btn active" data-period="day" aria-pressed="true" aria-label="显示日数据">日</button>
-                                            <button class="toggle-btn" data-period="month" aria-pressed="false" aria-label="显示月数据">月</button>
+                                        <div class="chart-toggle">
+                                            <button class="toggle-btn active" data-period="day" >日</button>
+                                            <button class="toggle-btn" data-period="month" >月</button>
                                         </div>
                                     </div>
-                                    <div id="patientFlowChart" class="chart-item" aria-label="患者流量趋势图，显示不同时间段的患者数量变化"></div>
+                                    <div id="patientFlowChart" class="chart-item" ></div>
                                 </div>
                             
-                                <div class="chart-container-small"  aria-label="能源消耗趋势图表">
+                                <div class="chart-container-small">
                                     <div class="chart-header">
                                         <h3 class="chart-title">能源消耗趋势</h3>
-                                        <div class="chart-toggle"  aria-label="选择时间周期">
-                                            <button class="toggle-btn active" data-period="day" aria-pressed="true" aria-label="显示日数据">日</button>
-                                            <button class="toggle-btn" data-period="month" aria-pressed="false" aria-label="显示月数据">月</button>
+                                        <div class="chart-toggle">
+                                            <button class="toggle-btn active" data-period="day" >日</button>
+                                            <button class="toggle-btn" data-period="month" >月</button>
                                         </div>
                                     </div>
-                                    <div id="energyChart" class="chart-item" aria-label="能源消耗趋势图，显示不同时间段的能源使用情况"></div>
+                                    <div id="energyChart" class="chart-item" ></div>
                                 </div>
                             </div>
                         </div>

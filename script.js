@@ -1,9 +1,6 @@
 // 患者流量趋势图表显示模式状态
 let patientFlowChartMode = 'day'; // 'day' 或 'month'
 
-// 手机端导航状态
-let currentMobileSection = 0;
-let isMobile = window.innerWidth <= 768;
 
 // 开发模式配置 - 控制日志输出
 const DEBUG_MODE = false; // 生产环境设为false，开发环境设为true
@@ -112,140 +109,7 @@ function ensureElementsVisible() {
     });
 }
 
-// 手机端导航功能
-function initMobileNavigation() {
-    if (!isMobile) return;
-    
-    const sections = document.querySelectorAll('[data-section]');
-    const navDots = document.querySelectorAll('.nav-dot');
-    let startY = 0;
-    let currentY = 0;
-    let isScrolling = false;
-    
-    // 导航点点击事件
-    navDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            scrollToSection(index);
-        });
-    });
-    
-    // 触摸事件处理
-    document.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-        isScrolling = true;
-    }, { passive: true });
-    
-    document.addEventListener('touchmove', (e) => {
-        if (!isScrolling) return;
-        currentY = e.touches[0].clientY;
-        const deltaY = startY - currentY;
-        
-        // 如果滑动距离足够大，切换section
-        if (Math.abs(deltaY) > 50) {
-            if (deltaY > 0 && currentMobileSection < sections.length - 1) {
-                // 向上滑动，下一个section
-                scrollToSection(currentMobileSection + 1);
-            } else if (deltaY < 0 && currentMobileSection > 0) {
-                // 向下滑动，上一个section
-                scrollToSection(currentMobileSection - 1);
-            }
-            isScrolling = false;
-        }
-    }, { passive: true });
-    
-    document.addEventListener('touchend', () => {
-        isScrolling = false;
-    }, { passive: true });
-    
-    // 滚动到指定section
-    function scrollToSection(index) {
-        if (index < 0 || index >= sections.length) return;
-        
-        currentMobileSection = index;
-        const targetSection = sections[index];
-        
-        // 更新导航点状态
-        navDots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-        });
-        
-        // 平滑滚动到目标section
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-    
-    // 监听滚动事件更新当前section
-    let scrollTimeout;
-    document.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            updateCurrentSection();
-        }, 100);
-    }, { passive: true });
-    
-    function updateCurrentSection() {
-        const windowHeight = window.innerHeight;
-        
-        sections.forEach((section, index) => {
-            const rect = section.getBoundingClientRect();
-            if (rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2) {
-                if (currentMobileSection !== index) {
-                    currentMobileSection = index;
-                    navDots.forEach((dot, i) => {
-                        dot.classList.toggle('active', i === index);
-                    });
-                }
-            }
-        });
-    }
-}
 
-// 手机端快速操作功能
-function initMobileQuickActions() {
-    if (!isMobile) return;
-    
-    const quickActionBtns = document.querySelectorAll('.quick-action-btn');
-    
-    quickActionBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const action = this.getAttribute('data-action');
-            
-            switch(action) {
-                case 'refresh':
-                    // 刷新数据
-                    updateData();
-                    // 添加刷新动画
-                    this.style.transform = 'rotate(360deg)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 500);
-                    break;
-                    
-                case 'fullscreen':
-                    // 全屏切换
-                    if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(() => {
-                            // 静默处理，某些浏览器可能不支持全屏
-                        });
-                    } else {
-                        document.exitFullscreen();
-                    }
-                    break;
-                    
-                case 'theme': {
-                    // 切换主题
-                    const themeToggle = document.getElementById('theme-toggle');
-                    if (themeToggle) {
-                        themeToggle.click();
-                    }
-                    break;
-                }
-            }
-        });
-    });
-}
 
 // 更新数据
 // 数据验证工具
@@ -2433,24 +2297,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // 初始化主题模式管理器
         window.themeModeManager = new ThemeModeManager();
         
-        // 检测是否为手机端
-        isMobile = window.innerWidth <= 768;
-        
-        // 初始化手机端导航
-        initMobileNavigation();
-        
-        // 初始化手机端快速操作
-        initMobileQuickActions();
-        
-        // 监听窗口大小变化
-        window.addEventListener('resize', function() {
-            const newIsMobile = window.innerWidth <= 768;
-            if (newIsMobile !== isMobile) {
-                isMobile = newIsMobile;
-                // 重新初始化手机端导航
-                initMobileNavigation();
-            }
-        });
         
         // 初始化时间显示 - 每秒更新
         updateTime();
@@ -2612,83 +2458,15 @@ function initAccessibility() {
     }
 }
 
-// 键盘快捷键
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'F11') {
-        e.preventDefault();
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            document.exitFullscreen();
-        }
-    }
-});
-
-// 全屏提示
-function showFullscreenTip() {
-    const tip = document.createElement('div');
-    tip.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #00e5ff;
-        padding: 10px 15px;
-        border-radius: 5px;
-        border: 1px solid #00e5ff;
-        font-size: 14px;
-        z-index: 1000;
-        /* 移除动画效果 */
-    `;
-    tip.textContent = '按F11键进入全屏模式';
-    document.body.appendChild(tip);
-    
-    setTimeout(() => {
-        document.body.removeChild(tip);
-    }, 3000);
-}
 
 
-// 页面加载后显示提示
-setTimeout(showFullscreenTip, 2000);
+
 
 // 视频监控模态框功能
 // initVideoModal函数已移除（HTML中不存在对应模态框）
 
 // 所有模态框相关函数已移除（HTML中不存在对应模态框）
 
-// 页面初始化
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        // 初始化时间显示
-        updateTime();
-        setInterval(updateTime, 1000);
-        
-        // 初始化移动端导航
-        if (isMobile) {
-            initMobileNavigation();
-            initMobileQuickActions();
-        }
-        
-        // 初始化图表
-        if (checkEChartsAvailable()) {
-            initCharts();
-        }
-        
-        // 初始化无障碍功能
-        initAccessibility();
-        
-        // 开始数据更新
-        updateData();
-        
-        // 定期更新数据
-        safeSetInterval(updateData, 10000);
-        safeSetInterval(updateSystemStatus, 20000);
-        
-    } catch (error) {
-        console.error('页面初始化失败:', error);
-    }
-});
 
 // 页面卸载时清理资源
 window.addEventListener('beforeunload', cleanup);
