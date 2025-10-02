@@ -51,13 +51,33 @@
   --morandi-radius-lg: 16px;
   --morandi-radius-xl: 24px;
   
-  /* 间距 - 符合用户浏览器习惯 */
-  --morandi-spacing-xs: 3px;
-  --morandi-spacing-sm: 6px;
-  --morandi-spacing-md: 12px;
-  --morandi-spacing-lg: 18px;
-  --morandi-spacing-xl: 24px;
-  --morandi-spacing-2xl: 36px;
+  /* 间距系统 - 基于8px网格系统，符合用户浏览器习惯 */
+  --morandi-spacing-0: 0px;        /* 无间距 */
+  --morandi-spacing-1: 4px;        /* 最小间距 */
+  --morandi-spacing-2: 8px;        /* 小间距 */
+  --morandi-spacing-3: 12px;       /* 中小间距 */
+  --morandi-spacing-4: 16px;       /* 中等间距 */
+  --morandi-spacing-5: 20px;       /* 中大间距 */
+  --morandi-spacing-6: 24px;       /* 大间距 */
+  --morandi-spacing-8: 32px;       /* 超大间距 */
+  --morandi-spacing-10: 40px;      /* 特大间距 */
+  --morandi-spacing-12: 48px;      /* 最大间距 */
+  
+  /* 语义化间距别名 - 保持向后兼容 */
+  --morandi-spacing-xs: var(--morandi-spacing-1);    /* 4px */
+  --morandi-spacing-sm: var(--morandi-spacing-2);    /* 8px */
+  --morandi-spacing-md: var(--morandi-spacing-3);    /* 12px */
+  --morandi-spacing-lg: var(--morandi-spacing-4);    /* 16px */
+  --morandi-spacing-xl: var(--morandi-spacing-6);    /* 24px */
+  --morandi-spacing-2xl: var(--morandi-spacing-8);   /* 32px */
+  
+  /* 组件特定间距 */
+  --morandi-spacing-card: var(--morandi-spacing-4);     /* 卡片内边距 */
+  --morandi-spacing-section: var(--morandi-spacing-6);  /* 区域间距 */
+  --morandi-spacing-grid: var(--morandi-spacing-3);     /* 网格间距 */
+  --morandi-spacing-list: var(--morandi-spacing-2);     /* 列表项间距 */
+  --morandi-spacing-button: var(--morandi-spacing-2);   /* 按钮内边距 */
+  --morandi-spacing-input: var(--morandi-spacing-2);    /* 输入框内边距 */
   
   /* 字体大小 */
   --morandi-text-xs: 12px;
@@ -125,7 +145,7 @@ body {
 .dashboard-header {
   background: var(--morandi-bg-card);
   border-bottom: 1px solid var(--morandi-border);
-  padding: var(--morandi-spacing-lg) var(--morandi-spacing-xl);
+  padding: var(--morandi-spacing-4) var(--morandi-spacing-6);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -138,7 +158,7 @@ body {
 .header-content {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
 }
 
 .main-title {
@@ -158,7 +178,7 @@ body {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-lg);
+  gap: var(--morandi-spacing-4);
 }
 
 /* 时间显示 */
@@ -166,7 +186,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-sm) var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-3);
   font-size: var(--morandi-text-base);
   color: var(--morandi-text-primary);
   font-weight: 500;
@@ -183,8 +203,8 @@ body {
 .theme-toggle-btn {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-sm) var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -216,8 +236,8 @@ body {
   flex: 1;
   display: grid;
   grid-template-columns: 320px 1fr 320px;
-  gap: var(--morandi-spacing-lg);
-  padding: var(--morandi-spacing-lg);
+  gap: var(--morandi-spacing-section);
+  padding: var(--morandi-spacing-4);
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
@@ -228,7 +248,7 @@ body {
   background: var(--morandi-bg-card);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-lg);
-  padding: var(--morandi-spacing-lg);
+  padding: var(--morandi-spacing-card);
   box-shadow: var(--morandi-shadow-sm);
   transition: all 0.3s ease;
   position: relative;
@@ -243,8 +263,8 @@ body {
   font-size: var(--morandi-text-lg);
   font-weight: 600;
   color: var(--morandi-text-primary);
-  margin-bottom: var(--morandi-spacing-lg);
-  padding-bottom: var(--morandi-spacing-sm);
+  margin-bottom: var(--morandi-spacing-4);
+  padding-bottom: var(--morandi-spacing-2);
   border-bottom: 2px solid var(--morandi-border-light);
   position: relative;
 }
@@ -264,33 +284,33 @@ body {
 .left-section {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-lg);
+  gap: var(--morandi-spacing-section);
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
-  padding-right: var(--morandi-spacing-sm);
+  padding-right: var(--morandi-spacing-2);
 }
 
 /* 核心指标卡片 */
 .core-metrics {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
 }
 
 /* 核心指标网格 */
 .metrics-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-grid);
 }
 
 .metric-card {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -343,7 +363,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
 }
 
 .metric-value {
@@ -351,20 +371,20 @@ body {
   font-weight: 700;
   color: var(--morandi-text-primary);
   line-height: 1.2;
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .metric-label {
   font-size: var(--morandi-text-xs);
   color: var(--morandi-text-secondary);
   font-weight: 500;
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .metric-trend {
   font-size: var(--morandi-text-xs);
   font-weight: 600;
-  padding: 2px var(--morandi-spacing-xs);
+  padding: 2px var(--morandi-spacing-1);
   border-radius: var(--morandi-radius-sm);
   display: inline-block;
 }
@@ -386,21 +406,21 @@ body {
 
 /* 科室运营状态 */
 .department-status {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
 }
 
 /* 科室列表 */
 .department-list {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-list);
 }
 
 .department-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--morandi-spacing-sm) var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-2) var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -416,7 +436,7 @@ body {
 .dept-info {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
 }
 
 .dept-name {
@@ -431,7 +451,7 @@ body {
 }
 
 .dept-status {
-  padding: var(--morandi-spacing-xs) var(--morandi-spacing-sm);
+  padding: var(--morandi-spacing-1) var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
   font-size: var(--morandi-text-xs);
   font-weight: 600;
@@ -456,7 +476,7 @@ body {
 
 /* 医疗质量指标 */
 .quality-indicators {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
 }
 
 
@@ -464,15 +484,15 @@ body {
 .quality-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-grid);
 }
 
 .quality-item {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -502,7 +522,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
 }
 
 .quality-value {
@@ -510,7 +530,7 @@ body {
   font-weight: 700;
   color: var(--morandi-text-primary);
   line-height: 1.2;
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .quality-label {
@@ -523,7 +543,7 @@ body {
 .middle-section {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-lg);
+  gap: var(--morandi-spacing-section);
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
@@ -534,8 +554,8 @@ body {
 .charts-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--morandi-spacing-md);
-  margin-bottom: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-grid);
+  margin-bottom: var(--morandi-spacing-3);
   position: relative;
 }
 
@@ -581,7 +601,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--morandi-spacing-lg);
+  margin-bottom: var(--morandi-spacing-4);
 }
 
 .chart-title {
@@ -590,7 +610,7 @@ body {
   color: var(--morandi-text-primary);
   margin: 0;
   position: relative;
-  padding-left: var(--morandi-spacing-sm);
+  padding-left: var(--morandi-spacing-2);
 }
 
 .chart-card:first-child .chart-title::before {
@@ -619,11 +639,11 @@ body {
 
 .chart-controls {
   display: flex;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
 }
 
 .control-btn {
-  padding: var(--morandi-spacing-xs) var(--morandi-spacing-sm);
+  padding: var(--morandi-spacing-1) var(--morandi-spacing-2);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-sm);
@@ -653,7 +673,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-sm);
+  padding: var(--morandi-spacing-2);
   position: relative;
   overflow: hidden;
 }
@@ -668,7 +688,7 @@ body {
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
 }
 
 .chart-loading::before {
@@ -688,20 +708,20 @@ body {
 
 /* 实时数据指标 */
 .real-time-metrics {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
 }
 
 .metrics-row {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-grid);
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -710,10 +730,10 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   display: flex !important;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -727,9 +747,9 @@ body {
 .metric-header {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
   flex-shrink: 0;
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .metric-header .metric-icon {
@@ -759,7 +779,7 @@ body {
   font-weight: 600;
   color: var(--morandi-primary);
   background: rgba(139, 157, 195, 0.1);
-  padding: 4px 8px;
+  padding: var(--morandi-spacing-1) var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
   border: 1px solid rgba(139, 157, 195, 0.3);
   min-width: 60px;
@@ -809,20 +829,20 @@ body {
   font-weight: 700;
   color: var(--morandi-text-primary);
   line-height: 1.2;
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .metric-label {
   font-size: var(--morandi-text-sm);
   color: var(--morandi-text-secondary);
-  margin: 0 0 4px 0;
+  margin: 0 0 var(--morandi-spacing-1) 0;
   line-height: 1.3;
 }
 
 .metric-trend {
   font-size: var(--morandi-text-xs);
   font-weight: 600;
-  padding: 3px 8px;
+  padding: 3px var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
   margin-top: 2px;
   align-self: flex-start;
@@ -845,11 +865,11 @@ body {
 
 /* 运营数据看板 */
 .operational-dashboard {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -858,7 +878,7 @@ body {
 .dashboard-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--morandi-spacing-lg);
+  gap: var(--morandi-spacing-4);
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -867,7 +887,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -878,8 +898,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--morandi-spacing-md);
-  padding-bottom: var(--morandi-spacing-sm);
+  margin-bottom: var(--morandi-spacing-3);
+  padding-bottom: var(--morandi-spacing-2);
   border-bottom: 1px solid var(--morandi-border-light);
 }
 
@@ -918,7 +938,7 @@ body {
 .efficiency-bars {
   display: flex !important;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-list);
   visibility: visible !important;
   opacity: 1 !important;
   width: 100%;
@@ -928,7 +948,7 @@ body {
 .efficiency-bar {
   display: flex !important;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
   width: 100%;
   visibility: visible !important;
   opacity: 1 !important;
@@ -972,7 +992,7 @@ body {
 .resource-metrics {
   display: flex !important;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-list);
   visibility: visible !important;
   opacity: 1 !important;
   width: 100%;
@@ -981,8 +1001,8 @@ body {
 .resource-item {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2);
   background: var(--morandi-bg-primary);
   border-radius: var(--morandi-radius-sm);
   border: 1px solid var(--morandi-border-light);
@@ -1011,11 +1031,11 @@ body {
 
 /* 性能监控面板 */
 .performance-monitoring {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -1024,7 +1044,7 @@ body {
 .performance-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr;
-  gap: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-grid);
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -1033,7 +1053,7 @@ body {
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -1044,8 +1064,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--morandi-spacing-sm);
-  padding-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-2);
+  padding-bottom: var(--morandi-spacing-1);
   border-bottom: 1px solid var(--morandi-border-light);
 }
 
@@ -1090,7 +1110,7 @@ body {
 .performance-metrics {
   display: flex !important;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-list);
   visibility: visible !important;
   opacity: 1 !important;
   width: 100%;
@@ -1099,7 +1119,7 @@ body {
 .metric-row {
   display: flex !important;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
   width: 100%;
   visibility: visible !important;
   opacity: 1 !important;
@@ -1145,7 +1165,7 @@ body {
 .network-metrics {
   display: flex !important;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-list);
   visibility: visible !important;
   opacity: 1 !important;
   width: 100%;
@@ -1154,8 +1174,8 @@ body {
 .network-item {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2);
   background: var(--morandi-bg-primary);
   border-radius: var(--morandi-radius-sm);
   border: 1px solid var(--morandi-border-light);
@@ -1184,11 +1204,11 @@ body {
 
 /* 实时告警 */
 .alert-panel {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
-  padding: var(--morandi-spacing-md);
+  padding: var(--morandi-spacing-3);
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -1198,20 +1218,20 @@ body {
   display: flex !important;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
   visibility: visible !important;
   opacity: 1 !important;
 }
 
 .alert-summary {
   display: flex !important;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
   visibility: visible !important;
   opacity: 1 !important;
 }
 
 .alert-count {
-  padding: 4px 8px;
+  padding: var(--morandi-spacing-1) var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
   font-size: var(--morandi-text-sm);
   font-weight: 600;
@@ -1236,9 +1256,9 @@ body {
 
 .alert-tabs {
   display: flex !important;
-  gap: var(--morandi-spacing-xs);
-  margin-bottom: var(--morandi-spacing-md);
-  padding-bottom: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-1);
+  margin-bottom: var(--morandi-spacing-3);
+  padding-bottom: var(--morandi-spacing-2);
   border-bottom: 1px solid var(--morandi-border-light);
   visibility: visible !important;
   opacity: 1 !important;
@@ -1269,7 +1289,7 @@ body {
 .alert-list {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-list);
   max-height: 400px;
   overflow-y: auto;
   flex: 1;
@@ -1278,8 +1298,8 @@ body {
 .alert-item {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-2);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-sm);
@@ -1316,7 +1336,7 @@ body {
   font-size: var(--morandi-text-sm);
   font-weight: 600;
   color: var(--morandi-text-primary);
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .alert-time {
@@ -1326,7 +1346,7 @@ body {
 
 .alert-status {
   font-size: var(--morandi-text-xs);
-  padding: 2px 6px;
+  padding: 2px var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
   background: var(--morandi-bg-primary);
   color: var(--morandi-text-secondary);
@@ -1420,7 +1440,7 @@ body {
 .right-section {
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-lg);
+  gap: var(--morandi-spacing-section);
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 0;
@@ -1429,12 +1449,12 @@ body {
 /* 系统网格 */
 /* 系统状态概览 */
 .system-overview {
-  margin-bottom: var(--morandi-spacing-md);
+  margin-bottom: var(--morandi-spacing-3);
 }
 
 /* 系统状态概览内的子区域 */
 .system-section, .equipment-section, .performance-section {
-  margin-bottom: var(--morandi-spacing-lg);
+  margin-bottom: var(--morandi-spacing-4);
 }
 
 .system-section:last-child, .equipment-section:last-child, .performance-section:last-child {
@@ -1445,22 +1465,22 @@ body {
   font-size: var(--morandi-text-md);
   font-weight: 600;
   color: var(--morandi-text-primary);
-  margin-bottom: var(--morandi-spacing-md);
-  padding-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-3);
+  padding-bottom: var(--morandi-spacing-1);
   border-bottom: 1px solid var(--morandi-border);
 }
 
 .system-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--morandi-spacing-sm);
+  gap: var(--morandi-spacing-2);
 }
 
 .system-item {
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-md);
-  padding: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-3);
+  padding: var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -1473,14 +1493,14 @@ body {
 
 .system-status-corner {
   position: absolute;
-  top: var(--morandi-spacing-sm);
-  right: var(--morandi-spacing-sm);
+  top: var(--morandi-spacing-2);
+  right: var(--morandi-spacing-2);
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
   font-size: var(--morandi-text-xs);
   font-weight: 500;
-  padding: 4px 8px;
+  padding: var(--morandi-spacing-1) var(--morandi-spacing-2);
   border-radius: var(--morandi-radius-sm);
   z-index: 10;
 }
@@ -1555,7 +1575,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
   padding-right: 60px; /* 为右上角状态留出空间 */
 }
 
@@ -1563,13 +1583,13 @@ body {
   font-size: var(--morandi-text-md);
   font-weight: 600;
   color: var(--morandi-text-primary);
-  margin-bottom: 2px;
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .system-description {
   font-size: var(--morandi-text-xs);
   color: var(--morandi-text-secondary);
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 
@@ -1670,21 +1690,19 @@ body {
 }
 
 /* 环境监控 */
-.environment-monitoring {
-}
 
 .environment-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-grid);
 }
 
 .env-item {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--morandi-spacing-sm);
-  padding: var(--morandi-spacing-md);
+  gap: var(--morandi-spacing-2);
+  padding: var(--morandi-spacing-3);
   background: var(--morandi-bg-secondary);
   border: 1px solid var(--morandi-border);
   border-radius: var(--morandi-radius-md);
@@ -1714,7 +1732,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--morandi-spacing-xs);
+  gap: var(--morandi-spacing-1);
 }
 
 .env-value {
@@ -1722,7 +1740,7 @@ body {
   font-weight: 700;
   color: var(--morandi-text-primary);
   line-height: 1.2;
-  margin-bottom: var(--morandi-spacing-xs);
+  margin-bottom: var(--morandi-spacing-1);
 }
 
 .env-label {
@@ -1778,7 +1796,7 @@ body {
 @media (max-width: 1200px) {
   .dashboard-main {
     grid-template-columns: 280px 1fr 280px;
-    gap: var(--morandi-spacing-md);
+    gap: var(--morandi-spacing-grid);
   }
   
   .metrics-grid {
@@ -1809,15 +1827,11 @@ body {
     min-height: 180px;
   }
   
-  .chart-card {
-  }
   
   .metrics-row {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .metric-item {
-  }
   
   .dashboard-grid,
   .performance-grid {
@@ -1826,15 +1840,13 @@ body {
   
   .charts-section {
     grid-template-columns: 1fr;
-    gap: var(--morandi-spacing-md);
+    gap: var(--morandi-spacing-grid);
   }
   
   .charts-section::before {
     display: none;
   }
   
-  .chart-card {
-  }
   
   .chart-card:first-child,
   .chart-card:last-child {
@@ -1846,15 +1858,15 @@ body {
   .dashboard-main {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
-    gap: var(--morandi-spacing-md);
-    padding: var(--morandi-spacing-md);
+    gap: var(--morandi-spacing-grid);
+    padding: var(--morandi-spacing-3);
     overflow-y: auto;
   }
   
   .dashboard-header {
-    padding: var(--morandi-spacing-md);
+    padding: var(--morandi-spacing-3);
     flex-direction: column;
-    gap: var(--morandi-spacing-md);
+    gap: var(--morandi-spacing-3);
     align-items: flex-start;
   }
   
@@ -1877,11 +1889,7 @@ body {
     min-height: 160px;
   }
   
-  .chart-card {
-  }
   
-  .alert-panel {
-  }
   
   .metrics-row {
     grid-template-columns: 1fr;
@@ -1892,8 +1900,6 @@ body {
     grid-template-columns: 1fr;
   }
   
-  .metric-item {
-  }
   
   .metric-value {
     font-size: var(--morandi-text-xl);
@@ -1906,15 +1912,13 @@ body {
   
   .charts-section {
     grid-template-columns: 1fr;
-    gap: var(--morandi-spacing-sm);
+    gap: var(--morandi-spacing-2);
   }
   
   .charts-section::before {
     display: none;
   }
   
-  .chart-card {
-  }
   
   .chart-card:first-child,
   .chart-card:last-child {
@@ -1928,12 +1932,12 @@ body {
 
 @media (max-width: 480px) {
   .dashboard-main {
-    padding: var(--morandi-spacing-sm);
-    gap: var(--morandi-spacing-sm);
+    padding: var(--morandi-spacing-2);
+    gap: var(--morandi-spacing-2);
   }
   
   .card {
-    padding: var(--morandi-spacing-md);
+    padding: var(--morandi-spacing-3);
   }
   
   .main-title {
