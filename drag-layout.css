@@ -1,0 +1,368 @@
+/* 拖拽布局功能样式 */
+
+/* 布局控制面板 */
+.layout-control-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background: rgba(26, 31, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.layout-control-panel.show {
+    transform: translateX(0);
+}
+
+.control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.control-header h3 {
+    margin: 0;
+    color: var(--primary-blue);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.close-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--primary-blue);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+}
+
+.control-content {
+    padding: 1rem;
+}
+
+.control-group {
+    margin-bottom: 1rem;
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+.control-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.control-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-blue);
+}
+
+.control-btn {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: var(--primary-blue);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.control-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--primary-blue);
+}
+
+.control-btn:last-child {
+    margin-bottom: 0;
+}
+
+/* 编辑模式样式 */
+.tech-card.editable {
+    cursor: move;
+    position: relative;
+}
+
+.tech-card.editable::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 212, 255, 0.05);
+    border: 2px dashed rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tech-card.editable:hover::before {
+    opacity: 1;
+}
+
+.tech-card.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+    z-index: 1000;
+    animation: dragPulse 0.5s ease-in-out infinite;
+}
+
+/* 拖拽目标区域 */
+.left-panel.edit-mode,
+.center-panel.edit-mode,
+.right-panel.edit-mode {
+    position: relative;
+    min-height: 200px;
+}
+
+.left-panel.drag-over,
+.center-panel.drag-over,
+.right-panel.drag-over {
+    background: rgba(0, 212, 255, 0.1);
+    border: 2px dashed var(--primary-blue);
+    border-radius: 12px;
+}
+
+.left-panel.drag-over::after,
+.center-panel.drag-over::after,
+.right-panel.drag-over::after {
+    content: '放置模块到这里';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* 通知样式 */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(26, 31, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.notification.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification-success {
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.notification-success i {
+    color: var(--success);
+}
+
+.notification-error {
+    border-color: rgba(255, 71, 87, 0.5);
+    background: rgba(255, 71, 87, 0.1);
+}
+
+.notification-error i {
+    color: var(--error);
+}
+
+.notification-info {
+    border-color: rgba(0, 212, 255, 0.5);
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.notification-info i {
+    color: var(--primary-blue);
+}
+
+/* 布局切换按钮 */
+.layout-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(26, 31, 46, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 50%;
+    color: var(--primary-blue);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.layout-toggle-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--primary-blue);
+    transform: scale(1.1);
+}
+
+/* 白天主题适配 */
+body.light .layout-control-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+body.light .control-header {
+    border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+body.light .control-header h3 {
+    color: var(--primary-blue);
+}
+
+body.light .close-btn {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--primary-blue);
+}
+
+body.light .close-btn:hover {
+    background: rgba(14, 165, 233, 0.2);
+}
+
+body.light .control-group label {
+    color: var(--text-primary);
+}
+
+body.light .control-btn {
+    background: rgba(14, 165, 233, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    color: var(--primary-blue);
+}
+
+body.light .control-btn:hover {
+    background: rgba(14, 165, 233, 0.2);
+    border-color: var(--primary-blue);
+}
+
+body.light .tech-card.editable::before {
+    background: rgba(14, 165, 233, 0.05);
+    border: 2px dashed rgba(14, 165, 233, 0.3);
+}
+
+body.light .left-panel.drag-over,
+body.light .center-panel.drag-over,
+body.light .right-panel.drag-over {
+    background: rgba(14, 165, 233, 0.1);
+    border: 2px dashed var(--primary-blue);
+}
+
+body.light .left-panel.drag-over::after,
+body.light .center-panel.drag-over::after,
+body.light .right-panel.drag-over::after {
+    color: var(--primary-blue);
+}
+
+body.light .notification {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    color: var(--text-primary);
+}
+
+body.light .layout-toggle-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    color: var(--primary-blue);
+}
+
+body.light .layout-toggle-btn:hover {
+    background: rgba(14, 165, 233, 0.1);
+    border-color: var(--primary-blue);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .layout-control-panel {
+        width: 280px;
+        right: 10px;
+        top: 10px;
+    }
+    
+    .layout-toggle-btn {
+        right: 10px;
+        top: 10px;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+    
+    .notification {
+        left: 10px;
+        right: 10px;
+        transform: translateY(-100px);
+    }
+    
+    .notification.show {
+        transform: translateY(0);
+    }
+}
+
+/* 动画效果 */
+@keyframes dragPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 拖拽预览样式 */
+.drag-preview {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.8;
+    transform: rotate(5deg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}

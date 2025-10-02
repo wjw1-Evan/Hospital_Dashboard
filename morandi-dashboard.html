@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>医院数据看板 - 莫兰迪风格</title>
+    <link rel="stylesheet" href="morandi-styles.css">
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" as="script" crossorigin="anonymous">
+    <link rel="preload" href="morandi-styles.css" as="style">
+    <link rel="preload" href="morandi-script.js" as="script">
+    <!-- DNS预解析 -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <!-- 使用压缩版本的库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="dashboard-container" aria-label="医院数据看板展示大屏">
+        <!-- 头部标题区域 -->
+        <header class="dashboard-header" role="banner">
+            <div class="header-content">
+               
+                <h1 class="main-title" style="display:inline-block;vertical-align:middle;"> <span class="header-logo" style="display:inline-block;vertical-align:middle;margin-right:16px;font-size:36px;line-height:1;">🏥</span>医院数据看板 <span class="header-subtitle" style="display:inline-block;vertical-align:middle;margin-left:16px;font-size:18px;font-weight:400;color:var(--morandi-text-secondary);">智慧医疗 · 数据驱动</span></h1>
+            </div>
+            <div class="header-controls" aria-label="页面控制工具">
+                <div class="datetime-display" role="timer" aria-label="当前时间">
+                    <span id="current-time" aria-live="polite"></span>
+                </div>
+                <div class="theme-mode-switcher">
+                    <button id="theme-toggle" class="theme-toggle-btn" title="切换主题模式" aria-label="切换主题模式" aria-pressed="false">
+                        <span class="theme-icon" aria-hidden="true">🌙</span>
+                        <span class="theme-text">深色</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="dashboard-main">
+            <!-- 左侧区域 - 核心指标概览 -->
+            <section class="left-section" data-section="left">
+                <!-- 核心指标卡片 -->
+                <div class="card core-metrics">
+                    <h2 class="card-title">核心指标概览</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card primary">
+                            <div class="metric-icon">🏥</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="left-total-patients">2,456</div>
+                                <div class="metric-label">今日患者</div>
+                                <div class="metric-trend up">+12.5%</div>
+                            </div>
+                        </div>
+                        <div class="metric-card secondary">
+                            <div class="metric-icon">🛏️</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="left-bed-occupancy">78%</div>
+                                <div class="metric-label">床位使用率</div>
+                                <div class="metric-trend stable">0%</div>
+                            </div>
+                        </div>
+                        <div class="metric-card accent">
+                            <div class="metric-icon">⚕️</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="left-staff-on-duty">1,245</div>
+                                <div class="metric-label">在岗医护</div>
+                                <div class="metric-trend up">+2.3%</div>
+                            </div>
+                        </div>
+                        <div class="metric-card neutral">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="left-daily-revenue">¥2.46M</div>
+                                <div class="metric-label">今日收入</div>
+                                <div class="metric-trend up">+8.3%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 科室运营状态 -->
+                <div class="card department-status">
+                    <h2 class="card-title">科室运营状态</h2>
+                    <div class="department-list">
+                        <div class="department-item">
+                            <div class="dept-info">
+                                <div class="dept-name">内科</div>
+                                <div class="dept-patients">患者: 456</div>
+                            </div>
+                            <div class="dept-status busy">繁忙</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="dept-info">
+                                <div class="dept-name">外科</div>
+                                <div class="dept-patients">患者: 234</div>
+                            </div>
+                            <div class="dept-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="dept-info">
+                                <div class="dept-name">急诊科</div>
+                                <div class="dept-patients">患者: 89</div>
+                            </div>
+                            <div class="dept-status urgent">紧急</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="dept-info">
+                                <div class="dept-name">儿科</div>
+                                <div class="dept-patients">患者: 156</div>
+                            </div>
+                            <div class="dept-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="dept-info">
+                                <div class="dept-name">妇产科</div>
+                                <div class="dept-patients">患者: 78</div>
+                            </div>
+                            <div class="dept-status normal">正常</div>
+                        </div>
+                        <div class="department-item">
+                            <div class="dept-info">
+                                <div class="dept-name">骨科</div>
+                                <div class="dept-patients">患者: 123</div>
+                            </div>
+                            <div class="dept-status normal">正常</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 医疗质量指标 -->
+                <div class="card quality-indicators">
+                    <h2 class="card-title">医疗质量指标</h2>
+                    <div class="quality-grid">
+                        <div class="quality-item">
+                            <div class="quality-icon">🩺</div>
+                            <div class="quality-content">
+                                <div class="quality-value">0.8%</div>
+                                <div class="quality-label">感染率</div>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">📊</div>
+                            <div class="quality-content">
+                                <div class="quality-value">3.2%</div>
+                                <div class="quality-label">再入院率</div>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">⏱️</div>
+                            <div class="quality-content">
+                                <div class="quality-value">6.8天</div>
+                                <div class="quality-label">平均住院日</div>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">⭐</div>
+                            <div class="quality-content">
+                                <div class="quality-value">98.5</div>
+                                <div class="quality-label">满意度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 中间区域 - 数据可视化 -->
+            <section class="middle-section" data-section="middle">
+                <!-- 实时数据指标 -->
+                <div class="card real-time-metrics">
+                    <h2 class="card-title">实时数据指标</h2>
+                    <div class="metrics-row">
+                        <div class="metric-item">
+                            <div class="metric-icon">👥</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="current-patients">1,234</div>
+                                <div class="metric-label">当前在院患者</div>
+                                <div class="metric-trend up">+5.2%</div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon">🛏️</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="bed-utilization">87.3%</div>
+                                <div class="metric-label">床位使用率</div>
+                                <div class="metric-trend stable">0.0%</div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon">⚡</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="avg-wait-time">12.5</div>
+                                <div class="metric-label">平均等待时间(分钟)</div>
+                                <div class="metric-trend down">-2.1%</div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="hourly-revenue">¥45.6万</div>
+                                <div class="metric-label">小时收入</div>
+                                <div class="metric-trend up">+8.7%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统状态概览 -->
+                <div class="card system-overview">
+                    <h2 class="card-title">系统状态概览</h2>
+                    
+                    <!-- 系统状态 -->
+                    <div class="system-section">
+                        <div class="system-grid">
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">🏥</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">HIS系统</div>
+                                    <div class="system-description">医院信息系统</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">📋</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">EMR系统</div>
+                                    <div class="system-description">电子病历系统</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">💳</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">收费系统</div>
+                                    <div class="system-description">财务管理系统</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">🔬</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">LIS系统</div>
+                                    <div class="system-description">实验室信息系统</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">📊</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">PACS系统</div>
+                                    <div class="system-description">影像存储系统</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">💊</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">药房系统</div>
+                                    <div class="system-description">药品管理系统</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">🩻</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">CT设备</div>
+                                    <div class="system-description">计算机断层扫描</div>
+                                </div>
+                            </div>
+                            <div class="system-item">
+                                <div class="system-status-corner online">
+                                    <span class="status-dot"></span>
+                                    在线
+                                </div>
+                                <div class="system-icon-container">
+                                    <div class="system-icon">🧲</div>
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="system-info">
+                                    <div class="system-name">MRI设备</div>
+                                    <div class="system-description">磁共振成像</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                  
+                    
+                    <!-- 性能监控 -->
+                    <div class="performance-section">
+                        <h3 class="section-title">性能监控</h3>
+                        <div class="performance-grid">
+                            <div class="performance-item">
+                                <div class="performance-header">
+                                    <h4>系统性能</h4>
+                                    <div class="performance-status good">良好</div>
+                                </div>
+                                <div class="performance-metrics">
+                                    <div class="metric-row">
+                                        <span class="metric-name">CPU使用率</span>
+                                        <div class="metric-bar">
+                                            <div class="bar-fill cpu" style="width: 45%"></div>
+                                        </div>
+                                        <span class="metric-value">45%</span>
+                                    </div>
+                                    <div class="metric-row">
+                                        <span class="metric-name">内存使用率</span>
+                                        <div class="metric-bar">
+                                            <div class="bar-fill memory" style="width: 62%"></div>
+                                        </div>
+                                        <span class="metric-value">62%</span>
+                                    </div>
+                                    <div class="metric-row">
+                                        <span class="metric-name">磁盘使用率</span>
+                                        <div class="metric-bar">
+                                            <div class="bar-fill disk" style="width: 38%"></div>
+                                        </div>
+                                        <span class="metric-value">38%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="performance-header">
+                                    <h4>网络状态</h4>
+                                    <div class="network-status">
+                                        <div class="status-indicator online"></div>
+                                        <span>正常</span>
+                                    </div>
+                                </div>
+                                <div class="network-metrics">
+                                    <div class="network-item">
+                                        <div class="network-icon">📡</div>
+                                        <div class="network-info">
+                                            <div class="network-name">内网连接</div>
+                                            <div class="network-value">延迟: 2ms</div>
+                                        </div>
+                                    </div>
+                                    <div class="network-item">
+                                        <div class="network-icon">🌐</div>
+                                        <div class="network-info">
+                                            <div class="network-name">外网连接</div>
+                                            <div class="network-value">带宽: 100Mbps</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 运营数据看板 -->
+                <div class="card operational-dashboard">
+                    <h2 class="card-title">运营数据看板</h2>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-item">
+                            <div class="dashboard-header">
+                                <h4>科室运营效率</h4>
+                                <div class="efficiency-score" id="efficiency-score">92.5%</div>
+                            </div>
+                            <div class="efficiency-bars">
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">急诊科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 88%"></div>
+                                    </div>
+                                    <span class="bar-value">88%</span>
+                                </div>
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">内科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 95%"></div>
+                                    </div>
+                                    <span class="bar-value">95%</span>
+                                </div>
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">外科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 91%"></div>
+                                    </div>
+                                    <span class="bar-value">91%</span>
+                                </div>
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">妇产科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 87%"></div>
+                                    </div>
+                                    <span class="bar-value">87%</span>
+                                </div>
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">儿科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 93%"></div>
+                                    </div>
+                                    <span class="bar-value">93%</span>
+                                </div>
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">骨科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 89%"></div>
+                                    </div>
+                                    <span class="bar-value">89%</span>
+                                </div>
+                                <div class="efficiency-bar">
+                                    <span class="bar-label">心内科</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 94%"></div>
+                                    </div>
+                                    <span class="bar-value">94%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-item">
+                            <div class="dashboard-header">
+                                <h4>资源利用率</h4>
+                                <div class="chart-controls">
+                                    <button class="control-btn active" data-period="day">日</button>
+                                    <button class="control-btn" data-period="week">周</button>
+                                    <button class="control-btn" data-period="month">月</button>
+                                </div>
+                            </div>
+                            <div class="chart-container" style="height: 200px;">
+                                <div id="resourceUtilizationChart" style="width: 100%; height: 100%;">
+                                    <div class="chart-loading" id="resourceUtilizationLoading">图表加载中...</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 收入结构分析 -->
+                        <div class="dashboard-item">
+                            <div class="dashboard-header">
+                                <h4>收入结构分析</h4>
+                            </div>
+                            <div class="chart-container" style="height: 200px;">
+                                <div id="revenueChart" style="width: 100%; height: 100%;">
+                                    <div class="chart-loading" id="revenueLoading">图表加载中...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </section>
+
+            <!-- 右侧区域 - 系统状态和告警 -->
+            <section class="right-section" data-section="right">
+
+                <!-- 环境监控 -->
+                <div class="card environment-monitoring">
+                    <h2 class="card-title">环境监控</h2>
+                    <div class="environment-grid">
+                        <div class="env-item">
+                            <div class="env-icon">🌡️</div>
+                            <div class="env-info">
+                                <div class="env-value">22.5°C</div>
+                                <div class="env-label">温度</div>
+                            </div>
+                        </div>
+                        <div class="env-item">
+                            <div class="env-icon">💧</div>
+                            <div class="env-info">
+                                <div class="env-value">58%</div>
+                                <div class="env-label">湿度</div>
+                            </div>
+                        </div>
+                        <div class="env-item">
+                            <div class="env-icon">🌬️</div>
+                            <div class="env-info">
+                                <div class="env-value">15</div>
+                                <div class="env-label">PM2.5</div>
+                            </div>
+                        </div>
+                        <div class="env-item">
+                            <div class="env-icon">⚡</div>
+                            <div class="env-info">
+                                <div class="env-value">45.6kW</div>
+                                <div class="env-label">功耗</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实时告警 -->
+                <div class="card alert-panel">
+                    <div class="alert-center-header">
+                        <h2 class="card-title">实时告警</h2>
+                    </div>
+                    <div class="alert-tabs">
+                        <button class="alert-tab active" data-type="all">全部</button>
+                        <button class="alert-tab" data-type="critical">严重</button>
+                        <button class="alert-tab" data-type="warning">警告</button>
+                        <button class="alert-tab" data-type="info">信息</button>
+                    </div>
+                    <div class="alert-list" id="alertList">
+                        <div class="alert-item critical">
+                            <div class="alert-icon">🚨</div>
+                            <div class="alert-content">
+                                <div class="alert-title">系统负载过高</div>
+                                <div class="alert-time">2分钟前</div>
+                            </div>
+                            <div class="alert-status pending">未处理</div>
+                        </div>
+                        <div class="alert-item warning">
+                            <div class="alert-icon">⚠️</div>
+                            <div class="alert-content">
+                                <div class="alert-title">内科床位使用率超过90%</div>
+                                <div class="alert-time">5分钟前</div>
+                            </div>
+                            <div class="alert-status processing">处理中</div>
+                        </div>
+                        <div class="alert-item info">
+                            <div class="alert-icon">ℹ️</div>
+                            <div class="alert-content">
+                                <div class="alert-title">系统定期维护提醒</div>
+                                <div class="alert-time">10分钟前</div>
+                            </div>
+                            <div class="alert-status resolved">已处理</div>
+                        </div>
+                        <div class="alert-item critical">
+                            <div class="alert-icon">🚨</div>
+                            <div class="alert-content">
+                                <div class="alert-title">X光机设备故障</div>
+                                <div class="alert-time">15分钟前</div>
+                            </div>
+                            <div class="alert-status pending">未处理</div>
+                        </div>
+                        <div class="alert-item info">
+                            <div class="alert-icon">ℹ️</div>
+                            <div class="alert-content">
+                                <div class="alert-title">数据备份完成</div>
+                                <div class="alert-time">20分钟前</div>
+                            </div>
+                            <div class="alert-status resolved">已处理</div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="morandi-script.js"></script>
+</body>
+</html>
