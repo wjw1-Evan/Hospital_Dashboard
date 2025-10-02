@@ -477,7 +477,7 @@ body {
 /* 质量指标网格 */
 .quality-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: var(--spacing-lg);
 }
 
@@ -902,15 +902,16 @@ body {
 /* 环境监控网格 */
 .environment-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-md);
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
 }
 
 .env-item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+ 
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
@@ -944,10 +945,11 @@ body {
 }
 
 .env-chart {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 80px;
   border-radius: var(--radius-sm);
-  overflow: hidden;
+  overflow: visible;
+  flex-shrink: 0;
 }
 
 /* 底部状态栏 */
@@ -1343,6 +1345,11 @@ body.light ::-webkit-scrollbar-thumb {
 
 body.light ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-blue);
+}
+
+/* 科室运营详情容器 */
+.department-details {
+    margin-top: var(--spacing-2xl);
 }
 
 /* 科室运营详情表格样式 */

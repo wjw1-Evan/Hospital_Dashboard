@@ -297,6 +297,7 @@ class ChartManager {
       backgroundColor: 'transparent',
             series: [{
         type: 'gauge',
+        center: ['50%', '70%'],
         startAngle: 200,
         endAngle: -20,
         radius: '90%',
@@ -351,7 +352,7 @@ class ChartManager {
           }
         },
         axisLabel: {
-          distance: -8,
+          distance: -20,
           color: '#b8c5d1',
           fontSize: 8
         },
@@ -374,6 +375,7 @@ class ChartManager {
       backgroundColor: 'transparent',
       series: [{
         type: 'gauge',
+        center: ['50%', '70%'],
         startAngle: 200,
         endAngle: -20,
         radius: '90%',
@@ -428,7 +430,7 @@ class ChartManager {
           }
         },
         axisLabel: {
-          distance: -8,
+          distance: -20,
           color: '#b8c5d1',
           fontSize: 8
         },
@@ -451,6 +453,7 @@ class ChartManager {
       backgroundColor: 'transparent',
       series: [{
         type: 'gauge',
+        center: ['50%', '70%'],
         startAngle: 200,
         endAngle: -20,
         radius: '90%',
@@ -507,7 +510,7 @@ class ChartManager {
           }
         },
         axisLabel: {
-          distance: -8,
+          distance: -20,
           color: '#b8c5d1',
           fontSize: 8
         },
@@ -530,6 +533,7 @@ class ChartManager {
       backgroundColor: 'transparent',
       series: [{
         type: 'gauge',
+        center: ['50%', '70%'],
         startAngle: 200,
         endAngle: -20,
         radius: '90%',
@@ -584,7 +588,7 @@ class ChartManager {
           }
         },
         axisLabel: {
-          distance: -8,
+          distance: -20,
           color: '#b8c5d1',
           fontSize: 8
         },
