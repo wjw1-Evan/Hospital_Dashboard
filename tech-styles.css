@@ -3,37 +3,37 @@
 /* 统一设计系统变量 */
 :root {
   /* 主色彩系统 - 科技蓝调 */
-  --primary-blue: #00d4ff;
-  --primary-blue-rgb: 0, 212, 255;
-  --primary-blue-light: #33ddff;
-  --primary-blue-dark: #00a8cc;
+  --primary-blue: #2563eb;
+  --primary-blue-rgb: 37, 99, 235;
+  --primary-blue-light: #3b82f6;
+  --primary-blue-dark: #1d4ed8;
   
   /* 辅助色彩系统 */
-  --secondary-green: #00ff88;
-  --secondary-green-rgb: 0, 255, 136;
-  --secondary-green-light: #33ffa3;
-  --secondary-green-dark: #00cc6b;
+  --success-green: #10b981;
+  --success-green-rgb: 16, 185, 129;
+  --success-green-light: #34d399;
+  --success-green-dark: #059669;
   
-  --accent-purple: #6c5ce7;
-  --accent-purple-rgb: 108, 92, 231;
-  --accent-purple-light: #8a7eed;
-  --accent-purple-dark: #4f3bb8;
+  --accent-purple: #8b5cf6;
+  --accent-purple-rgb: 139, 92, 246;
+  --accent-purple-light: #a78bfa;
+  --accent-purple-dark: #7c3aed;
   
-  /* 状态色彩系统 */
-  --warning-orange: #ffaa00;
-  --warning-orange-rgb: 255, 170, 0;
-  --warning-orange-light: #ffbb33;
-  --warning-orange-dark: #cc8800;
+  /* 状态色彩系统 - 优化语义和对比度 */
+  --warning-orange: #f59e0b;
+  --warning-orange-rgb: 245, 158, 11;
+  --warning-orange-light: #fbbf24;
+  --warning-orange-dark: #d97706;
   
-  --error-red: #ff4757;
-  --error-red-rgb: 255, 71, 87;
-  --error-red-light: #ff6b79;
-  --error-red-dark: #cc3945;
+  --error-red: #ef4444;
+  --error-red-rgb: 239, 68, 68;
+  --error-red-light: #f87171;
+  --error-red-dark: #dc2626;
   
-  --success-cyan: #00cec9;
-  --success-cyan-rgb: 0, 206, 201;
-  --success-cyan-light: #33d8d4;
-  --success-cyan-dark: #00a5a0;
+  --success-green: #10b981;
+  --success-green-rgb: 16, 185, 129;
+  --success-green-light: #34d399;
+  --success-green-dark: #059669;
   
   /* 背景色系统 */
   --bg-primary: #0a0e1a;
@@ -44,21 +44,21 @@
   --bg-hover: rgba(0, 212, 255, 0.05);
   --bg-active: rgba(0, 212, 255, 0.1);
   
-  /* 文字颜色系统 */
+  /* 文字颜色系统 - 优化对比度 */
   --text-primary: #ffffff;
-  --text-secondary: #b8c5d1;
-  --text-tertiary: #7a8a9a;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #94a3b8;
   --text-muted: #64748b;
   --text-accent: var(--primary-blue);
-  --text-success: var(--secondary-green);
+  --text-success: var(--success-green);
   --text-warning: var(--warning-orange);
   --text-error: var(--error-red);
   
   /* 边框和阴影系统 */
-  --border-primary: 1px solid rgba(0, 212, 255, 0.3);
-  --border-secondary: 1px solid rgba(0, 255, 136, 0.3);
+  --border-primary: 1px solid rgba(37, 99, 235, 0.3);
+  --border-secondary: 1px solid rgba(16, 185, 129, 0.3);
   --border-subtle: 1px solid rgba(255, 255, 255, 0.1);
-  --border-hover: 1px solid rgba(0, 212, 255, 0.5);
+  --border-hover: 1px solid rgba(37, 99, 235, 0.5);
   --border-active: 1px solid var(--primary-blue);
   
   /* 阴影系统 */
@@ -66,7 +66,7 @@
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
   --shadow-primary: 0 0 20px rgba(var(--primary-blue-rgb), 0.2);
-  --shadow-secondary: 0 0 20px rgba(var(--secondary-green-rgb), 0.2);
+  --shadow-secondary: 0 0 20px rgba(var(--success-green-rgb), 0.2);
   --shadow-glow: 0 0 30px rgba(var(--primary-blue-rgb), 0.3);
   --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.25);
   
@@ -172,9 +172,9 @@ body {
   height: 100%;
   z-index: -1;
   background: 
-    radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(108, 92, 231, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
 }
 
 .grid-overlay {
@@ -184,8 +184,8 @@ body {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: gridMove 20s linear infinite;
 }
@@ -203,7 +203,7 @@ body {
   height: 100%;
   background: 
     radial-gradient(2px 2px at 20px 30px, var(--primary-blue), transparent),
-    radial-gradient(2px 2px at 40px 70px, var(--secondary-green), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--success-green), transparent),
     radial-gradient(1px 1px at 90px 40px, var(--accent-purple), transparent);
   background-repeat: repeat;
   background-size: 100px 100px;
@@ -245,7 +245,7 @@ body {
 .logo-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+  background: linear-gradient(135deg, var(--primary-blue), var(--success-green));
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
@@ -314,7 +314,7 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--secondary-green);
+  background: var(--success-green);
   animation: statusPulse 2s ease-in-out infinite;
 }
 
@@ -385,11 +385,11 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-green));
+  background: linear-gradient(90deg, var(--primary-blue), var(--success-green));
 }
 
 .tech-card:hover {
-  border-color: var(--secondary-green);
+  border-color: var(--success-green);
   box-shadow: var(--shadow-secondary);
   transform: translateY(-2px);
 }
@@ -507,13 +507,13 @@ body {
 }
 
 .dept-card.normal {
-  border-color: var(--secondary-green);
-  box-shadow: 0 0 15px rgba(var(--secondary-green-rgb), 0.2);
+  border-color: var(--success-green);
+  box-shadow: 0 0 15px rgba(var(--success-green-rgb), 0.2);
 }
 
 .dept-card.normal:hover {
-  border-color: var(--secondary-green-light);
-  box-shadow: 0 0 20px rgba(var(--secondary-green-rgb), 0.3);
+  border-color: var(--success-green-light);
+  box-shadow: 0 0 20px rgba(var(--success-green-rgb), 0.3);
   transform: translateY(-2px);
 }
 
@@ -585,9 +585,9 @@ body {
 }
 
 .dept-status.normal {
-  background: rgba(var(--secondary-green-rgb), 0.2);
-  color: var(--secondary-green);
-  border: 1px solid var(--secondary-green);
+  background: rgba(var(--success-green-rgb), 0.2);
+  color: var(--success-green);
+  border: 1px solid var(--success-green);
 }
 
 .dept-metrics {
@@ -631,7 +631,7 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-green));
+  background: linear-gradient(90deg, var(--primary-blue), var(--success-green));
   transition: width var(--transition-normal);
   border-radius: inherit;
 }
@@ -695,7 +695,7 @@ body {
 .quality-item:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(var(--primary-blue-rgb), 0.2);
-  border-color: var(--secondary-green);
+  border-color: var(--success-green);
 }
 
 .quality-item:hover::before {
@@ -709,7 +709,7 @@ body {
 .quality-item:hover .quality-icon {
   transform: scale(1.1);
   box-shadow: 0 0 30px rgba(var(--primary-blue-rgb), 0.5);
-  border-color: var(--secondary-green);
+  border-color: var(--success-green);
 }
 
 .quality-item:hover .quality-icon::before {
@@ -763,7 +763,7 @@ body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   background: linear-gradient(135deg, 
     var(--primary-blue) 0%, 
-    var(--secondary-green) 100%);
+    var(--success-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -803,7 +803,7 @@ body {
 }
 
 .quality-trend.down {
-  color: var(--secondary-green);
+  color: var(--success-green);
 }
 
 /* 主要指标仪表板 */
@@ -878,14 +878,14 @@ body {
 }
 
 .metric-card.patients {
-  border-color: var(--secondary-green);
-  box-shadow: 0 8px 32px rgba(var(--secondary-green-rgb), 0.15);
-  color: var(--secondary-green);
+  border-color: var(--success-green);
+  box-shadow: 0 8px 32px rgba(var(--success-green-rgb), 0.15);
+  color: var(--success-green);
 }
 
 .metric-card.patients:hover {
-  box-shadow: 0 20px 40px rgba(var(--secondary-green-rgb), 0.3);
-  border-color: var(--secondary-green);
+  box-shadow: 0 20px 40px rgba(var(--success-green-rgb), 0.3);
+  border-color: var(--success-green);
 }
 
 .metric-card.equipment {
@@ -911,14 +911,14 @@ body {
 }
 
 .metric-card.efficiency {
-  border-color: var(--success-cyan);
-  box-shadow: 0 8px 32px rgba(var(--success-cyan-rgb), 0.15);
-  color: var(--success-cyan);
+  border-color: var(--success-green);
+  box-shadow: 0 8px 32px rgba(var(--success-green-rgb), 0.15);
+  color: var(--success-green);
 }
 
 .metric-card.efficiency:hover {
-  box-shadow: 0 20px 40px rgba(var(--success-cyan-rgb), 0.3);
-  border-color: var(--success-cyan);
+  box-shadow: 0 20px 40px rgba(var(--success-green-rgb), 0.3);
+  border-color: var(--success-green);
 }
 
 .metric-card.satisfaction {
@@ -1046,8 +1046,8 @@ body {
 }
 
 .metric-change.positive {
-  color: var(--secondary-green);
-  border-color: rgba(var(--secondary-green-rgb), 0.3);
+  color: var(--success-green);
+  border-color: rgba(var(--success-green-rgb), 0.3);
 }
 
 .metric-change.negative {
@@ -1210,8 +1210,8 @@ body {
 }
 
 .system-item.online {
-    border-color: var(--secondary-green);
-    box-shadow: 0 0 10px rgba(var(--secondary-green-rgb), 0.2);
+    border-color: var(--success-green);
+    box-shadow: 0 0 10px rgba(var(--success-green-rgb), 0.2);
 }
 
 .system-item.warning {
@@ -1290,9 +1290,9 @@ body {
 }
 
 .system-item.online .system-icon {
-    border-color: var(--secondary-green);
-    color: var(--secondary-green);
-    box-shadow: 0 0 15px rgba(var(--secondary-green-rgb), 0.2);
+    border-color: var(--success-green);
+    color: var(--success-green);
+    box-shadow: 0 0 15px rgba(var(--success-green-rgb), 0.2);
 }
 
 .system-item.warning .system-icon {
@@ -1346,9 +1346,9 @@ body {
 }
 
 .system-item.online .system-metrics span {
-    background: rgba(var(--secondary-green-rgb), 0.1);
-    color: var(--secondary-green);
-    border-color: rgba(var(--secondary-green-rgb), 0.3);
+    background: rgba(var(--success-green-rgb), 0.1);
+    color: var(--success-green);
+    border-color: rgba(var(--success-green-rgb), 0.3);
 }
 
 .system-item.warning .system-metrics span {
@@ -1380,8 +1380,8 @@ body {
 }
 
 .system-item.online .status-dot {
-    background: var(--secondary-green);
-    color: var(--secondary-green);
+    background: var(--success-green);
+    color: var(--success-green);
 }
 
 .system-item.warning .status-dot {
@@ -1402,7 +1402,7 @@ body {
 }
 
 .system-item.online .system-status-text {
-    color: var(--secondary-green);
+    color: var(--success-green);
 }
 
 .system-item.warning .system-status-text {
@@ -1632,7 +1632,7 @@ body {
 .env-item:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
-  border-color: var(--secondary-green);
+  border-color: var(--success-green);
 }
 
 .env-item:hover::before {
@@ -1674,8 +1674,8 @@ body {
 }
 
 .env-item:hover .env-icon {
-  border-color: var(--secondary-green);
-  box-shadow: 0 0 15px rgba(var(--secondary-green-rgb), 0.3);
+  border-color: var(--success-green);
+  box-shadow: 0 0 15px rgba(var(--success-green-rgb), 0.3);
 }
 
 .env-item:hover .env-icon::before {
@@ -2054,7 +2054,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-green);
+  background: var(--success-green);
 }
 
 /* 选择文本样式 */
@@ -2368,7 +2368,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
 
 .col-beds .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary-blue), var(--secondary-green));
+    background: linear-gradient(90deg, var(--primary-blue), var(--success-green));
     border-radius: 3px;
     transition: width 0.3s ease;
 }
@@ -2381,7 +2381,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
 
 .col-revenue {
     font-weight: 600;
-    color: var(--secondary-green);
+    color: var(--success-green);
 }
 
 .efficiency-indicator {
@@ -2394,7 +2394,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
 
 .efficiency-indicator.high {
     background: rgba(0, 255, 136, 0.2);
-    color: var(--secondary-green);
+    color: var(--success-green);
     border: 1px solid rgba(0, 255, 136, 0.3);
 }
 
@@ -2464,7 +2464,7 @@ body.light ::-webkit-scrollbar-thumb:hover {
 
 .stream-type.new {
     background: rgba(0, 255, 136, 0.2);
-    color: var(--secondary-green);
+    color: var(--success-green);
     border: 1px solid rgba(0, 255, 136, 0.3);
 }
 

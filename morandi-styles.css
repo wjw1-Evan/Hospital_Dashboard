@@ -17,15 +17,15 @@
   --morandi-accent-light: #E8C5C5;  /* 浅粉灰 */
   --morandi-accent-dark: #B88585;   /* 深粉灰 */
   
-  /* 状态色 - 莫兰迪风格 */
-  --morandi-success: #9BB5A1;       /* 柔和绿灰 */
-  --morandi-success-light: #B5C5B5; /* 浅绿灰 */
-  --morandi-warning: #D4B896;       /* 柔和黄灰 */
-  --morandi-warning-light: #E0C5A5; /* 浅黄灰 */
-  --morandi-error: #C4A5A5;         /* 柔和红灰 */
-  --morandi-error-light: #D5B5B5;   /* 浅红灰 */
-  --morandi-info: #A5B5C4;          /* 柔和蓝灰 */
-  --morandi-info-light: #B5C5D5;    /* 浅蓝灰 */
+  /* 状态色 - 莫兰迪风格 - 优化对比度和语义 */
+  --morandi-success: #4ade80;       /* 更清晰的绿色 */
+  --morandi-success-light: #86efac; /* 浅绿色 */
+  --morandi-warning: #fbbf24;       /* 更醒目的橙色 */
+  --morandi-warning-light: #fcd34d; /* 浅橙色 */
+  --morandi-error: #f87171;         /* 更清晰红色 */
+  --morandi-error-light: #fca5a5;   /* 浅红色 */
+  --morandi-info: #60a5fa;          /* 更清晰蓝色 */
+  --morandi-info-light: #93c5fd;    /* 浅蓝色 */
   
   /* 背景色系 */
   --morandi-bg-primary: #F5F5F5;    /* 主背景 */
@@ -33,10 +33,10 @@
   --morandi-bg-card: #FFFFFF;       /* 卡片背景 */
   --morandi-bg-overlay: rgba(139, 157, 195, 0.05); /* 覆盖层 */
   
-  /* 文字色系 */
-  --morandi-text-primary: #4A4A4A;  /* 主文字 */
-  --morandi-text-secondary: #6A6A6A; /* 次文字 */
-  --morandi-text-muted: #8A8A8A;    /* 弱文字 */
+  /* 文字色系 - 优化对比度 */
+  --morandi-text-primary: #1f2937;  /* 主文字 - 更深色提高对比度 */
+  --morandi-text-secondary: #374151; /* 次文字 - 提高对比度 */
+  --morandi-text-muted: #6b7280;    /* 弱文字 - 保持适度对比 */
   --morandi-text-white: #FFFFFF;    /* 白色文字 */
   
   /* 边框和分割线 */

@@ -107,19 +107,19 @@
   /* 响应式缩放支持 */
   --scale-factor: 1;
 
-  /* 颜色主题变量定义 - 默认主题 - 浅蓝色 */
-  --primary-color: #87ceeb;
-  --primary-color-rgb: 135, 206, 235;
-  --secondary-color: #00ffff;
-  --secondary-color-rgb: 0, 255, 255;
-  --accent-color: #00e5ff;
-  --accent-color-rgb: 0, 229, 255;
-  --background-gradient-1: rgba(135, 206, 235, 0.1);
-  --background-gradient-2: rgba(0, 150, 255, 0.1);
-  --background-gradient-3: rgba(0, 200, 255, 0.05);
-  --border-color: rgba(135, 206, 235, 0.3);
-  --text-shadow: 0 0 20px rgba(135, 206, 235, 0.6);
-  --glow-color: rgba(135, 206, 235, 0.4);
+  /* 颜色主题变量定义 - 默认主题 - 优化蓝色系 */
+  --primary-color: #2563eb;
+  --primary-color-rgb: 37, 99, 235;
+  --secondary-color: #3b82f6;
+  --secondary-color-rgb: 59, 130, 246;
+  --accent-color: #1d4ed8;
+  --accent-color-rgb: 29, 78, 216;
+  --background-gradient-1: rgba(37, 99, 235, 0.1);
+  --background-gradient-2: rgba(59, 130, 246, 0.1);
+  --background-gradient-3: rgba(29, 78, 216, 0.05);
+  --border-color: rgba(37, 99, 235, 0.3);
+  --text-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
+  --glow-color: rgba(37, 99, 235, 0.4);
 }
 
 /* 全局样式重置 */
@@ -2785,50 +2785,50 @@ body::after {
 
 /* 浅绿色主题 */
 [data-theme="light-green"] {
-  --primary-color: #98fb98;
-  --primary-color-rgb: 152, 251, 152;
-  --secondary-color: #90ee90;
-  --secondary-color-rgb: 144, 238, 144;
-  --accent-color: #98fb98;
-  --accent-color-rgb: 152, 251, 152;
-  --background-gradient-1: rgba(152, 251, 152, 0.1);
-  --background-gradient-2: rgba(144, 238, 144, 0.1);
-  --background-gradient-3: rgba(152, 251, 152, 0.05);
-  --border-color: rgba(152, 251, 152, 0.3);
-  --text-shadow: 0 0 20px rgba(152, 251, 152, 0.6);
-  --glow-color: rgba(152, 251, 152, 0.4);
+  --primary-color: #10b981;
+  --primary-color-rgb: 16, 185, 129;
+  --secondary-color: #34d399;
+  --secondary-color-rgb: 52, 211, 153;
+  --accent-color: #059669;
+  --accent-color-rgb: 5, 150, 105;
+  --background-gradient-1: rgba(16, 185, 129, 0.1);
+  --background-gradient-2: rgba(52, 211, 153, 0.1);
+  --background-gradient-3: rgba(5, 150, 105, 0.05);
+  --border-color: rgba(16, 185, 129, 0.3);
+  --text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+  --glow-color: rgba(16, 185, 129, 0.4);
 }
 
 /* 浅紫色主题 */
 [data-theme="light-purple"] {
-  --primary-color: #dda0dd;
-  --primary-color-rgb: 221, 160, 221;
-  --secondary-color: #da70d6;
-  --secondary-color-rgb: 218, 112, 214;
-  --accent-color: #dda0dd;
-  --accent-color-rgb: 221, 160, 221;
-  --background-gradient-1: rgba(221, 160, 221, 0.1);
-  --background-gradient-2: rgba(218, 112, 214, 0.1);
-  --background-gradient-3: rgba(221, 160, 221, 0.05);
-  --border-color: rgba(221, 160, 221, 0.3);
-  --text-shadow: 0 0 20px rgba(221, 160, 221, 0.6);
-  --glow-color: rgba(221, 160, 221, 0.4);
+  --primary-color: #8b5cf6;
+  --primary-color-rgb: 139, 92, 246;
+  --secondary-color: #a78bfa;
+  --secondary-color-rgb: 167, 139, 250;
+  --accent-color: #7c3aed;
+  --accent-color-rgb: 124, 58, 237;
+  --background-gradient-1: rgba(139, 92, 246, 0.1);
+  --background-gradient-2: rgba(167, 139, 250, 0.1);
+  --background-gradient-3: rgba(124, 58, 237, 0.05);
+  --border-color: rgba(139, 92, 246, 0.3);
+  --text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+  --glow-color: rgba(139, 92, 246, 0.4);
 }
 
 /* 浅粉色主题 */
 [data-theme="light-pink"] {
-  --primary-color: #ffb6c1;
-  --primary-color-rgb: 255, 182, 193;
-  --secondary-color: #ffc0cb;
-  --secondary-color-rgb: 255, 192, 203;
-  --accent-color: #ffb6c1;
-  --accent-color-rgb: 255, 182, 193;
-  --background-gradient-1: rgba(255, 182, 193, 0.1);
-  --background-gradient-2: rgba(255, 192, 203, 0.1);
-  --background-gradient-3: rgba(255, 182, 193, 0.05);
-  --border-color: rgba(255, 182, 193, 0.3);
-  --text-shadow: 0 0 20px rgba(255, 182, 193, 0.6);
-  --glow-color: rgba(255, 182, 193, 0.4);
+  --primary-color: #ec4899;
+  --primary-color-rgb: 236, 72, 153;
+  --secondary-color: #f472b6;
+  --secondary-color-rgb: 244, 114, 182;
+  --accent-color: #db2777;
+  --accent-color-rgb: 219, 39, 119;
+  --background-gradient-1: rgba(236, 72, 153, 0.1);
+  --background-gradient-2: rgba(244, 114, 182, 0.1);
+  --background-gradient-3: rgba(219, 39, 119, 0.05);
+  --border-color: rgba(236, 72, 153, 0.3);
+  --text-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+  --glow-color: rgba(236, 72, 153, 0.4);
 }
 
 /* 图表颜色主题适配 */
