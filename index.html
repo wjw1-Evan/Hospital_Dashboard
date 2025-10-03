@@ -19,6 +19,37 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* 夜间模式样式 */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-mode .header h1 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .header p {
+            color: rgba(255,255,255,0.7);
+        }
+
+        body.dark-mode .dashboard-card {
+            background: rgba(30, 30, 50, 0.95);
+            color: #ffffff;
+        }
+
+        body.dark-mode .dashboard-card h3 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .dashboard-card p {
+            color: rgba(255,255,255,0.8);
+        }
+
+        body.dark-mode .footer {
+            color: rgba(255,255,255,0.5);
         }
 
         .container {
@@ -126,6 +157,41 @@
             font-size: 0.9rem;
         }
 
+        /* 主题切换按钮样式 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: rgba(0,0,0,0.2);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -143,10 +209,17 @@
     </style>
 </head>
 <body>
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="themeToggle" title="切换主题">
+        <span class="icon" id="themeIcon">🌙</span>
+    </button>
+
     <div class="container">
         <div class="header">
             <h1>医院仪表板</h1>
             <p>选择您喜欢的界面风格</p>
+            <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">💡 演示页面支持白天/夜间模式切换</p>
+            <p style="font-size: 0.85rem; margin-top: 8px; opacity: 0.7;">🖥️ 建议在1920×1080及以上分辨率的大屏设备上演示以获得最佳效果</p>
         </div>
 
         <div class="dashboard-grid">
@@ -174,12 +247,38 @@
 
         <div class="footer">
             <p>© 2024 医院仪表板系统 - 多风格界面选择</p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">天津滨中科讯信息技术股份有限公司</p>
         </div>
     </div>
 
     <script>
-        // 添加页面加载动画
+        // 主题切换功能
         document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const body = document.body;
+            
+            // 从本地存储获取主题设置
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeIcon.textContent = '☀️';
+            }
+            
+            // 主题切换事件
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                
+                if (body.classList.contains('dark-mode')) {
+                    themeIcon.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeIcon.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // 添加页面加载动画
             const cards = document.querySelectorAll('.dashboard-card');
             cards.forEach((card, index) => {
                 card.style.opacity = '0';
