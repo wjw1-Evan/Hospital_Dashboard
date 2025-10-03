@@ -259,7 +259,7 @@
             const body = document.body;
             
             // 从本地存储获取主题设置
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedTheme = localStorage.getItem('index-theme') || 'light';
             if (savedTheme === 'dark') {
                 body.classList.add('dark-mode');
                 themeIcon.textContent = '☀️';
@@ -271,10 +271,10 @@
                 
                 if (body.classList.contains('dark-mode')) {
                     themeIcon.textContent = '☀️';
-                    localStorage.setItem('theme', 'dark');
+                    localStorage.setItem('index-theme', 'dark');
                 } else {
                     themeIcon.textContent = '🌙';
-                    localStorage.setItem('theme', 'light');
+                    localStorage.setItem('index-theme', 'light');
                 }
             });
 

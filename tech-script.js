@@ -1503,11 +1503,11 @@ class ThemeManager {
     }
 
     // 保存主题设置
-    localStorage.setItem('theme', this.currentTheme);
+    localStorage.setItem('tech-theme', this.currentTheme);
   }
 
   loadSavedTheme() {
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem('tech-theme');
     if (savedTheme) {
       this.currentTheme = savedTheme;
       document.body.className = this.currentTheme;
