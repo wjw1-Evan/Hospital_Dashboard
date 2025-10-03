@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>医院数据看板展示大屏</title>
     <link rel="stylesheet" href="styles.css">
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" as="script" crossorigin="anonymous">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" as="script"
+        crossorigin="anonymous">
     <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="script.js" as="script">
     <!-- DNS预解析 -->
@@ -14,12 +16,14 @@
     <!-- 使用压缩版本的库 -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- 头部标题区域 -->
         <header class="dashboard-header">
             <div class="header-logo-title">
-                <span class="header-logo" style="display:inline-block;vertical-align:middle;margin-right:16px;font-size:36px;line-height:1;">🏥</span>
+                <span class="header-logo"
+                    style="display:inline-block;vertical-align:middle;margin-right:16px;font-size:36px;line-height:1;">🏥</span>
                 <h1 class="main-title" style="display:inline-block;vertical-align:middle;">医院数据看板展示大屏</h1>
             </div>
             <div class="header-controls">
@@ -37,12 +41,12 @@
 
         <!-- 主要内容区域 -->
         <main class="dashboard-main">
-            
+
             <!-- 左侧区域 - 科室运营情况 -->
             <section class="left-section" data-section="left">
                 <!-- 科室运营情况 -->
                 <div class="card department-operations">
-                    <h2 class="card-title" style="padding-bottom:9px;">科室运营情况</h2>
+                    <h2 class="card-title" style="padding-bottom:10px;">科室运营情况</h2>
                     <div class="department-grid">
                         <div class="department-item">
                             <div class="department-name">内科</div>
@@ -113,7 +117,7 @@
 
                 <!-- 医疗质量指标 -->
                 <div class="card quality-metrics">
-                    <h2 class="card-title">医疗质量指标</h2>
+                    <h2 class="card-title" style="padding-bottom: 10px;">医疗质量指标</h2>
                     <div class="quality-grid">
                         <div class="quality-item">
                             <div class="quality-icon">⚕️</div>
@@ -155,8 +159,8 @@
                 <!-- 核心指标卡片 - 主要数据展示 -->
                 <div class="card hospital-operations main-focus">
                     <h2 class="card-title main-title-large">医院运营情况</h2>
-                    
-                    
+
+
 
                     <!-- 详细运营数据 -->
                     <div class="detailed-metrics-section">
@@ -175,7 +179,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="detailed-metric-item">
                                 <div class="metric-header">
                                     <span class="metric-icon">🔬</span>
@@ -190,7 +194,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="detailed-metric-item">
                                 <div class="metric-header">
                                     <span class="metric-icon">📋</span>
@@ -237,7 +241,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="detailed-metric-item">
                                 <div class="metric-header">
                                     <span class="metric-icon">👥</span>
@@ -253,7 +257,7 @@
                                 </div>
                             </div>
 
-                            <div class="detailed-metric-item revenue-analysis-item">
+                            <div class="detailed-metric-item">
                                 <div class="metric-header">
                                     <span class="metric-icon">📊</span>
                                     <span class="metric-title">收入分析</span>
@@ -265,7 +269,7 @@
                                 </div>
                             </div>
 
-                            <div class="detailed-metric-item equipment-status-item">
+                            <div class="detailed-metric-item">
                                 <div class="metric-header">
                                     <span class="metric-icon">⚙️</span>
                                     <span class="metric-title">设备状态</span>
@@ -277,34 +281,34 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 环境监控数据 -->
                         <div class="environment-monitoring-section">
-                        <h3 class="section-title">环境监控</h3>
-                        <div class="environment-grid">
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="temperatureChart" class="mini-chart"></div>
+                            <h3 class="section-title">环境监控</h3>
+                            <div class="environment-grid">
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="temperatureChart" class="mini-chart"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="humidityChart" class="mini-chart"></div>
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="humidityChart" class="mini-chart"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="airQualityChart" class="mini-chart"></div>
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="airQualityChart" class="mini-chart"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="env-item">
-                                <div class="env-chart">
-                                    <div id="powerChart" class="mini-chart"></div>
+                                <div class="env-item">
+                                    <div class="env-chart">
+                                        <div id="powerChart" class="mini-chart"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
-                        
+
                         <!-- 图表区域 -->
                         <div class="charts-section">
                             <div class="chart-row">
@@ -312,111 +316,111 @@
                                     <div class="chart-header">
                                         <h3 class="chart-title">患者流量趋势</h3>
                                         <div class="chart-toggle">
-                                            <button class="toggle-btn active" data-period="day" >日</button>
-                                            <button class="toggle-btn" data-period="month" >月</button>
+                                            <button class="toggle-btn active" data-period="day">日</button>
+                                            <button class="toggle-btn" data-period="month">月</button>
                                         </div>
                                     </div>
-                                    <div id="patientFlowChart" class="chart-item" ></div>
+                                    <div id="patientFlowChart" class="chart-item"></div>
                                 </div>
-                            
+
                                 <div class="chart-container-small">
                                     <div class="chart-header">
                                         <h3 class="chart-title">能源消耗趋势</h3>
                                         <div class="chart-toggle">
-                                            <button class="toggle-btn active" data-period="day" >日</button>
-                                            <button class="toggle-btn" data-period="month" >月</button>
+                                            <button class="toggle-btn active" data-period="day">日</button>
+                                            <button class="toggle-btn" data-period="month">月</button>
                                         </div>
                                     </div>
-                                    <div id="energyChart" class="chart-item" ></div>
+                                    <div id="energyChart" class="chart-item"></div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 停车场使用情况和网络流量监控 -->
                         <div class="parking-network-section">
-                        <div class="parking-part">
-                            <h3 class="section-title">停车场使用情况</h3>
-                            <div class="parking-chart-container">
-                                <div id="trafficChart" class="chart-item"></div>
+                            <div class="parking-part">
+                                <h3 class="section-title">停车场使用情况</h3>
+                                <div class="parking-chart-container">
+                                    <div id="trafficChart" class="chart-item"></div>
+                                </div>
+                                <div class="parking-stats">
+                                    <div class="parking-stat">
+                                        <span class="parking-label">总车位</span>
+                                        <span class="parking-value">245</span>
+                                    </div>
+                                    <div class="parking-stat">
+                                        <span class="parking-label">已使用</span>
+                                        <span class="parking-value">191</span>
+                                    </div>
+                                    <div class="parking-stat">
+                                        <span class="parking-label">空闲</span>
+                                        <span class="parking-value available">54</span>
+                                    </div>
+                                    <div class="parking-stat">
+                                        <span class="parking-label">使用率</span>
+                                        <span class="parking-value">78%</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="parking-stats">
-                                <div class="parking-stat">
-                                    <span class="parking-label">总车位</span>
-                                    <span class="parking-value">245</span>
+
+                            <div class="network-part">
+                                <h3 class="section-title">网络流量监控</h3>
+                                <div class="network-stats">
+                                    <div class="network-item">
+                                        <div class="network-icon">📡</div>
+                                        <div class="network-info">
+                                            <div class="network-label">上行速度</div>
+                                            <div class="network-value" id="upload-speed">125 Mbps</div>
+                                        </div>
+                                    </div>
+                                    <div class="network-item">
+                                        <div class="network-icon">📥</div>
+                                        <div class="network-info">
+                                            <div class="network-label">下行速度</div>
+                                            <div class="network-value" id="download-speed">856 Mbps</div>
+                                        </div>
+                                    </div>
+                                    <div class="network-item">
+                                        <div class="network-icon">🌐</div>
+                                        <div class="network-info">
+                                            <div class="network-label">在线设备</div>
+                                            <div class="network-value" id="online-devices">2,345</div>
+                                        </div>
+                                    </div>
+                                    <div class="network-item">
+                                        <div class="network-icon">📊</div>
+                                        <div class="network-info">
+                                            <div class="network-label">网络延迟</div>
+                                            <div class="network-value" id="network-latency">12ms</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="parking-stat">
-                                    <span class="parking-label">已使用</span>
-                                    <span class="parking-value">191</span>
-                                </div>
-                                <div class="parking-stat">
-                                    <span class="parking-label">空闲</span>
-                                    <span class="parking-value available">54</span>
-                                </div>
-                                <div class="parking-stat">
-                                    <span class="parking-label">使用率</span>
-                                    <span class="parking-value">78%</span>
+                                <div class="network-chart-container">
+                                    <div id="networkChart" class="chart-item"></div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="network-part">
-                            <h3 class="section-title">网络流量监控</h3>
-                            <div class="network-stats">
-                                <div class="network-item">
-                                    <div class="network-icon">📡</div>
-                                    <div class="network-info">
-                                        <div class="network-label">上行速度</div>
-                                        <div class="network-value" id="upload-speed">125 Mbps</div>
-                                    </div>
-                                </div>
-                                <div class="network-item">
-                                    <div class="network-icon">📥</div>
-                                    <div class="network-info">
-                                        <div class="network-label">下行速度</div>
-                                        <div class="network-value" id="download-speed">856 Mbps</div>
-                                    </div>
-                                </div>
-                                <div class="network-item">
-                                    <div class="network-icon">🌐</div>
-                                    <div class="network-info">
-                                        <div class="network-label">在线设备</div>
-                                        <div class="network-value" id="online-devices">2,345</div>
-                                    </div>
-                                </div>
-                                <div class="network-item">
-                                    <div class="network-icon">📊</div>
-                                    <div class="network-info">
-                                        <div class="network-label">网络延迟</div>
-                                        <div class="network-value" id="network-latency">12ms</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="network-chart-container">
-                                <div id="networkChart" class="chart-item"></div>
-                            </div>
-                        </div>
-                        </div>
-                        
+
                         <!-- 实时状态指示器 -->
                         <div class="status-indicators">
-                        <div class="status-item">
-                            <div class="status-icon normal">🟢</div>
-                            <div class="status-text">系统运行正常</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-icon warning">🟡</div>
-                            <div class="status-text">部分科室繁忙</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-icon normal">🟢</div>
-                            <div class="status-text">设备运行良好</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-icon normal">🟢</div>
-                            <div class="status-text">库存充足</div>
+                            <div class="status-item">
+                                <div class="status-icon normal">🟢</div>
+                                <div class="status-text">系统运行正常</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon warning">🟡</div>
+                                <div class="status-text">部分科室繁忙</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon normal">🟢</div>
+                                <div class="status-text">设备运行良好</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon normal">🟢</div>
+                                <div class="status-text">库存充足</div>
+                            </div>
                         </div>
                     </div>
-                </div>
             </section>
 
             <!-- 右侧区域 - 系统功能模块和实时监控 -->
@@ -577,7 +581,7 @@
 
                 <!-- 系统告警 -->
                 <div class="card alert-panel">
-                    <h2 class="card-title" style="padding: 7px; padding-bottom: 12px;">系统告警</h2>
+                    <h2 class="card-title" style="padding: 7px; ">系统告警</h2>
                     <div class="alert-list">
                         <div class="alert-item warning">
                             <span class="alert-time">14:23</span>
@@ -607,4 +611,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

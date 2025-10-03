@@ -1997,8 +1997,12 @@ function initCharts() {
 
     // 收入分析饼图
     const revenueElement = document.getElementById('revenueChart');
+    if (DEBUG_MODE) console.log('收入分析图表元素:', revenueElement);
     if (revenueElement) {
         window.revenueChart = echarts.init(revenueElement);
+        if (DEBUG_MODE) console.log('收入分析图表初始化成功:', window.revenueChart);
+    } else if (DEBUG_MODE) {
+        console.error('收入分析图表元素未找到');
     }
     const revenueOption = {
         backgroundColor: 'transparent',
@@ -2061,8 +2065,12 @@ function initCharts() {
 
     // 设备状态图表
     const equipmentStatusElement = document.getElementById('equipmentStatusChart');
+    if (DEBUG_MODE) console.log('设备状态图表元素:', equipmentStatusElement);
     if (equipmentStatusElement) {
         window.equipmentStatusChart = echarts.init(equipmentStatusElement);
+        if (DEBUG_MODE) console.log('设备状态图表初始化成功:', window.equipmentStatusChart);
+    } else if (DEBUG_MODE) {
+        console.error('设备状态图表元素未找到');
     }
     const equipmentStatusOption = {
         backgroundColor: 'transparent',
