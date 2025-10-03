@@ -150,13 +150,6 @@
   contain: layout style;
 }
 
-/* 优化字体渲染 */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
 /* 浏览器兼容性支持 */
 @supports not (backdrop-filter: blur(10px)) {
 
@@ -205,6 +198,10 @@ body {
   overflow: hidden;
   height: 100vh;
   position: relative;
+  /* 优化字体渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @media (max-width: 768px) {
@@ -4392,10 +4389,6 @@ body.dark-mode .monitoring-item {
     margin: var(--spacing-xs) 0;
   }
 
-  .parking-network-section {
-    margin: var(--spacing-xs) 0;
-  }
-
   /* 图表区域手机端优化 */
   .chart-row {
     grid-template-columns: 1fr;
@@ -4431,13 +4424,9 @@ body.dark-mode .monitoring-item {
     min-height: 100px;
   }
 
-  .chart-item {
-    height: 100%;
-    width: 100%;
-  }
-
   /* 停车场和网络监控手机端优化 */
   .parking-network-section {
+    margin: var(--spacing-xs) 0;
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
   }

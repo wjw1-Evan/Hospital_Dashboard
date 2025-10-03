@@ -150,21 +150,21 @@
         </div>
 
         <div class="dashboard-grid">
-            <div class="dashboard-card" onclick="window.location.href='classic-dashboard.html'">
+            <div class="dashboard-card">
                 <span class="icon original">🏥</span>
                 <h3>经典风格</h3>
                 <p>传统的医院仪表板界面，简洁实用，适合日常医疗管理使用。</p>
                 <a href="classic-dashboard.html" class="btn">进入经典版</a>
             </div>
 
-            <div class="dashboard-card" onclick="window.location.href='morandi-dashboard.html'">
+            <div class="dashboard-card">
                 <span class="icon morandi">🎨</span>
                 <h3>莫兰迪风格</h3>
                 <p>优雅的莫兰迪色调，温和舒适的视觉体验，适合长时间使用。</p>
                 <a href="morandi-dashboard.html" class="btn">进入莫兰迪版</a>
             </div>
 
-            <div class="dashboard-card" onclick="window.location.href='tech-dashboard.html'">
+            <div class="dashboard-card">
                 <span class="icon tech">💻</span>
                 <h3>科技风格</h3>
                 <p>现代科技感界面，专业的商务风格，适合技术导向的用户。</p>
@@ -195,12 +195,15 @@
 
         // 添加卡片点击效果
         document.querySelectorAll('.dashboard-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-            });
+            const link = card.querySelector('.btn');
+            if (link) {
+                link.addEventListener('click', function(e) {
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            }
         });
     </script>
 </body>

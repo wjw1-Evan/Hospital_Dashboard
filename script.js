@@ -678,88 +678,45 @@ function cleanup() {
 
 // chartLazyLoader对象已移除（未使用）
 
-// 初始化图表 - 优化性能
-function initCharts() {
-    try {
-        // 检查ECharts是否可用
-        if (!checkEChartsAvailable()) {
-            return;
-        }
-    // 患者流量图表
-    const patientFlowElement = document.getElementById('patientFlowChart');
-    if (patientFlowElement) {
-        window.patientFlowChart = echarts.init(patientFlowElement);
-    }
-    const patientFlowOption = {
+// 患者流量图表配置
+function getPatientFlowOption() {
+    return {
         ...getPerformanceOptimizedConfig(),
         backgroundColor: 'transparent',
-        textStyle: {
-            color: '#ffffff'
-        },
+        textStyle: { color: '#ffffff' },
         tooltip: {
             trigger: 'axis',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#00ffff',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
             data: ['当日患者', '去年同期', '上月同期'],
-            textStyle: {
-                color: '#ffffff'
-            },
-          
+            textStyle: { color: '#ffffff' }
         },
         grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            top: '15%',
+            left: '3%', right: '4%', bottom: '3%', top: '15%',
             containLabel: true
         },
         xAxis: {
             type: 'category',
             boundaryGap: false,
             data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff'
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff' }
         },
         yAxis: {
             type: 'value',
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff'
-            },
-            splitLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                }
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff' },
+            splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.1)' } }
         },
         series: [
             {
-                name: '当日患者',
-                type: 'line',
-                data: [45, 23, 156, 234, 189, 78],
-                smooth: true,
-                itemStyle: {
-                    color: '#00e5ff'
-                },
-                lineStyle: {
-                    color: '#00e5ff',
-                    width: 3
-                },
+                name: '当日患者', type: 'line',
+                data: [45, 23, 156, 234, 189, 78], smooth: true,
+                itemStyle: { color: '#00e5ff' },
+                lineStyle: { color: '#00e5ff', width: 3 },
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: 'rgba(0, 229, 255, 0.3)' },
@@ -768,351 +725,153 @@ function initCharts() {
                 }
             },
             {
-                name: '去年同期',
-                type: 'line',
-                data: [38, 45, 142, 198, 165, 89],
-                smooth: true,
-                itemStyle: {
-                    color: '#ff6b6b'
-                },
-                lineStyle: {
-                    color: '#ff6b6b',
-                    width: 2
-                }
+                name: '去年同期', type: 'line',
+                data: [38, 45, 142, 198, 165, 89], smooth: true,
+                itemStyle: { color: '#ff6b6b' },
+                lineStyle: { color: '#ff6b6b', width: 2 }
             },
             {
-                name: '上月同期',
-                type: 'line',
-                data: [42, 28, 148, 215, 172, 85],
-                smooth: true,
-                itemStyle: {
-                    color: '#4ecdc4'
-                },
-                lineStyle: {
-                    color: '#4ecdc4',
-                    width: 2
-                }
+                name: '上月同期', type: 'line',
+                data: [42, 28, 148, 215, 172, 85], smooth: true,
+                itemStyle: { color: '#4ecdc4' },
+                lineStyle: { color: '#4ecdc4', width: 2 }
             }
         ]
     };
-    if (window.patientFlowChart) {
-        window.patientFlowChart.setOption(patientFlowOption);
-    }
+}
 
-    // 患者流量趋势图表日月切换功能
-    const patientFlowToggleButtons = document.querySelectorAll('.chart-container-small:nth-child(1) .chart-toggle .toggle-btn');
-    patientFlowToggleButtons.forEach(button => {
+// 患者流量图表切换选项
+function getPatientFlowToggleOption(period) {
+    const baseConfig = {
+        backgroundColor: 'transparent',
+        textStyle: { color: '#ffffff' },
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderColor: '#00ffff',
+            textStyle: { color: '#ffffff' }
+        },
+        grid: {
+            left: '3%', right: '4%', bottom: '3%', top: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category', boundaryGap: false,
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff' }
+        },
+        yAxis: {
+            type: 'value',
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff' },
+            splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.1)' } }
+        }
+    };
+
+    if (period === 'day') {
+        return {
+            ...baseConfig,
+            legend: { data: ['今日', '昨日', '上周同日'], textStyle: { color: '#ffffff' } },
+            xAxis: { ...baseConfig.xAxis, data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'] },
+            series: [
+                { name: '今日', type: 'line', data: [12, 8, 5, 15, 45, 78, 95, 88, 76, 65, 42, 28], smooth: true, itemStyle: { color: '#00e5ff' }, lineStyle: { color: '#00e5ff', width: 3 }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(0, 229, 255, 0.3)' }, { offset: 1, color: 'rgba(0, 229, 255, 0.05)' }]) } },
+                { name: '昨日', type: 'line', data: [10, 6, 8, 18, 42, 82, 89, 85, 72, 68, 45, 32], smooth: true, itemStyle: { color: '#ff6b6b' }, lineStyle: { color: '#ff6b6b', width: 2 } },
+                { name: '上周同日', type: 'line', data: [15, 12, 10, 20, 48, 75, 92, 90, 78, 70, 50, 35], smooth: true, itemStyle: { color: '#4ecdc4' }, lineStyle: { color: '#4ecdc4', width: 2 } }
+            ]
+        };
+    } else {
+        const monthData = Array.from({length: 30}, () => Math.floor(Math.random() * 200) + 300);
+        const lastMonthData = Array.from({length: 30}, () => Math.floor(Math.random() * 180) + 280);
+        const lastYearData = Array.from({length: 30}, () => Math.floor(Math.random() * 160) + 250);
+        
+        return {
+            ...baseConfig,
+            legend: { data: ['本月', '上月', '去年同月'], textStyle: { color: '#ffffff' } },
+            xAxis: { ...baseConfig.xAxis, data: Array.from({length: 30}, (_, i) => `${i + 1}日`), axisLabel: { color: '#ffffff', interval: 4, rotate: 45 } },
+            yAxis: { ...baseConfig.yAxis, min: 200, max: 600, axisLabel: { color: '#ffffff', formatter: value => value + '人' } },
+            series: [
+                { name: '本月', type: 'line', data: monthData, smooth: true, itemStyle: { color: '#00e5ff' }, lineStyle: { color: '#00e5ff', width: 3 }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(0, 229, 255, 0.3)' }, { offset: 1, color: 'rgba(0, 229, 255, 0.05)' }]) } },
+                { name: '上月', type: 'line', data: lastMonthData, smooth: true, itemStyle: { color: '#ff6b6b' }, lineStyle: { color: '#ff6b6b', width: 2 } },
+                { name: '去年同月', type: 'line', data: lastYearData, smooth: true, itemStyle: { color: '#4ecdc4' }, lineStyle: { color: '#4ecdc4', width: 2 } }
+            ]
+        };
+    }
+}
+
+// 初始化患者流量图表
+function initPatientFlowChart() {
+    const element = document.getElementById('patientFlowChart');
+    if (!element) return;
+    
+    window.patientFlowChart = echarts.init(element);
+    window.patientFlowChart.setOption(getPatientFlowOption());
+    
+    // 绑定切换事件
+    const toggleButtons = document.querySelectorAll('.chart-container-small:nth-child(1) .chart-toggle .toggle-btn');
+    toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // 移除所有按钮的active类
-            patientFlowToggleButtons.forEach(btn => btn.classList.remove('active'));
-            // 添加当前按钮的active类
+            toggleButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             
-            // 获取切换的周期
             const period = this.getAttribute('data-period');
-            
-            // 更新图表模式状态
             patientFlowChartMode = period;
             
-            // 更新患者流量图表数据
             if (window.patientFlowChart) {
-                let newOption;
-                if (period === 'day') {
-                    // 日数据 - 12小时
-                    newOption = {
-                        backgroundColor: 'transparent',
-                        textStyle: {
-                            color: '#ffffff'
-                        },
-                        tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            borderColor: '#00ffff',
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        legend: {
-                            data: ['今日', '昨日', '上周同日'],
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '4%',
-                            bottom: '3%',
-                            top: '15%',
-                            containLabel: true
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff'
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff'
-                            },
-                            splitLine: {
-                                lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                }
-                            }
-                        },
-                        series: [
-                            {
-                                name: '今日',
-                                type: 'line',
-                                data: [12, 8, 5, 15, 45, 78, 95, 88, 76, 65, 42, 28],
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#00e5ff'
-                                },
-                                lineStyle: {
-                                    color: '#00e5ff',
-                                    width: 3
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(0, 229, 255, 0.3)' },
-                                        { offset: 1, color: 'rgba(0, 229, 255, 0.05)' }
-                                    ])
-                                }
-                            },
-                            {
-                                name: '昨日',
-                                type: 'line',
-                                data: [10, 6, 8, 18, 42, 82, 89, 85, 72, 68, 45, 32],
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#ff6b6b'
-                                },
-                                lineStyle: {
-                                    color: '#ff6b6b',
-                                    width: 2
-                                }
-                            },
-                            {
-                                name: '上周同日',
-                                type: 'line',
-                                data: [15, 12, 10, 20, 48, 75, 92, 90, 78, 70, 50, 35],
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#4ecdc4'
-                                },
-                                lineStyle: {
-                                    color: '#4ecdc4',
-                                    width: 2
-                                }
-                            }
-                        ]
-                    };
-                } else {
-                    // 月数据 - 30天
-                    const monthData = Array.from({length: 30}, () => Math.floor(Math.random() * 200) + 300);
-                    const lastMonthData = Array.from({length: 30}, () => Math.floor(Math.random() * 180) + 280);
-                    const lastYearData = Array.from({length: 30}, () => Math.floor(Math.random() * 160) + 250);
-                    
-                    newOption = {
-                        backgroundColor: 'transparent',
-                        textStyle: {
-                            color: '#ffffff'
-                        },
-                        tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            borderColor: '#00ffff',
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        legend: {
-                            data: ['本月', '上月', '去年同月'],
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '4%',
-                            bottom: '3%',
-                            top: '15%',
-                            containLabel: true
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: Array.from({length: 30}, (_, i) => `${i + 1}日`),
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff',
-                                interval: 4, // 每5天显示一个标签
-                                rotate: 45 // 旋转45度避免重叠
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            min: 200,
-                            max: 600,
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff',
-                                formatter: function(value) {
-                                    return value + '人';
-                                }
-                            },
-                            splitLine: {
-                                lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                }
-                            }
-                        },
-                        series: [
-                            {
-                                name: '本月',
-                                type: 'line',
-                                data: monthData,
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#00e5ff'
-                                },
-                                lineStyle: {
-                                    color: '#00e5ff',
-                                    width: 3
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(0, 229, 255, 0.3)' },
-                                        { offset: 1, color: 'rgba(0, 229, 255, 0.05)' }
-                                    ])
-                                }
-                            },
-                            {
-                                name: '上月',
-                                type: 'line',
-                                data: lastMonthData,
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#ff6b6b'
-                                },
-                                lineStyle: {
-                                    color: '#ff6b6b',
-                                    width: 2
-                                }
-                            },
-                            {
-                                name: '去年同月',
-                                type: 'line',
-                                data: lastYearData,
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#4ecdc4'
-                                },
-                                lineStyle: {
-                                    color: '#4ecdc4',
-                                    width: 2
-                                }
-                            }
-                        ]
-                    };
-                }
-                
-                // 更新图表
-                window.patientFlowChart.setOption(newOption, true);
+                window.patientFlowChart.setOption(getPatientFlowToggleOption(period), true);
             }
         });
     });
+}
 
-    // 能源消耗图表
-    const energyElement = document.getElementById('energyChart');
-    if (energyElement) {
-        window.energyChart = echarts.init(energyElement);
+// 初始化图表 - 优化性能
+function initCharts() {
+    try {
+        if (!checkEChartsAvailable()) return;
+        
+        initPatientFlowChart();
+        initEnergyChart();
+        initOtherCharts();
+        initResizeHandler();
+    } catch (error) {
+        if (DEBUG_MODE) console.error('图表初始化错误:', error);
     }
-    const energyOption = {
+}
+
+// 能源消耗图表配置
+function getEnergyOption() {
+    return {
         backgroundColor: 'transparent',
-      
         tooltip: {
             trigger: 'axis',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#00e5ff',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
             data: ['电力', '水', '燃气'],
-            textStyle: {
-                color: '#ffffff'
-            },
-          
+            textStyle: { color: '#ffffff' }
         },
         grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            top: '15%',
+            left: '3%', right: '4%', bottom: '3%', top: '15%',
             containLabel: true
         },
         xAxis: {
-            type: 'category',
-            boundaryGap: false,
+            type: 'category', boundaryGap: false,
             data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff'
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff' }
         },
         yAxis: {
             type: 'value',
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff'
-            },
-            splitLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                }
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff' },
+            splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.1)' } }
         },
         series: [
             {
-                name: '电力',
-                type: 'line',
+                name: '电力', type: 'line',
                 data: [120, 132, 101, 134, 90, 230],
-                itemStyle: {
-                    color: '#ff6b6b'
-                },
+                itemStyle: { color: '#ff6b6b' },
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: 'rgba(255, 107, 107, 0.3)' },
@@ -1121,12 +880,9 @@ function initCharts() {
                 }
             },
             {
-                name: '水',
-                type: 'line',
+                name: '水', type: 'line',
                 data: [220, 182, 191, 234, 290, 330],
-                itemStyle: {
-                    color: '#4ecdc4'
-                },
+                itemStyle: { color: '#4ecdc4' },
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: 'rgba(78, 205, 196, 0.3)' },
@@ -1135,12 +891,9 @@ function initCharts() {
                 }
             },
             {
-                name: '燃气',
-                type: 'line',
+                name: '燃气', type: 'line',
                 data: [150, 232, 201, 154, 190, 330],
-                itemStyle: {
-                    color: '#45b7d1'
-                },
+                itemStyle: { color: '#45b7d1' },
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: 'rgba(69, 183, 209, 0.3)' },
@@ -1150,426 +903,170 @@ function initCharts() {
             }
         ]
     };
-    if (window.energyChart) {
-        window.energyChart.setOption(energyOption);
-    }
+}
 
-    // 能源消耗趋势图表日月切换功能
-    const energyToggleButtons = document.querySelectorAll('.chart-container-small:nth-child(2) .chart-toggle .toggle-btn');
-    energyToggleButtons.forEach(button => {
+// 初始化能源消耗图表
+function initEnergyChart() {
+    const element = document.getElementById('energyChart');
+    if (!element) return;
+    
+    window.energyChart = echarts.init(element);
+    window.energyChart.setOption(getEnergyOption());
+    
+    // 绑定切换事件
+    const toggleButtons = document.querySelectorAll('.chart-container-small:nth-child(2) .chart-toggle .toggle-btn');
+    toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // 移除所有按钮的active类
-            energyToggleButtons.forEach(btn => btn.classList.remove('active'));
-            // 添加当前按钮的active类
+            toggleButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             
-            // 获取切换的周期
             const period = this.getAttribute('data-period');
-            
-            // 更新能源消耗图表数据
             if (window.energyChart) {
-                let newOption;
-                if (period === 'day') {
-                    // 日数据 - 12小时
-                    newOption = {
-                        backgroundColor: 'transparent',
-                        tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            borderColor: '#00e5ff',
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        legend: {
-                            data: ['电力', '水', '燃气'],
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '4%',
-                            bottom: '3%',
-                            top: '15%',
-                            containLabel: true
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff'
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff'
-                            },
-                            splitLine: {
-                                lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                }
-                            }
-                        },
-                        series: [
-                            {
-                                name: '电力',
-                                type: 'line',
-                                data: [120, 110, 95, 105, 140, 180, 200, 185, 160, 135, 125, 115],
-                                itemStyle: {
-                                    color: '#ff6b6b'
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(255, 107, 107, 0.3)' },
-                                        { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }
-                                    ])
-                                }
-                            },
-                            {
-                                name: '水',
-                                type: 'line',
-                                data: [220, 200, 180, 190, 240, 280, 300, 285, 260, 235, 225, 215],
-                                itemStyle: {
-                                    color: '#4ecdc4'
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(78, 205, 196, 0.3)' },
-                                        { offset: 1, color: 'rgba(78, 205, 196, 0.05)' }
-                                    ])
-                                }
-                            },
-                            {
-                                name: '燃气',
-                                type: 'line',
-                                data: [150, 140, 125, 135, 170, 210, 230, 215, 190, 165, 155, 145],
-                                itemStyle: {
-                                    color: '#45b7d1'
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(69, 183, 209, 0.3)' },
-                                        { offset: 1, color: 'rgba(69, 183, 209, 0.05)' }
-                                    ])
-                                }
-                            }
-                        ]
-                    };
-                } else {
-                    // 月数据 - 30天
-                    const electricityData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 100);
-                    const waterData = Array.from({length: 30}, () => Math.floor(Math.random() * 120) + 180);
-                    const gasData = Array.from({length: 30}, () => Math.floor(Math.random() * 80) + 120);
-                    
-                    newOption = {
-                        backgroundColor: 'transparent',
-                        tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            borderColor: '#00e5ff',
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        legend: {
-                            data: ['电力', '水', '燃气'],
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '4%',
-                            bottom: '3%',
-                            top: '15%',
-                            containLabel: true
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: Array.from({length: 30}, (_, i) => `${i + 1}日`),
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff',
-                                interval: 4, // 每5天显示一个标签
-                                rotate: 45 // 旋转45度避免重叠
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisLine: {
-                                lineStyle: {
-                                    color: '#ffffff'
-                                }
-                            },
-                            axisLabel: {
-                                color: '#ffffff'
-                            },
-                            splitLine: {
-                                lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                }
-                            }
-                        },
-                        series: [
-                            {
-                                name: '电力',
-                                type: 'line',
-                                data: electricityData,
-                                itemStyle: {
-                                    color: '#ff6b6b'
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(255, 107, 107, 0.3)' },
-                                        { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }
-                                    ])
-                                }
-                            },
-                            {
-                                name: '水',
-                                type: 'line',
-                                data: waterData,
-                                itemStyle: {
-                                    color: '#4ecdc4'
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(78, 205, 196, 0.3)' },
-                                        { offset: 1, color: 'rgba(78, 205, 196, 0.05)' }
-                                    ])
-                                }
-                            },
-                            {
-                                name: '燃气',
-                                type: 'line',
-                                data: gasData,
-                                itemStyle: {
-                                    color: '#45b7d1'
-                                },
-                                areaStyle: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                        { offset: 0, color: 'rgba(69, 183, 209, 0.3)' },
-                                        { offset: 1, color: 'rgba(69, 183, 209, 0.05)' }
-                                    ])
-                                }
-                            }
-                        ]
-                    };
-                }
-                
-                // 更新图表
-                window.energyChart.setOption(newOption, true);
+                const option = period === 'day' ? getEnergyDayOption() : getEnergyMonthOption();
+                window.energyChart.setOption(option, true);
             }
         });
     });
+}
 
-    // 交通流量图表
-    const trafficElement = document.getElementById('trafficChart');
-    if (trafficElement) {
-        window.trafficChart = echarts.init(trafficElement);
-    }
-    const trafficOption = {
+// 能源图表日/月选项
+function getEnergyDayOption() {
+    return {
+        ...getEnergyOption(),
+        xAxis: { ...getEnergyOption().xAxis, data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'] },
+        series: [
+            { name: '电力', type: 'line', data: [120, 110, 95, 105, 140, 180, 200, 185, 160, 135, 125, 115], itemStyle: { color: '#ff6b6b' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(255, 107, 107, 0.3)' }, { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }]) } },
+            { name: '水', type: 'line', data: [220, 200, 180, 190, 240, 280, 300, 285, 260, 235, 225, 215], itemStyle: { color: '#4ecdc4' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(78, 205, 196, 0.3)' }, { offset: 1, color: 'rgba(78, 205, 196, 0.05)' }]) } },
+            { name: '燃气', type: 'line', data: [150, 140, 125, 135, 170, 210, 230, 215, 190, 165, 155, 145], itemStyle: { color: '#45b7d1' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(69, 183, 209, 0.3)' }, { offset: 1, color: 'rgba(69, 183, 209, 0.05)' }]) } }
+        ]
+    };
+}
+
+function getEnergyMonthOption() {
+    const electricityData = Array.from({length: 30}, () => Math.floor(Math.random() * 100) + 100);
+    const waterData = Array.from({length: 30}, () => Math.floor(Math.random() * 120) + 180);
+    const gasData = Array.from({length: 30}, () => Math.floor(Math.random() * 80) + 120);
+    
+    return {
+        ...getEnergyOption(),
+        xAxis: { ...getEnergyOption().xAxis, data: Array.from({length: 30}, (_, i) => `${i + 1}日`), axisLabel: { color: '#ffffff', interval: 4, rotate: 45 } },
+        series: [
+            { name: '电力', type: 'line', data: electricityData, itemStyle: { color: '#ff6b6b' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(255, 107, 107, 0.3)' }, { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }]) } },
+            { name: '水', type: 'line', data: waterData, itemStyle: { color: '#4ecdc4' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(78, 205, 196, 0.3)' }, { offset: 1, color: 'rgba(78, 205, 196, 0.05)' }]) } },
+            { name: '燃气', type: 'line', data: gasData, itemStyle: { color: '#45b7d1' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(69, 183, 209, 0.3)' }, { offset: 1, color: 'rgba(69, 183, 209, 0.05)' }]) } }
+        ]
+    };
+}
+
+// 初始化其他图表
+function initOtherCharts() {
+    initTrafficChart();
+    initQualityChart();
+    initGaugeCharts();
+    initNetworkChart();
+    initRevenueChart();
+    initEquipmentChart();
+}
+
+// 初始化交通流量图表
+function initTrafficChart() {
+    const element = document.getElementById('trafficChart');
+    if (!element) return;
+    
+    window.trafficChart = echarts.init(element);
+    window.trafficChart.setOption({
         backgroundColor: 'transparent',
-       
         tooltip: {
             trigger: 'item',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#00e5ff',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
-            orient: 'vertical',
-            left: 'left',
-            textStyle: {
-                color: '#ffffff'
-            }
+            orient: 'vertical', left: 'left',
+            textStyle: { color: '#ffffff' }
         },
-        series: [
-            {
-                name: '停车场使用',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                center: ['60%', '50%'],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: '20',
-                        fontWeight: 'bold',
-                        color: '#ffffff'
-                    }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: [
-                    { value: 191, name: '已使用', itemStyle: { color: '#ff6b6b' } },
-                    { value: 54, name: '空闲', itemStyle: { color: '#4ecdc4' } }
-                ]
-            }
-        ]
-    };
-    if (window.trafficChart) {
-        window.trafficChart.setOption(trafficOption);
-    }
+        series: [{
+            name: '停车场使用', type: 'pie',
+            radius: ['40%', '70%'], center: ['60%', '50%'],
+            avoidLabelOverlap: false,
+            itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+            label: { show: false, position: 'center' },
+            emphasis: { label: { show: true, fontSize: '20', fontWeight: 'bold', color: '#ffffff' } },
+            labelLine: { show: false },
+            data: [
+                { value: 191, name: '已使用', itemStyle: { color: '#ff6b6b' } },
+                { value: 54, name: '空闲', itemStyle: { color: '#4ecdc4' } }
+            ]
+        }]
+    });
+}
 
-    // 医疗质量指标图表
-    const qualityElement = document.getElementById('qualityChart');
-    if (qualityElement) {
-        window.qualityChart = echarts.init(qualityElement);
-    }
-    const qualityOption = {
+// 初始化质量图表
+function initQualityChart() {
+    const element = document.getElementById('qualityChart');
+    if (!element) return;
+    
+    window.qualityChart = echarts.init(element);
+    window.qualityChart.setOption({
         backgroundColor: 'transparent',
         title: {
             text: '医疗质量趋势',
-            textStyle: {
-                color: '#4caf50',
-                fontSize: 14
-            },
+            textStyle: { color: '#4caf50', fontSize: 14 },
             left: 'center'
         },
         tooltip: {
             trigger: 'axis',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#4caf50',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
             data: ['感染率', '再入院率', '满意度'],
-            textStyle: {
-                color: '#ffffff'
-            },
-            top: 35,
-            itemGap: 15,
-            itemWidth: 12,
-            itemHeight: 8
+            textStyle: { color: '#ffffff' },
+            top: 35, itemGap: 15, itemWidth: 12, itemHeight: 8
         },
         grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            top: '25%',
+            left: '3%', right: '4%', bottom: '3%', top: '25%',
             containLabel: true
         },
         xAxis: {
-            type: 'category',
-            boundaryGap: false,
+            type: 'category', boundaryGap: false,
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 10
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff', fontSize: 10 }
         },
         yAxis: {
             type: 'value',
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 10
-            },
-            splitLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                }
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff', fontSize: 10 },
+            splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.1)' } }
         },
         series: [
-            {
-                name: '感染率',
-                type: 'line',
-                data: [0.8, 0.7, 0.9, 0.6, 0.8, 0.7, 0.8],
-                itemStyle: {
-                    color: '#f44336'
-                },
-                lineStyle: {
-                    width: 2
-                }
-            },
-            {
-                name: '再入院率',
-                type: 'line',
-                data: [3.2, 3.5, 3.1, 3.0, 3.3, 3.4, 3.2],
-                itemStyle: {
-                    color: '#ff9800'
-                },
-                lineStyle: {
-                    width: 2
-                }
-            },
-            {
-                name: '满意度',
-                type: 'line',
-                data: [96.8, 97.2, 96.5, 97.0, 96.9, 97.1, 96.8],
-                itemStyle: {
-                    color: '#4caf50'
-                },
-                lineStyle: {
-                    width: 2
-                }
-            }
+            { name: '感染率', type: 'line', data: [0.8, 0.7, 0.9, 0.6, 0.8, 0.7, 0.8], itemStyle: { color: '#f44336' }, lineStyle: { width: 2 } },
+            { name: '再入院率', type: 'line', data: [3.2, 3.5, 3.1, 3.0, 3.3, 3.4, 3.2], itemStyle: { color: '#ff9800' }, lineStyle: { width: 2 } },
+            { name: '满意度', type: 'line', data: [96.8, 97.2, 96.5, 97.0, 96.9, 97.1, 96.8], itemStyle: { color: '#4caf50' }, lineStyle: { width: 2 } }
         ]
-    };
-    if (window.qualityChart) {
-        window.qualityChart.setOption(qualityOption);
-    }
+    });
+}
 
-    // 温度监控图表
-    const temperatureElement = document.getElementById('temperatureChart');
-    if (temperatureElement) {
-        window.temperatureChart = echarts.init(temperatureElement);
-    }
-    const temperatureOption = {
+// 初始化仪表盘图表
+function initGaugeCharts() {
+    initTemperatureChart();
+    initHumidityChart();
+    initAirQualityChart();
+    initPowerChart();
+}
+
+// 通用仪表盘配置
+function getGaugeConfig(name, value, min, max, formatter) {
+    return {
         backgroundColor: 'transparent',
         series: [{
             type: 'gauge',
-            startAngle: 180,
-            endAngle: 0,
-            
-            center: ['50%', '85%'],
-            radius: '130%',
-            min: 0,
-            max: 40,
-            splitNumber: 4,
+            startAngle: 180, endAngle: 0,
+            center: ['50%', '85%'], radius: '130%',
+            min, max, splitNumber: 4,
             axisLine: {
                 lineStyle: {
                     width: 5,
@@ -1578,577 +1075,185 @@ function initCharts() {
             },
             pointer: {
                 icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                length: '12%',
-                width: 18,
+                length: '12%', width: 18,
                 offsetCenter: [0, '-60%'],
-                itemStyle: {
-                    color: '#00ffff'
-                }
+                itemStyle: { color: '#00ffff' }
             },
-            axisTick: {
-                length: 10,
-                lineStyle: {
-                    color: 'auto',
-                    width: 2
-                }
-            },
-            splitLine: {
-                length: 18,
-                lineStyle: {
-                    color: 'auto',
-                    width: 4
-                }
-            },
+            axisTick: { length: 10, lineStyle: { color: 'auto', width: 2 } },
+            splitLine: { length: 18, lineStyle: { color: 'auto', width: 4 } },
             axisLabel: {
-                color: '#ffffff',
-                fontSize: 9,
-                distance: -60,
-                rotate: 'tangential',
-                formatter: function (value) {
-                    if (value === 0) {
-                        return '0°C';
-                    } else if (value === 10) {
-                        return '10°C';
-                    } else if (value === 20) {
-                        return '20°C';
-                    } else if (value === 30) {
-                        return '30°C';
-                    } else if (value === 40) {
-                        return '40°C';
-                    }
-                    return '';
-                }
+                color: '#ffffff', fontSize: 9, distance: -60,
+                rotate: 'tangential', formatter
             },
-            title: {
-                offsetCenter: [0, '-10%'],
-                fontSize: 9,
-                color: '#ffffff'
-            },
+            title: { offsetCenter: [0, '-10%'], fontSize: 9, color: '#ffffff' },
             detail: {
-                fontSize: 12,
-                offsetCenter: [0, '-35%'],
-                valueAnimation: true,
-                formatter: function (value) {
-                    return Math.round(value) + '°C';
-                },
+                fontSize: 12, offsetCenter: [0, '-35%'],
+                valueAnimation: true, formatter: value => formatter(value),
                 color: '#00ffff'
             },
-            data: [{
-                value: 22.5,
-                name: '温度'
-            }]
+            data: [{ value, name }]
         }]
     };
-    if (window.temperatureChart) {
-        window.temperatureChart.setOption(temperatureOption);
-    }
+}
 
-    // 湿度监控图表
-    const humidityElement = document.getElementById('humidityChart');
-    if (humidityElement) {
-        window.humidityChart = echarts.init(humidityElement);
-    }
-    const humidityOption = {
-        backgroundColor: 'transparent',
-        series: [{
-            type: 'gauge',
-            startAngle: 180,
-            endAngle: 0,
-            center: ['50%', '85%'],
-            radius: '130%',
-            min: 0,
-            max: 100,
-            splitNumber: 5,
-            axisLine: {
-                lineStyle: {
-                    width: 5,
-                    color: [[0.4, '#4caf50'], [0.7, '#ff9800'], [1, '#f44336']]
-                }
-            },
-            pointer: {
-                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                length: '12%',
-                width: 18,
-                offsetCenter: [0, '-60%'],
-                itemStyle: {
-                    color: '#00ffff'
-                }
-            },
-            axisTick: {
-                length: 10,
-                lineStyle: {
-                    color: 'auto',
-                    width: 2
-                }
-            },
-            splitLine: {
-                length: 18,
-                lineStyle: {
-                    color: 'auto',
-                    width: 4
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 9,
-                distance: -60,
-                rotate: 'tangential',
-                formatter: function (value) {
-                    if (value === 20) {
-                        return '20%';
-                    } else if (value === 50) {
-                        return '50%';
-                    } else if (value === 80) {
-                        return '80%';
-                    }
-                    return '';
-                }
-            },
-            title: {
-                offsetCenter: [0, '-10%'],
-                fontSize: 9,
-                color: '#ffffff'
-            },
-            detail: {
-                fontSize: 12,
-                offsetCenter: [0, '-35%'],
-                valueAnimation: true,
-                formatter: function (value) {
-                    return Math.round(value) + '%';
-                },
-                color: '#00ffff'
-            },
-            data: [{
-                value: 58,
-                name: '湿度'
-            }]
-        }]
-    };
-    if (window.humidityChart) {
-        window.humidityChart.setOption(humidityOption);
-    }
+function initTemperatureChart() {
+    const element = document.getElementById('temperatureChart');
+    if (!element) return;
+    
+    window.temperatureChart = echarts.init(element);
+    window.temperatureChart.setOption(getGaugeConfig('温度', 22.5, 0, 40, value => Math.round(value) + '°C'));
+}
 
-    // 空气质量监控图表
-    const airQualityElement = document.getElementById('airQualityChart');
-    if (airQualityElement) {
-        window.airQualityChart = echarts.init(airQualityElement);
-    }
-    const airQualityOption = {
-        backgroundColor: 'transparent',
-        series: [{
-            type: 'gauge',
-            startAngle: 180,
-            endAngle: 0,
-            center: ['50%', '85%'],
-            radius: '130%',
-            min: 0,
-            max: 500,
-            splitNumber: 5,
-            axisLine: {
-                lineStyle: {
-                    width: 5,
-                    color: [[0.2, '#4caf50'], [0.4, '#ff9800'], [0.6, '#ff5722'], [1, '#f44336']]
-                }
-            },
-            pointer: {
-                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                length: '12%',
-                width: 18,
-                offsetCenter: [0, '-60%'],
-                itemStyle: {
-                    color: '#00ffff'
-                }
-            },
-            axisTick: {
-                length: 10,
-                lineStyle: {
-                    color: 'auto',
-                    width: 2
-                }
-            },
-            splitLine: {
-                length: 18,
-                lineStyle: {
-                    color: 'auto',
-                    width: 4
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 9,
-                distance: -60,
-                rotate: 'tangential',
-                formatter: function (value) {
-                    if (value === 50) {
-                        return '优';
-                    } else if (value === 100) {
-                        return '良';
-                    } else if (value === 200) {
-                        return '中';
-                    }
-                    return '';
-                }
-            },
-            title: {
-                offsetCenter: [0, '-10%'],
-                fontSize: 9,
-                color: '#ffffff'
-            },
-            detail: {
-                fontSize: 12,
-                offsetCenter: [0, '-35%'],
-                valueAnimation: true,
-                formatter: function (value) {
-                    return Math.round(value);
-                },
-                color: '#00ffff'
-            },
-            data: [{
-                value: 15,
-                name: 'PM2.5'
-            }]
-        }]
-    };
-    if (window.airQualityChart) {
-        window.airQualityChart.setOption(airQualityOption);
-    }
+function initHumidityChart() {
+    const element = document.getElementById('humidityChart');
+    if (!element) return;
+    
+    window.humidityChart = echarts.init(element);
+    window.humidityChart.setOption(getGaugeConfig('湿度', 58, 0, 100, value => Math.round(value) + '%'));
+}
 
-    // 电力消耗图表
-    const powerElement = document.getElementById('powerChart');
-    if (powerElement) {
-        try {
-            window.powerChart = echarts.init(powerElement);
-        } catch (error) {
-            if (DEBUG_MODE) console.error('powerChart 初始化失败:', error);
-            window.powerChart = null;
-        }
-    } else {
+function initAirQualityChart() {
+    const element = document.getElementById('airQualityChart');
+    if (!element) return;
+    
+    window.airQualityChart = echarts.init(element);
+    window.airQualityChart.setOption(getGaugeConfig('PM2.5', 15, 0, 500, value => Math.round(value)));
+}
+
+function initPowerChart() {
+    const element = document.getElementById('powerChart');
+    if (!element) return;
+    
+    try {
+        window.powerChart = echarts.init(element);
+        window.powerChart.setOption(getGaugeConfig('用电', 1245, 800, 1600, value => Math.round(value) + 'kWh'));
+    } catch (error) {
+        if (DEBUG_MODE) console.error('powerChart 初始化失败:', error);
         window.powerChart = null;
     }
-    const powerOption = {
-        backgroundColor: 'transparent',
-        series: [{
-            type: 'gauge',
-            startAngle: 180,
-            endAngle: 0,
-            center: ['50%', '85%'],
-            radius: '130%', 
-            min: 800,
-            max: 1600,
-            splitNumber: 8,
-            axisLine: {
-                lineStyle: {
-                    width: 5,
-                    color: [[0.6, '#4caf50'], [0.8, '#ff9800'], [1, '#f44336']]
-                }
-            },
-            pointer: {
-                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                length: '12%',
-                width: 18,
-                offsetCenter: [0, '-60%'],
-                itemStyle: {
-                    color: '#00ffff'
-                }
-            },
-            axisTick: {
-                length: 10,
-                lineStyle: {
-                    color: 'auto',
-                    width: 2
-                }
-            },
-            splitLine: {
-                length: 18,
-                lineStyle: {
-                    color: 'auto',
-                    width: 4
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 9,
-                distance: -60,
-                rotate: 'tangential',
-                formatter: function (value) {
-                    if (value === 1000) {
-                        return '1.0k';
-                    } else if (value === 1200) {
-                        return '1.2k';
-                    } else if (value === 1400) {
-                        return '1.4k';
-                    }
-                    return '';
-                }
-            },
-            title: {
-                offsetCenter: [0, '-10%'],
-                fontSize: 9,
-                color: '#ffffff'
-            },
-            detail: {
-                fontSize: 12,
-                offsetCenter: [0, '-35%'],
-                valueAnimation: true,
-                formatter: function (value) {
-                    return Math.round(value) + 'kWh';
-                },
-                color: '#00ffff'
-            },
-            data: [{
-                value: 1245,
-                name: '用电'
-            }]
-        }]
-    };
-    if (window.powerChart && typeof window.powerChart.setOption === 'function') {
-        window.powerChart.setOption(powerOption);
-    }
+}
 
-    // 网络流量图表
-    const networkElement = document.getElementById('networkChart');
-    if (networkElement) {
-        window.networkChart = echarts.init(networkElement);
-    }
-    const networkOption = {
+// 初始化网络图表
+function initNetworkChart() {
+    const element = document.getElementById('networkChart');
+    if (!element) return;
+    
+    window.networkChart = echarts.init(element);
+    window.networkChart.setOption({
         backgroundColor: 'transparent',
-     
         tooltip: {
             trigger: 'axis',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#00ffff',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
             data: ['上行', '下行'],
-            textStyle: {
-                color: '#ffffff'
-            },
-            top: 25
+            textStyle: { color: '#ffffff' }, top: 25
         },
         grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            top: '15%',
+            left: '3%', right: '4%', bottom: '3%', top: '15%',
             containLabel: true
         },
         xAxis: {
-            type: 'category',
-            boundaryGap: false,
+            type: 'category', boundaryGap: false,
             data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 10
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff', fontSize: 10 }
         },
         yAxis: {
             type: 'value',
-            axisLine: {
-                lineStyle: {
-                    color: '#ffffff'
-                }
-            },
-            axisLabel: {
-                color: '#ffffff',
-                fontSize: 10
-            },
-            splitLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                }
-            }
+            axisLine: { lineStyle: { color: '#ffffff' } },
+            axisLabel: { color: '#ffffff', fontSize: 10 },
+            splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.1)' } }
         },
         series: [
-            {
-                name: '上行',
-                type: 'line',
-                data: [120, 132, 101, 134, 90, 230],
-                itemStyle: {
-                    color: '#ff9800'
-                },
-                lineStyle: {
-                    width: 2
-                }
-            },
-            {
-                name: '下行',
-                type: 'line',
-                data: [220, 182, 191, 234, 290, 330],
-                itemStyle: {
-                    color: '#4caf50'
-                },
-                lineStyle: {
-                    width: 2
-                }
-            }
+            { name: '上行', type: 'line', data: [120, 132, 101, 134, 90, 230], itemStyle: { color: '#ff9800' }, lineStyle: { width: 2 } },
+            { name: '下行', type: 'line', data: [220, 182, 191, 234, 290, 330], itemStyle: { color: '#4caf50' }, lineStyle: { width: 2 } }
         ]
-    };
-    if (window.networkChart) {
-        window.networkChart.setOption(networkOption);
-    }
+    });
+}
 
-    // 收入分析饼图
-    const revenueElement = document.getElementById('revenueChart');
-    if (DEBUG_MODE) console.log('收入分析图表元素:', revenueElement);
-    if (revenueElement) {
-        window.revenueChart = echarts.init(revenueElement);
-        if (DEBUG_MODE) console.log('收入分析图表初始化成功:', window.revenueChart);
-    } else if (DEBUG_MODE) {
-        console.error('收入分析图表元素未找到');
-    }
-    const revenueOption = {
+// 初始化收入图表
+function initRevenueChart() {
+    const element = document.getElementById('revenueChart');
+    if (!element) return;
+    
+    window.revenueChart = echarts.init(element);
+    window.revenueChart.setOption({
         backgroundColor: 'transparent',
-        textStyle: {
-            color: '#ffffff'
-        },
+        textStyle: { color: '#ffffff' },
         tooltip: {
             trigger: 'item',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#00ffff',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
-            orient: 'vertical',
-            right: '0%',
-            top: 'center',
-            textStyle: {
-                color: '#ffffff',
-                fontSize: 11,
-                fontWeight: 'normal'
-            },
-            itemWidth: 10,
-            itemHeight: 10,
-            itemGap: 6,
-            formatter: function(name) {
-                // 确保图例文字完整显示
-                return name;
-            }
+            orient: 'vertical', right: '0%', top: 'center',
+            textStyle: { color: '#ffffff', fontSize: 11, fontWeight: 'normal' },
+            itemWidth: 10, itemHeight: 10, itemGap: 6
         },
         series: [{
-            type: 'pie',
-            radius: ['35%', '65%'],
-            center: ['25%', '50%'],
+            type: 'pie', radius: ['35%', '65%'], center: ['25%', '50%'],
             data: [
                 { value: 45, name: '门诊收入', itemStyle: { color: '#00e5ff' } },
                 { value: 30, name: '住院收入', itemStyle: { color: '#4caf50' } },
                 { value: 15, name: '检查收入', itemStyle: { color: '#ff9800' } },
                 { value: 10, name: '其他收入', itemStyle: { color: '#9c27b0' } }
             ],
-            label: {
-                show: false
-            },
-            labelLine: {
-                show: false
-            },
+            label: { show: false }, labelLine: { show: false },
             emphasis: {
                 itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
+                    shadowBlur: 10, shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 255, 255, 0.5)'
                 }
             }
         }]
-    };
-    if (window.revenueChart) {
-        window.revenueChart.setOption(revenueOption);
-    }
+    });
+}
 
-    // 设备状态图表
-    const equipmentStatusElement = document.getElementById('equipmentStatusChart');
-    if (DEBUG_MODE) console.log('设备状态图表元素:', equipmentStatusElement);
-    if (equipmentStatusElement) {
-        window.equipmentStatusChart = echarts.init(equipmentStatusElement);
-        if (DEBUG_MODE) console.log('设备状态图表初始化成功:', window.equipmentStatusChart);
-    } else if (DEBUG_MODE) {
-        console.error('设备状态图表元素未找到');
-    }
-    const equipmentStatusOption = {
+// 初始化设备状态图表
+function initEquipmentChart() {
+    const element = document.getElementById('equipmentStatusChart');
+    if (!element) return;
+    
+    window.equipmentStatusChart = echarts.init(element);
+    window.equipmentStatusChart.setOption({
         backgroundColor: 'transparent',
-        textStyle: {
-            color: '#ffffff'
-        },
+        textStyle: { color: '#ffffff' },
         tooltip: {
             trigger: 'item',
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             borderColor: '#00ffff',
-            textStyle: {
-                color: '#ffffff'
-            }
+            textStyle: { color: '#ffffff' }
         },
         legend: {
-            orient: 'vertical',
-            right: '0%',
-            top: 'center',
-            textStyle: {
-                color: '#ffffff',
-                fontSize: 11,
-                fontWeight: 'normal'
-            },
-            itemWidth: 10,
-            itemHeight: 10,
-            itemGap: 6,
-            formatter: function(name) {
-                // 确保图例文字完整显示
-                return name;
-            }
+            orient: 'vertical', right: '0%', top: 'center',
+            textStyle: { color: '#ffffff', fontSize: 11, fontWeight: 'normal' },
+            itemWidth: 10, itemHeight: 10, itemGap: 6
         },
         series: [{
-            type: 'pie',
-            radius: ['35%', '65%'],
-            center: ['25%', '50%'],
+            type: 'pie', radius: ['35%', '65%'], center: ['25%', '50%'],
             data: [
                 { value: 78, name: '正常运行', itemStyle: { color: '#4caf50' } },
                 { value: 15, name: '维护中', itemStyle: { color: '#ff9800' } },
                 { value: 5, name: '故障', itemStyle: { color: '#f44336' } },
                 { value: 2, name: '待机', itemStyle: { color: '#9e9e9e' } }
             ],
-            label: {
-                show: false
-            },
-            labelLine: {
-                show: false
-            },
+            label: { show: false }, labelLine: { show: false },
             emphasis: {
                 itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
+                    shadowBlur: 10, shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 255, 255, 0.5)'
                 }
             }
         }]
-    };
-    if (window.equipmentStatusChart) {
-        window.equipmentStatusChart.setOption(equipmentStatusOption);
-    }
+    });
+}
 
-    // patientTrendChart相关代码已移除（HTML中不存在对应元素）
-
-    // bedUsageGauge相关代码已移除（HTML中不存在对应元素）
-
-    // emergencyChart相关代码已移除（HTML中不存在对应元素）
-
-    // surgeryChart相关代码已移除（HTML中不存在对应元素）
-
-    // 等待时间折线图（容器不存在，跳过初始化）
-    // const waitingTimeElement = document.getElementById('waitingTimeChart');
-    // if (waitingTimeElement) {
-    //     window.waitingTimeChart = echarts.init(waitingTimeElement);
-    //     // ... 图表配置代码
-    // }
-
-    // satisfactionChart相关代码已移除（HTML中不存在对应元素）
-
-    // 响应式处理 - 优化性能
+// 初始化响应式处理
+function initResizeHandler() {
     const resizeHandler = throttle(() => {
         const chartInstances = [
             'energyChart', 'patientFlowChart', 'trafficChart', 'qualityChart',
@@ -2165,13 +1270,10 @@ function initCharts() {
                 if (DEBUG_MODE) console.warn(`图表 ${chartName} resize失败:`, error);
             }
         });
-    }, 300); // 300ms节流
+    }, 300);
     
     window.addEventListener('resize', resizeHandler);
-    window.resizeHandler = resizeHandler; // 保存引用以便清理
-    } catch (error) {
-        if (DEBUG_MODE) console.error('图表初始化错误:', error);
-    }
+    window.resizeHandler = resizeHandler;
 }
 
 // 系统状态随机更新
@@ -2374,56 +1476,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// 处理ESC键关闭模态框
+function handleEscapeKey() {
+    const modals = document.querySelectorAll('.video-modal, .vehicle-modal');
+    modals.forEach(modal => {
+        if (modal.style.display !== 'none') {
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+    });
+}
+
+// 处理Tab键导航
+function handleTabKey(e) {
+    const focusableElements = document.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    
+    if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+    } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+    }
+}
+
+// 处理方向键导航图表切换
+function handleArrowKeys(e) {
+    const activeToggle = document.querySelector('.toggle-btn.active');
+    if (!activeToggle) return;
+    
+    const toggleGroup = activeToggle.parentElement;
+    const toggles = Array.from(toggleGroup.querySelectorAll('.toggle-btn'));
+    const currentIndex = toggles.indexOf(activeToggle);
+    
+    let newIndex;
+    if (e.key === 'ArrowLeft') {
+        newIndex = currentIndex > 0 ? currentIndex - 1 : toggles.length - 1;
+    } else {
+        newIndex = currentIndex < toggles.length - 1 ? currentIndex + 1 : 0;
+    }
+    
+    toggles[newIndex].click();
+    toggles[newIndex].focus();
+}
+
 // 无障碍访问性支持
 function initAccessibility() {
     // 键盘导航支持
     document.addEventListener('keydown', function(e) {
-        // ESC键关闭模态框
         if (e.key === 'Escape') {
-            const modals = document.querySelectorAll('.video-modal, .vehicle-modal');
-            modals.forEach(modal => {
-                if (modal.style.display !== 'none') {
-                    modal.style.display = 'none';
-                    document.body.classList.remove('modal-open');
-                }
-            });
-        }
-        
-        // Tab键导航优化
-        if (e.key === 'Tab') {
-            const focusableElements = document.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            );
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-            
-            if (e.shiftKey && document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-            } else if (!e.shiftKey && document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
-            }
-        }
-        
-        // 方向键导航图表切换
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-            const activeToggle = document.querySelector('.toggle-btn.active');
-            if (activeToggle) {
-                const toggleGroup = activeToggle.parentElement;
-                const toggles = Array.from(toggleGroup.querySelectorAll('.toggle-btn'));
-                const currentIndex = toggles.indexOf(activeToggle);
-                
-                let newIndex;
-                if (e.key === 'ArrowLeft') {
-                    newIndex = currentIndex > 0 ? currentIndex - 1 : toggles.length - 1;
-                } else {
-                    newIndex = currentIndex < toggles.length - 1 ? currentIndex + 1 : 0;
-                }
-                
-                toggles[newIndex].click();
-                toggles[newIndex].focus();
-            }
+            handleEscapeKey();
+        } else if (e.key === 'Tab') {
+            handleTabKey(e);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            handleArrowKeys(e);
         }
     });
     
